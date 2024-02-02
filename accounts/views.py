@@ -19,6 +19,8 @@ from rest_framework import generics
 from .models import CustomUser
 
 from . import roles
+from .roles import roles_data
+
 from .serializers import LoginSerializer
 from .serializers import (
     CustomUserReadSerializer,CustomUserSerializer, GroupSerializer, 
@@ -125,12 +127,11 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
 
 
 class RoleViewSet(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]  
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]  
     
     def get(self,request,format=None):
-        my_tuple = CustomUser.ROLE_CHOICES
-        serializer = RoleSerializer(data=my_tuple,many=True)
+        serializer = RoleSerializer(data=roles_data,many=True)
         serializer.is_valid()
         serialized_data = serializer.data
     

@@ -12,10 +12,10 @@ router = DefaultRouter()
 
 router.register('users', views.CustomUserSerializerViewSet, basename="CustomUserSerializer")
 
-router.register('groups', views.GroupViewSet, basename="group")
-router.register('permissions', views.PermissionViewSet, basename="permission")
+# router.register('groups', views.GroupViewSet, basename="group")
+# router.register('permissions', views.PermissionViewSet, basename="permission")
 
-router.register("permission-has-group",PermissionHasGroupViewSet,basename="PermissionHasGroupViewSet")
+# router.register("permission-has-group",PermissionHasGroupViewSet,basename="PermissionHasGroupViewSet")
 
 
 urlpatterns = [    
@@ -27,8 +27,6 @@ urlpatterns = [
     path('token-verify/',TokenVerifyView.as_view(),name="token_verify"),
 
     path('check-token-status/',CheckTokenExpireView.as_view(),name="token_verify"),
-
-    path('permission-all-delete/', PermissionAllDelete.as_view()),
     path('roles/',RoleViewSet.as_view()),
 
     path('add-customized-permission/',CustomPermissionInsert,name="CustomPermissionInsert"),
