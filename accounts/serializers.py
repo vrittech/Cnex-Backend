@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import Group,Permission
-from account.models import CustomUser,Relationship
+from .models import CustomUser
 from django.contrib.auth.hashers import make_password
 from . import roles
-from points.models import ReferralCodes,Referral
 
 
 class CustomUserReadSerializer(serializers.ModelSerializer):
@@ -75,16 +74,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         else:
             return False
         
-    def validate_referral_code(self,referral_code):
-        if referral_code != '':
-            if len(referral_code)<5:
-                raise serializers.ValidationError("please input Correct referral code.")
-            referral_obj = ReferralCodes.objects.filter(referral_code = referral_code)
-            if referral_obj.exists():
-                self.initial_data['referral_code_obj'] = referral_obj.first()
-            else:
-                raise serializers.ValidationError("please input Correct referral code,ask referral code with your friends.")
-    
+
     def validate(self, attrs):
         request = self.context.get('request')
         action = self.context['view'].action     
@@ -103,25 +93,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
                     if not instance.check_password(old_password):
                         raise serializers.ValidationError("Password does not match")
             attrs['old_password_change_case'] = True
-        return attrs
-    
-    def create(self, validated_data):
-
-        instance = super().create(validated_data)
-        if self.initial_data.get('referral_code_obj'):
-            referral_code_obj = self.initial_data.get('referral_code_obj')
-            data = {
-                'user':referral_code_obj.user,
-                'to_user_id':instance.id,
-                'referral_code':referral_code_obj.referral_code
-            }
-            try:
-                Referral.objects.create(**data)
-                print("referral code issue")
-            except:
-                instance.delete()
-        return instance
-        
+        return attrs        
 
     def get_extra_kwargs(self):
         extra_kwargs = super().get_extra_kwargs()
@@ -133,23 +105,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
             pass
     
     class Meta:
-        ref_name =  "account serializer"
+        ref_name =  "accountWriteserializer"
         model = CustomUser
         fields = '__all__' 
-
 
 class RoleSerializer(serializers.Serializer):
     role_id = serializers.IntegerField()
     role_name = serializers.CharField()
     def to_representation(self, instance):
         return {'role_id': instance[0], 'role_name': instance[1]}
-    
-class departmentTypeSerializer(serializers.Serializer):
-    code = serializers.CharField()
-    name = serializers.CharField()
-    def to_representation(self, instance):
-        return {'code': instance[0], 'name': instance[1]}
-
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -178,19 +142,7 @@ class PermissionGroupSerializer(serializers.Serializer):
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'full_name', 'phone', 'image', 'email','role','facebook','instagram','tiktok','youtube','description','is_verified']
+        fields = ['id', 'full_name', 'phone', 'image', 'email']
     
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        user = self.context['request'].user
-        representation['followers'] = instance.followers.all().count()
-        if user.is_authenticated:
-            is_follow = Relationship.objects.filter(followed_by_user = user, followed_to = instance.id).exists()
-            if is_follow:
-                representation['is_follow'] = True
-            else:
-                representation['is_follow'] = False
-        else:
-            representation['is_follow'] = False
-        return representation
+  
     

@@ -55,18 +55,7 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
     }
 
     authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
-    # permission_classes = [AccountPermission]
-
-    # def get_permissions(self):
-    #     if self.action == 'list':
-        
-    #         # Only allow authenticated users to list users
-    #         return [IsAuthenticated()]
-    #     else:
-    #         # For other actions, no authentication is required
-    #         return []
-
+    permission_classes = [AccountPermission]
     
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
@@ -78,32 +67,23 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
         queryset =  CustomUser.objects.all()
         
         if not user.is_authenticated:
-            # Return an empty queryset or a default response
             query = CustomUser.objects.none()
-        elif user.role == roles.SYSTEM_ADMIN:
-            # query = CustomUser.objects.all()    
+        elif user.role == roles.SUPER_ADMIN: 
             query = queryset       
-        elif user.role == roles.ADMIN:
-            # Regular user can see SampleForm instances with form_available='user'
-            # query = CustomUser.objects.filter(is_active = True)    
+        elif user.role == roles.ADMIN: 
             query = queryset.filter(is_active = True)
-    
         else:
-            # query = CustomUser.objects.filter(email=user.email,is_active = True)
-            query = queryset.filter(email=user.email,is_active = True)
-            # raise PermissionDenied("You do not have permission to access this resource.")
-        # query = CustomUser.objects.all()
+            query = queryset.filter(id=user.id,is_active = True)
         return query.order_by("-created_date")
     
-    #m@method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
+    # @method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
     def list(self, request, *args, **kwargs):
-        # print(request.user)
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         data = serializer.data
         return Response(data)
 
-    #m@method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
+    # @method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
@@ -136,7 +116,7 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
         # Save the new object to the database
         self.perform_create(serializer)
 
-      
+    
         response_data = {
             "message": "Account created successfully",
             "data": serializer.data
@@ -155,8 +135,7 @@ class RoleViewSet(APIView):
         serializer = RoleSerializer(data=my_tuple,many=True)
         serializer.is_valid()
         serialized_data = serializer.data
-        # authentication_classes = [JWTAuthentication]
-        # permission_classes = [IsAuthenticated]
+    
         return Response({"roles": serialized_data},status=status.HTTP_200_OK)
 
 
@@ -165,8 +144,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     filter_backends = [SearchFilter]
     search_fields = ['name']
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]    
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
