@@ -4,7 +4,6 @@ from . import views
 from .views import LoginView
 from rest_framework.routers import DefaultRouter
 from .views import PermissionAllDelete,RoleViewSet,CheckTokenExpireView,userLimitedData,AllUserData
-from .relationship  import RelationshipViewSet,UnfollowRelationship
 from .group_permission import PermissionHasGroupViewSet,CustomPermissionInsert
 
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView,TokenVerifyView
@@ -12,7 +11,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView,
 router = DefaultRouter()
 
 router.register('users', views.CustomUserSerializerViewSet, basename="CustomUserSerializer")
-router.register('relationship', RelationshipViewSet, basename="Relationship")
 
 router.register('groups', views.GroupViewSet, basename="group")
 router.register('permissions', views.PermissionViewSet, basename="permission")
@@ -38,8 +36,6 @@ urlpatterns = [
     path('get-limited-user-data/',userLimitedData.as_view(),name="userLimitedData"),
 
     path('get-all-users-data/',AllUserData.as_view(),name="userLimitedData"),
-
-    path('unfollow-users/',UnfollowRelationship.as_view(),name="userLimitedData"),
     
     path('user-details/<str:username>/', views.UserDetailsView.as_view(), name="user_details"),
 

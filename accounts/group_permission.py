@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group, Permission
-from account.models import CustomUser
+from .models import CustomUser
 from rest_framework import viewsets
 from .serializers import GroupNamesSerializer,PermissionGroupSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication

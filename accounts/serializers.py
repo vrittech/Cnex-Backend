@@ -31,7 +31,7 @@ class CustomUserReadLimitedSerializer_1(serializers.ModelSerializer):
     class Meta:
         ref_name =  "CustomUserReadLimitedSerializer serializers"
         model = CustomUser
-        fields = ['id','email','first_name','username','is_verified','last_name','role','getRoleName']
+        fields = ['id','email','first_name','username','last_name','role','getRoleName']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -78,12 +78,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         request = self.context.get('request')
         action = self.context['view'].action     
-        
-        if action == 'create':
-            self.validate_referral_code(request.data.get('referral_code',''))
-        
-        if action == 'partial_update' and 'is_verified' in attrs and 'remarks' in attrs:
-            attrs['approved_by'] = request.user
 
         if action == 'partial_update':
             if self.instance.old_password_change_case == True:
