@@ -34,7 +34,6 @@ class CustomUser(AbstractUser):
     )
     provider = models.PositiveSmallIntegerField(choices=provider_CHOICES,default = system_provider)
 
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -56,3 +55,13 @@ class CustomUser(AbstractUser):
             return self.first_name + " " + self.last_name
         except:
             return self.username
+
+class ShippingAddress(models.Model):
+    profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    address_type = models.CharField(max_length=255, choices=[
+        ('home', 'Home Address'),
+        ('office', 'Office Address'),
+    ])
+    address = models.TextField()
+    location = models.CharField(max_length = 300)
+    contact_number = models.CharField(max_length = 50)

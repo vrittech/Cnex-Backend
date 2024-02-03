@@ -31,11 +31,10 @@ urlpatterns = [
 
     path('add-customized-permission/',CustomPermissionInsert,name="CustomPermissionInsert"),
 
-    path('get-limited-user-data/',userLimitedData.as_view(),name="userLimitedData"),
-
-    path('get-all-users-data/',AllUserData.as_view(),name="userLimitedData"),
+    # path('get-limited-user-data/',userLimitedData.as_view(),name="userLimitedData"),
+    # path('get-all-users-data/',AllUserData.as_view(),name="userLimitedData"),
     
-    path('user-details/<str:username>/', views.UserDetailsView.as_view(), name="user_details"),
+    # path('user-details/<str:username>/', views.UserDetailsView.as_view(), name="user_details"),
 
     path('google-login/', views.GoogleLogin.as_view(), name="user_details"),
     # path('user-has-groups/',)
