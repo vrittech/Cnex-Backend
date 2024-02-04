@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     'corsheaders',
-    'accounts',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
+    'accounts',
+    'products',
+    # 'order',
 ]
 
 ASGI_APPLICATION = 'cnex.asgi.application'
