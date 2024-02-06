@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib import admin
 
-from .models import CustomUser
+from .models import CustomUser,ShippingAddress
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -22,3 +22,5 @@ admin.site.register(CustomUser, UserAdmin)
 
 # admin.site.register(CustomUser)
 admin.site.register(Permission)
+
+admin.site.register(ShippingAddress)
