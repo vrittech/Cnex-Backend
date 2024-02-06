@@ -35,6 +35,8 @@ ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_HOSTS').split(',') if host 
 
 INSTALLED_APPS = [
     'daphne',
+    'admin_interface',
+    "colorfield",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,8 +49,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'accounts',
+    'variations',
     'products',
-    # 'order',
+    'coupon',
+    'order',
+    'payment',
+    'appointment',
 ]
 
 ASGI_APPLICATION = 'cnex.asgi.application'
