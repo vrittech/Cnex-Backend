@@ -65,3 +65,7 @@ class ShippingAddress(models.Model):
     address = models.TextField()
     location = models.CharField(max_length = 300)
     contact_number = models.CharField(max_length = 50)
+
+    def __str__(self):
+        return str(self.profile.username) + ' '+ str(self.address_type)
+
