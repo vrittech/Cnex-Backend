@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group, Permission
 from .models import CustomUser
 from rest_framework import viewsets
-from .serializers import GroupNamesSerializer,PermissionGroupSerializer
+from .serializers.custom_user_serializers import GroupNamesSerializer,PermissionGroupSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken

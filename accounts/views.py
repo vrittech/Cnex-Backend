@@ -21,12 +21,13 @@ from .models import CustomUser
 from . import roles
 from .roles import roles_data
 
-from .serializers import LoginSerializer
-from .serializers import (
+from accounts.serializers.custom_user_serializers import LoginSerializer
+from accounts.serializers.custom_user_serializers import (
     CustomUserReadSerializer,CustomUserSerializer, GroupSerializer, 
     PermissionSerializer,RoleSerializer,CustomUserReadLimitedSerializer,
     UserDetailsSerializer,CustomUserReadLimitedSerializer_1
     )
+
 from .custompermission import AccountPermission,AllUserDataPermission
 from .pagination import PageNumberPagination
 

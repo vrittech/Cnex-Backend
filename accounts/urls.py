@@ -7,10 +7,12 @@ from .views import PermissionAllDelete,RoleViewSet,CheckTokenExpireView,userLimi
 from .group_permission import PermissionHasGroupViewSet,CustomPermissionInsert
 
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView,TokenVerifyView
+from accounts.viewsets.shipping_address_viewsets import ShippingAddressViewsets
 
 router = DefaultRouter()
 
 router.register('users', views.CustomUserSerializerViewSet, basename="CustomUserSerializer")
+router.register('shipping-address', ShippingAddressViewsets, basename="ShippingAddressViewsets")
 
 # router.register('groups', views.GroupViewSet, basename="group")
 # router.register('permissions', views.PermissionViewSet, basename="permission")

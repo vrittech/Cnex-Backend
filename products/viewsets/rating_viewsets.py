@@ -8,7 +8,7 @@ class RatingViewsets(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     authentication_classes = [JWTAuthentication]
     permission_classes = [AdminViewSetsPermission]
-
+    swagger_schema_title = 'RatingViewsets API'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return RatingWriteSerializers

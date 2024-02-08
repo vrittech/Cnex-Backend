@@ -8,6 +8,7 @@ class BrandViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Brand.objects.all()
+    swagger_schema_title = 'Brand API'
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

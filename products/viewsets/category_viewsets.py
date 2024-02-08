@@ -8,6 +8,7 @@ class CategoryViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Category.objects.all()
+    swagger_schema_title = 'CategoryViewsets API'
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

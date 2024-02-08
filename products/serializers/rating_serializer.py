@@ -4,9 +4,9 @@ from ..models import Rating
 class RatingReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fiels = '__all__'
+        fields = '__all__'
 
 class RatingWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fiels = '__all__'
+        fields = '__all__'

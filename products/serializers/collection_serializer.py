@@ -4,9 +4,9 @@ from ..models import Collection
 class CollectionReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fiels = '__all__'
+        fields = '__all__'
 
 class CollectionWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fiels = '__all__'
+        fields = '__all__'
