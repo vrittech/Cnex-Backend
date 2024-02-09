@@ -1,8 +1,10 @@
 from django.db import models
 from accounts.models import CustomUser
 from variations.models import VariationGroup,VariationOption
+import uuid
 
 class Brand(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length = 200)
     description =  models.CharField(max_length = 2000)
     
@@ -10,6 +12,7 @@ class Brand(models.Model):
         return self.name
 
 class Collection(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length = 2000)
     is_active = models.BooleanField(default = False)
@@ -18,6 +21,7 @@ class Collection(models.Model):
         return self.name
 
 class Category(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length=255)
     parent = models.ForeignKey("Category",related_name = "child",blank=True,null=True,on_delete = models.CASCADE)
     descrirption = models.CharField(max_length = 2000)
@@ -27,7 +31,9 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True) #editable=False
     name = models.CharField(max_length=255)
+    title = models.CharField(max_length = 500,null = True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -35,12 +41,14 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
     is_best_sell = models.BooleanField(default = False)
     collection = models.ManyToManyField(Collection,related_name="products")
-
+    is_publish = models.BooleanField(default = False)
+    
     
     def __str__(self):
         return self.name
 
 class ProductHaveImages(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name = "product_images",on_delete = models.CASCADE)
     image = models.ImageField(upload_to="products/images")
 
@@ -48,6 +56,7 @@ class ProductHaveImages(models.Model):
         return str(self.product.name) + ":" + str(self.id)
 
 class ProductDetailAfterVariation(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation_options = models.ManyToManyField(VariationOption)
     price_override = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -57,6 +66,7 @@ class ProductDetailAfterVariation(models.Model):
         return self.product.name
 
 class Rating(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField()

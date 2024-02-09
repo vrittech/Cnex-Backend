@@ -3,8 +3,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .roles import roles_data,roles_data_dict
 from .import roles
+import uuid
 
 class CustomUser(AbstractUser):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     phone = models.CharField(max_length=15 ,unique=True,null=True , default = '')
     email = models.EmailField(max_length=255,unique=True)
     username = models.CharField(max_length=255,unique=True)  
@@ -57,6 +59,7 @@ class CustomUser(AbstractUser):
             return self.username
 
 class ShippingAddress(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     address_type = models.CharField(max_length=255, choices=[
         ('home', 'Home Address'),

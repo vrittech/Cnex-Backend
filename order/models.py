@@ -2,9 +2,11 @@ from django.db import models
 from accounts.models import CustomUser,ShippingAddress
 from products.models import ProductDetailAfterVariation,Product
 from coupon.models import Coupon
+import uuid
 
 # Create your models here.
 class Order(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     products = models.ManyToManyField(ProductDetailAfterVariation, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -26,14 +28,17 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
 
 class OrderItem(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product_variation = models.ForeignKey(ProductDetailAfterVariation, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
 class Wishlist(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
 
 class Cart(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     products = models.ManyToManyField(ProductDetailAfterVariation)
