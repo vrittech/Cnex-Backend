@@ -46,10 +46,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', lambda request: HttpResponse("cdn storage fixing"), name='index'),
     path('api/accounts/',include('accounts.urls')),
-    path('api/products/',include('products.urls')),
-    path('api/order/',include('order.urls')),
-    path('api/appointment/',include('appointment.urls')),
-    path('api/coupon/',include('coupon.urls')),
+    path('api/',include('variations.urls')),
+    path('api/',include('products.urls')),
+    path('api/',include('order.urls')),
+    path('api/',include('appointment.urls')),
+    path('api/',include('coupon.urls')),
     
 
     # path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),

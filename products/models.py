@@ -33,6 +33,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0) 
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
+    is_best_sell = models.BooleanField(default = False)
     collection = models.ManyToManyField(Collection,related_name="products")
 
     
