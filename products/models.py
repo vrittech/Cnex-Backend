@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import CustomUser
 from variations.models import VariationGroup,VariationOption
 import uuid
+from django.utils.text import slugify
 
 class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -22,18 +23,26 @@ class Collection(models.Model):
 
 class Category(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,unique=True)
+    slug = models.SlugField(unique = True,blank=True)
     parent = models.ForeignKey("Category",related_name = "child",blank=True,null=True,on_delete = models.CASCADE)
     descrirption = models.CharField(max_length = 2000)
     variation_group = models.ForeignKey(VariationGroup,related_name = "category",null = True,on_delete = models.SET_NULL)
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        # Generate the slug when saving the product if it's blank
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class Product(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True) #editable=False
     name = models.CharField(max_length=255)
     title = models.CharField(max_length = 500,null = True)
+    slug = models.SlugField(unique = True,blank=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -43,9 +52,15 @@ class Product(models.Model):
     collection = models.ManyToManyField(Collection,related_name="products")
     is_publish = models.BooleanField(default = False)
     
-    
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        # Generate the slug when saving the product if it's blank
+        if not self.slug:
+            self.slug = slugify(self.name)+'-'+str(self.public_id)[1:5] + str(self.public_id)[-1:-5]
+        super().save(*args, **kwargs)
+
 
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
