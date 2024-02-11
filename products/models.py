@@ -27,6 +27,7 @@ class Category(models.Model):
     slug = models.SlugField(unique = True,blank=True)
     parent = models.ForeignKey("Category",related_name = "child",blank=True,null=True,on_delete = models.CASCADE)
     descrirption = models.CharField(max_length = 2000)
+    image = models.ImageField(upload_to="category/images")
     variation_group = models.ForeignKey(VariationGroup,related_name = "category",null = True,on_delete = models.SET_NULL)
 
     def __str__(self):
