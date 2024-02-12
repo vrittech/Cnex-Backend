@@ -17,6 +17,7 @@ class Services(models.Model): #by admin
     name =  models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     slots = models.ManyToManyField(Slots) #if number of slots reached then, it raise errors slots not available.
+    image = models.ImageField(upload_to="appointment/services",blank=True,null=True)
     
     def __str__(self) -> str:
         return self.name + " " + str(self.price)
