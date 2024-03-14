@@ -235,7 +235,8 @@ class CheckTokenExpireView(APIView):
     
 # Create your views here.
 class LoginView(APIView):
-    @csrf_exempt
+    
+    # @csrf_exempt
     def post(self, request):
         username_or_email = request.data.get('email')
         password = request.data.get('password')
@@ -251,7 +252,7 @@ class LoginView(APIView):
                 return Response({'error': 'Your Account is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
             login(request, user)
             refresh = RefreshToken.for_user(user)
-            user_obj = CustomUserSerializer(request.user,context={'request': request}) 
+            user_obj = CustomUserReadSerializer(request.user,context={'request': request}) 
             return Response({
                 'access': str(refresh.access_token),
                 'refresh': str(refresh),

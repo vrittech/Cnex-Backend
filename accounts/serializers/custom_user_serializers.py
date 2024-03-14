@@ -11,15 +11,6 @@ class CustomUserReadSerializer(serializers.ModelSerializer):
         model = CustomUser
         # fields = '__all__' 
         exclude = ['password']
-    
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        action = self.context['view'].action 
-        if action == "retrieve":
-            if instance.role == roles.USER or instance.role == roles.PUBLISHER:
-                total_blogs = instance.blogs.all().count()
-                representation['total_blogs'] = total_blogs
-        return representation
 
 class CustomUserReadLimitedSerializer(serializers.ModelSerializer):
     class Meta:
