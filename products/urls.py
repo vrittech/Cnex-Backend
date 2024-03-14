@@ -16,7 +16,7 @@ router.register('category',CategoryViewsets,basename='CategoryViewsets')
 router.register('collection',CollectionViewsets,basename='CollectionViewsets')
 router.register('product-detail-after-variation',ProductDetailAfterVariationViewsets,basename='ProductDetailAfterVariationViewsets')
 router.register('product-have-images',ProductHaveImagesViewsets,basename='ProductHaveImagesViewsets')
-router.register('product-viewsets',ProductViewsets,basename='ProductViewsets')
+router.register('products',ProductViewsets,basename='ProductViewsets')
 
 
 urlpatterns = [

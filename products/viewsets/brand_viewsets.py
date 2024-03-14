@@ -4,8 +4,8 @@ from ..utilities.importbase import *
 
 class BrandViewsets(viewsets.ModelViewSet):
     serializer_class = BrandReadSerializers
-    permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
+    permission_classes = [AdminViewSetsPermission]
     pagination_class = MyPageNumberPagination
     queryset  = Brand.objects.all()
     swagger_schema_title = 'Brand API'

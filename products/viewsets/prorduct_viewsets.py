@@ -14,3 +14,9 @@ class ProductViewsets(viewsets.ModelViewSet):
             return ProductWriteSerializers
         return super().get_serializer_class()
     
+    def create(self, request, *args, **kwargs):
+        file_uploaded = request.FILES  # Access the uploaded file   
+        print(file_uploaded)
+        
+        return super().create(request, *args, **kwargs)
+    

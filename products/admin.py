@@ -6,10 +6,8 @@ admin.site.register(Brand)
 admin.site.register(Collection)
 admin.site.register(Category)
 
-# admin.site.register(ProductHaveImages)
+admin.site.register(ProductHaveImages)
 # admin.site.register(ProductDetailAfterVariation)
-
-
 
 class ProductHaveImagesInline(admin.TabularInline):
     model = ProductHaveImages

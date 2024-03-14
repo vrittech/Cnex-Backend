@@ -9,4 +9,7 @@ class ProductHaveImagesReadSerializers(serializers.ModelSerializer):
 class ProductHaveImagesWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = ProductHaveImages
-        fields = '__all__'
+        fields = ['image']
+        # extra_kwargs = {
+        #     'image': {'required': False}  # Make the image field optional
+        # }
