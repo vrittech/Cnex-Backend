@@ -4,8 +4,8 @@ from ..utilities.importbase import *
 
 class ProductViewsets(viewsets.ModelViewSet):
     serializer_class = ProductReadSerializers
-    permission_classes = [AdminViewSetsPermission]
-    authentication_classes = [JWTAuthentication]
+    # permission_classes = [AdminViewSetsPermission]
+    # authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset = Product.objects.all()
     swagger_schema_title = 'ProductViewsets API'
