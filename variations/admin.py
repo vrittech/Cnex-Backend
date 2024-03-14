@@ -7,12 +7,14 @@ from .models import *
 class AdminVariationOption(admin.ModelAdmin):
     list_display = ['variation','value']
 
-admin.site.register(VariationGroup)
+@admin.register(VariationGroup)
+class AdminVariationGroup(admin.ModelAdmin):
+    list_display = ['id','name']
 
 class VariationOptionInline(admin.TabularInline):
     model = VariationOption
 
 @admin.register(Variation)
-class AdminVariationGroup(admin.ModelAdmin):
+class AdminVariation(admin.ModelAdmin):
     inlines = [VariationOptionInline]
     list_display = ['name']
