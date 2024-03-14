@@ -21,6 +21,11 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(CustomUser, UserAdmin)
 
 # admin.site.register(CustomUser)
-admin.site.register(Permission)
+# admin.site.register(Permission)
 
-admin.site.register(ShippingAddress)
+# admin.site.register(ShippingAddress)
+@admin.register(ShippingAddress)
+class AdminShippingAddress(admin.ModelAdmin):
+    list_display = ['profile','address_type','location']
+
+
