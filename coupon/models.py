@@ -11,7 +11,7 @@ class Coupon(models.Model):
     discount_amount = models.FloatField()
     from_date = models.DateField(default=django.utils.timezone.now)
     to_date = models.DateField()
-    image = models.ImageField(upload_to="coupon/image")
+    image = models.ImageField(upload_to="coupon/image",null = True,blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
