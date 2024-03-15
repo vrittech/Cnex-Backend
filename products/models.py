@@ -15,7 +15,7 @@ class Brand(models.Model):
 class Collection(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length = 2000)
+    description = models.CharField(max_length = 2000,null = True,blank = True)
     is_active = models.BooleanField(default = False)
     
     def __str__(self):
