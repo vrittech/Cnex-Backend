@@ -4,7 +4,7 @@ from ..models import ProductHaveImages
 class ProductHaveImagesReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = ProductHaveImages
-        fields = '__all__'
+        fields = ['image']
 
 class ProductHaveImagesWriteSerializers(serializers.ModelSerializer):
     class Meta:
