@@ -183,3 +183,16 @@ EMAIL_HOST = os.getenv('smtp.gmail.com')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.getenv('REDIS_CACHE_LOCATION'),  # Update with your Redis server details
+        'KEY_PREFIX': os.getenv('REDIS_CACHE_KEY_PREFIX'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'MASTER_NAME': 'mymaster_suchanapark_local',
+        }
+    }
+}
