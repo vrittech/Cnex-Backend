@@ -8,6 +8,9 @@ class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length = 200)
     description =  models.CharField(max_length = 2000)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.name
@@ -17,6 +20,9 @@ class Collection(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length = 2000,null = True,blank = True)
     is_active = models.BooleanField(default = False)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.name
@@ -29,6 +35,9 @@ class Category(models.Model):
     descrirption = models.CharField(max_length = 2000)
     image = models.ImageField(upload_to="category/images")
     variations = models.ForeignKey(VariationOption,related_name = "category",null = True,on_delete = models.SET_NULL)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -54,6 +63,9 @@ class Product(models.Model):
     is_best_sell = models.BooleanField(default = False)
     collection = models.ManyToManyField(Collection,related_name="products")
     is_publish = models.BooleanField(default = False)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.name
@@ -79,6 +91,9 @@ class ProductDetailAfterVariation(models.Model):
     variation_options = models.ManyToManyField(VariationOption)
     price_override = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.product.name
@@ -89,6 +104,9 @@ class Rating(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField()
     description = models.CharField(max_length = 2000,default = "")
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)

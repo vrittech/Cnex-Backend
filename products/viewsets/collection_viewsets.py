@@ -12,3 +12,6 @@ class CollectionViewsets(viewsets.ModelViewSet):
         if self.action in ['create','update','partial_update']:
             return CollectionWriteSerializers
         return super().get_serializer_class()
+    def get_queryset(self):
+        query = super().get_queryset()
+        return query.order_by('-id')
