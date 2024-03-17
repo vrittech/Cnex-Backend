@@ -14,10 +14,3 @@ class VariationOption(models.Model): #red,green
     
     def __str__(self):
         return str(self.variation.name)+":" + str(self.value)  
-
-class VariationGroup(models.Model): #electronics variation
-    name = models.CharField(max_length = 50)
-    variations = models.ManyToManyField(Variation,related_name="variation_group")
-
-    def __str__(self):
-        return self.name

@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
-from variations.models import VariationGroup,VariationOption
+from variations.models import VariationOption
 import uuid
 from django.utils.text import slugify
 
@@ -25,10 +25,10 @@ class Category(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length=255,unique=True)
     slug = models.SlugField(unique = True,blank=True)
-    parent = models.ForeignKey("Category",related_name = "child",blank=True,null=True,on_delete = models.CASCADE)
+    parent = models.ForeignKey("Category",related_name = "childs",blank=True,null=True,on_delete = models.CASCADE)
     descrirption = models.CharField(max_length = 2000)
     image = models.ImageField(upload_to="category/images")
-    variation_group = models.ForeignKey(VariationGroup,related_name = "category",null = True,on_delete = models.SET_NULL)
+    variations = models.ForeignKey(VariationOption,related_name = "category",null = True,on_delete = models.SET_NULL)
 
     def __str__(self):
         return self.name

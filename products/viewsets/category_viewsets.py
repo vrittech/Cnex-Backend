@@ -8,7 +8,7 @@ class CategoryViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Category.objects.all()
-
+    lookup_field = 'slug'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return CategoryWriteSerializers

@@ -4,8 +4,8 @@ from ..utilities.importbase import *
 
 class ServicesViewsets(viewsets.ModelViewSet):
     serializer_class = ServicesReadSerializers
-    # permission_classes = [AdminViewSetsPermission]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [AdminViewSetsPermission]
+    authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Services.objects.all()
 

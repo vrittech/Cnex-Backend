@@ -13,14 +13,26 @@ class ServicesWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Services
         fields = '__all__'
-  
-    # def create(self, validated_data):
-    #     slots_data = self.context['request'].data.get('slots')#validated_data.pop('slots', None)
-    #     print(type(slots_data)) #type string
-    #     # Parsing slots data from string to JSON
-    #     if slots_data is not None:
-    #         slots_data = json.loads(slots_data)#type list
-    #     print(type(slots_data[0])) #type dictionary
-    #     instance = super().create(validated_data)
-    
-    #     return instance
+
+    def create(self, validated_data):
+        slots_data = self.context['request'].data.get('slots')
+        # Create the Services instance
+        service_instance = Services.objects.create(**validated_data)
+
+        if slots_data is not None:
+            # Parse slots data from string to JSON
+            slots_data = json.loads(slots_data)
+            # Add the service_instance to each slot_data dictionary
+            for slot_data in slots_data:
+                slot_data['services'] = service_instance.id
+
+            # Initialize SlotsWriteSerializers with the modified slots_data
+            slots_serializer = SlotsWriteSerializers(data=slots_data, many=True)
+            
+            # Validate the serializer
+            slots_serializer.is_valid(raise_exception=True)
+            
+            # Save the validated data (creating Slots instances)
+            slots_serializer.save()
+
+        return service_instance

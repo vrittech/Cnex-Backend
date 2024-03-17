@@ -9,5 +9,4 @@ class SlotsReadSerializers(serializers.ModelSerializer):
 class SlotsWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Slots
-        # fields = '__all__'
-        exclude = ['services']
+        fields = '__all__'
