@@ -18,7 +18,6 @@ class ProductViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset = Product.objects.all()
-    swagger_schema_title = 'ProductViewsets API'
     lookup_field = 'slug'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
@@ -34,6 +33,8 @@ class ProductViewsets(viewsets.ModelViewSet):
                 return ProductReadAdminSerializers
             else:
                 return super().get_serializer_class()
+        else:
+            return super().get_serializer_class()
             
     @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):

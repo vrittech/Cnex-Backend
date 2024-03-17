@@ -232,10 +232,23 @@ class CheckTokenExpireView(APIView):
             # If the token is expired or invalid
             return Response({'valid': False}, status=status.HTTP_401_UNAUTHORIZED)
 
-    
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 class LoginView(APIView):
-    
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'email': openapi.Schema(type=openapi.TYPE_STRING),
+                'password': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=['email', 'password']
+        ),
+        # responses={200: MyResponseSerializer},
+        operation_summary="Login and get token",
+        operation_description="Login and get token",
+    )
     # @csrf_exempt
     def post(self, request):
         username_or_email = request.data.get('email')

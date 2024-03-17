@@ -4,11 +4,10 @@ from ..utilities.importbase import *
 
 class CategoryViewsets(viewsets.ModelViewSet):
     serializer_class = CategoryReadSerializers
-    # permission_classes = [AdminViewSetsPermission]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [AdminViewSetsPermission]
+    authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Category.objects.all()
-    swagger_schema_title = 'CategoryViewsets API'
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

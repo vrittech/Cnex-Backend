@@ -8,7 +8,6 @@ class CollectionViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Collection.objects.all()
-    swagger_schema_title = 'CollectionViewsets API'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return CollectionWriteSerializers
