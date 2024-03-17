@@ -36,14 +36,20 @@ class ProductViewsets(viewsets.ModelViewSet):
         else:
             return super().get_serializer_class()
             
-    @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
+    # @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):
         print(" with out cache")
         return super().list(request, *args, **kwargs)
     
     def create(self, request, *args, **kwargs):
-        file_uploaded = request.FILES  # Access the uploaded file   
-        print(file_uploaded)
-        
         return super().create(request, *args, **kwargs)
+    
+    def perform_create(self, serializer):
+        # Perform the default object creation
+        instance = serializer.save()
+        tags_data = self.request.data.get('tag_manager', [])
+        if len(tags_data) != 0:
+            instance.save_tags(tags_data)
+        else:
+            print("tags error ")
     
