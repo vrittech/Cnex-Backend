@@ -112,6 +112,10 @@ class Product(models.Model):
     @property
     def average_rating(self):
         return 4
+    
+    @property
+    def total_rating(self):
+        return 20
 
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -158,3 +162,5 @@ class Rating(models.Model):
 #each category have any one of variation group.
 #variation group are collection of attribute, each group have multiple variation
 #attributes are value
+        
+        

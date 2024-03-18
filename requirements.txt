@@ -14,3 +14,5 @@ google-auth==2.26.1
 requests
 
 django-admin-interface==0.28.5
+
+django-redis==5.4.0

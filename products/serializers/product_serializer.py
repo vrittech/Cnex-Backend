@@ -66,7 +66,7 @@ class ProductReadSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating']
 
 class ProductReadAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -94,7 +94,7 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductRetrieveSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
 
 class ProductWriteSerializers(serializers.ModelSerializer):
     class Meta:
