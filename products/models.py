@@ -3,6 +3,7 @@ from accounts.models import CustomUser
 from variations.models import Variation,VariationOption
 import uuid
 from django.utils.text import slugify
+from django.core.validators import MaxValueValidator
 
 class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -107,6 +108,10 @@ class Product(models.Model):
         tags = Product.tag_manager.get_or_create_tags(tag_names)
         self.tags.set(tags)
 
+    @property
+    def average_rating(self):
+        return 4
+
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name = "product_images",on_delete = models.CASCADE)
@@ -132,15 +137,18 @@ class Rating(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField()
-    description = models.CharField(max_length = 2000,default = "")
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)
-
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'product'], name='unique_rating')
+        ]
 
 
 

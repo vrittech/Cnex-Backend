@@ -1,8 +1,22 @@
 from rest_framework import serializers
-from ..models import Product,ProductHaveImages,ProductDetailAfterVariation
+from ..models import Product,ProductHaveImages,ProductDetailAfterVariation,Tags
 from .product_have_images_serializer import ProductHaveImagesReadSerializers
 from ..models import Category,Brand,Collection
 from variations.models import VariationOption
+
+import ast
+
+def str_to_list(data,value_to_convert):
+    mutable_data = data.dict()
+    value_to_convert_data = mutable_data[value_to_convert]
+    if type(value_to_convert_data) == list:
+        return mutable_data
+    try:
+        variations = ast.literal_eval(value_to_convert_data)
+        mutable_data[value_to_convert] = variations
+        return mutable_data
+    except ValueError as e:
+        raise serializers.ValidationError({f'{value_to_convert}': str(e)})
 
 class CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +31,11 @@ class BrandReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
 class CollectionSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Collection
+        fields = ['name']
+
+class Tags_ProductReadSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Tags
         fields = ['name']
 
 class VariationProducts_ProductRetrieveSerializers(serializers.ModelSerializer):
@@ -38,9 +57,10 @@ class ProductReadSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
+
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating']
 
 class ProductReadAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -55,9 +75,10 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
     collection = CollectionSerializers_ProductReadSerializers()
+    tags = Tags_ProductReadSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags']
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -73,9 +94,16 @@ class ProductWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+    
+    def to_internal_value(self, data):
+        if data.get('collection'):
+            data = str_to_list(data,'collection')
+            return super().to_internal_value(data)
+        return super().to_internal_value(data)
        
     def create(self, validated_data):
         images_data = self.context['request'].FILES # Extract image data
+        images_data.pop('featured_image')
         product = super().create(validated_data)
         for key,image in images_data.lists():
             ProductHaveImages.objects.create(product=product, image=image[0])
