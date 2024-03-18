@@ -4,6 +4,7 @@ from variations.models import Variation,VariationOption
 import uuid
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator
+import ast
 
 class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -28,8 +29,8 @@ class Tags(models.Model):
 class TagManager(models.Manager):
     def get_or_create_tags(self, tag_names):
         # Create or retrieve Tag objects based on tag names
-        print(tag_names)
         # tag_names = tag_names.split(',')
+        tag_names = ast.literal_eval(tag_names)
         tags = [Tags.objects.get_or_create(name=tag)[0] for tag in tag_names]
         return tags
 
