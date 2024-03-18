@@ -81,13 +81,18 @@ class ProductWriteSerializers(serializers.ModelSerializer):
             ProductHaveImages.objects.create(product=product, image=image[0])
 
         variation_data = self.initial_data.get('variation_options')
-        createProductDetailAfterVariation(variation_data,product,"create")
+        createProductDetailAfterVariation(variation_data,product.id,"create")
 
         return product
 
 def createProductDetailAfterVariation(variation_data,product,create_update):
-    # return True
-    variation_data = [{**variation, 'product': product} for variation in variation_data]
-    print(variation_data)
+    return True
+    processed_variation_data = [{**variation, 'product': product} for variation in variation_data]
+    if processed_variation_data:
+        serializers = ProductDetailAfterVariation(data=processed_variation_data, many=True)
+        serializers.is_valid(raise_exception=True)
+        serializers.save()
+      
+    print(processed_variation_data)
 
     
