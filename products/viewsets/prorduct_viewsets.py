@@ -22,9 +22,12 @@ class ProductViewsets(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return ProductWriteSerializers
-        elif self.request.user.is_authenticated  and     self.action in ['retrieve']:
-            if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
-                return ProductRetrieveAdminSerializers
+        elif self.action in ['retrieve']:
+            if self.request.user.is_authenticated:
+                if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+                    return ProductRetrieveAdminSerializers
+                else:
+                    return ProductRetrieveSerializers
             else:
                 return ProductRetrieveSerializers
             

@@ -27,8 +27,8 @@ class Tags(models.Model):
 class TagManager(models.Manager):
     def get_or_create_tags(self, tag_names):
         # Create or retrieve Tag objects based on tag names
-        tag_names = tag_names.split(',')
-        # print(tag_names, " tag event name")
+        print(tag_names)
+        # tag_names = tag_names.split(',')
         tags = [Tags.objects.get_or_create(name=tag)[0] for tag in tag_names]
         return tags
 
@@ -73,7 +73,8 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     discount = models.DecimalField(max_digits = 10,decimal_places=2,null = True)
-    product_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular'),('manage_stock','manage stock')),default = 'regular')
+    product_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
+    is_manage_stock = models.BooleanField(default = False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0) 
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
@@ -116,7 +117,7 @@ class ProductHaveImages(models.Model):
 
 class ProductDetailAfterVariation(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,related_name="variations", on_delete=models.CASCADE)
     variation_options = models.OneToOneField(VariationOption,on_delete = models.PROTECT,)
     price_override = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation

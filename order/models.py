@@ -8,7 +8,8 @@ import uuid
 class Order(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    products = models.ManyToManyField(ProductDetailAfterVariation, through='OrderItem')
+    product = models.ForeignKey(Product,related_name = "order",on_delete = models.CASCADE)
+    products_variations = models.ManyToManyField(ProductDetailAfterVariation, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     delivery_address = models.ForeignKey(ShippingAddress, on_delete=models.SET_NULL, null=True, blank=True)
     coupons = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)

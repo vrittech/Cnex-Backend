@@ -9,7 +9,7 @@ def AdminLevel(request):
 
 class AdminViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
-        if view.action == "list":
+        if view.action in ['list','retrieve']:
             return True
         else:
             return AdminLevel(request)
