@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ..models import Product,ProductHaveImages,ProductDetailAfterVariation,Tags
 from .product_have_images_serializer import ProductHaveImagesReadSerializers
+from .product_details_after_variation_serializer import ProductDetailAfterVariationWriteSerializers
 from ..models import Category,Brand,Collection
 from variations.models import VariationOption
 
@@ -120,13 +121,11 @@ class ProductWriteSerializers(serializers.ModelSerializer):
         return product
 
 def createProductDetailAfterVariation(variation_data,product,create_update):
-    return True
+    # return True
     processed_variation_data = [{**variation, 'product': product} for variation in variation_data]
     if processed_variation_data:
-        serializers = ProductDetailAfterVariation(data=processed_variation_data, many=True)
+        serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
         serializers.is_valid(raise_exception=True)
         serializers.save()
-      
-    print(processed_variation_data)
 
     
