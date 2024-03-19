@@ -11,5 +11,11 @@ class Faqs(models.Model):
     title = models.CharField(max_length = 100)
     description = models.TextField()
 
+class PrivacyPolicy(models.Model):
+    title = models.CharField(max_length = 100)
+    description = models.TextField()
+
+
+
     
 

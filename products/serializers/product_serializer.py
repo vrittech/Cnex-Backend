@@ -37,7 +37,7 @@ class BrandReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
 class CollectionSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ['name']
+        fields = ['name','id']
 
 class Tags_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
@@ -80,17 +80,17 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
-    collection = CollectionSerializers_ProductReadSerializers()
+    collection = CollectionSerializers_ProductReadSerializers(many = True)
     tags = Tags_ProductReadSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish']
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
-    collection = CollectionSerializers_ProductReadSerializers()
+    collection = CollectionSerializers_ProductReadSerializers(many = True)
     variations = VariationProducts_ProductRetrieveSerializers(many = True)
     class Meta:
         model = Product

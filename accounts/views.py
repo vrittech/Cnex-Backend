@@ -56,7 +56,7 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
     }
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated,AccountPermission]
+    permission_classes = [AccountPermission]
     
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
