@@ -29,6 +29,7 @@ class ProductViewsets(viewsets.ModelViewSet):
 
     filterset_fields = {
         'category':['exact'],
+        'product_type':['exact'],
     }
 
     lookup_field = 'slug'

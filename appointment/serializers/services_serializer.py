@@ -3,7 +3,13 @@ from ..models import Services,Slots
 from .slots_serializer import SlotsWriteSerializers
 import json
 
+class SlotsReadSerializers_ServicesReadSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Slots
+        fields = '__all__'
+
 class ServicesReadSerializers(serializers.ModelSerializer):
+    slots = SlotsReadSerializers_ServicesReadSerializers(many = True)
     class Meta:
         model = Services
         fields = '__all__'
