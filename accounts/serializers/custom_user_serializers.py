@@ -28,7 +28,7 @@ class CustomUserReadLimitedSerializer_1(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     
     def validate_password(self,value):#field level validation
-        if len(value) < 2:
+        if len(value) < 5:
             raise serializers.ValidationError('Password must be 8 digit')
         return make_password(value) 
     
