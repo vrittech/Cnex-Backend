@@ -12,12 +12,25 @@ cache_time = 30 # 300 is 5 minutes
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
+
 class ProductViewsets(viewsets.ModelViewSet):
     serializer_class = ProductReadSerializers
     permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset = Product.objects.all()
+    
+    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    search_fields = ['title','tags__name','name','category__name','collection__name']
+    ordering_fields = ['id','created_date']
+
+    filterset_fields = {
+        'category':['exact'],
+    }
+
     lookup_field = 'slug'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
