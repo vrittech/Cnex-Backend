@@ -18,7 +18,7 @@ def str_to_list(data,value_to_convert):
         return mutable_data
     except ValueError as e:
         raise serializers.ValidationError({f'{value_to_convert}': str(e)})
-    
+
 class CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -73,9 +73,10 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
+    variations = VariationProducts_ProductRetrieveSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','product_type']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','product_type','featured_image','variations']
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)

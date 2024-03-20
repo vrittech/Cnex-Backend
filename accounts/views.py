@@ -352,15 +352,14 @@ class GoogleLogin(APIView):
     def post(self, request):
     
         google_id_token = request.data.get('idToken',False)
-        first_name = request.data.get('first_name')
-        last_name = request.data.get('last_name','')
-        print(first_name,last_name)
+
         if google_id_token == False:
             return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
         
         idinfo,is_verify = VerifyGoogleToken(google_id_token)
+       
         if idinfo:
-            user,success_user = createGoogleAccount(idinfo,first_name,last_name)
+            user,success_user = createGoogleAccount(idinfo)
         else:
             return Response({'error': 'Invalid ID token.'}, status=status.HTTP_401_UNAUTHORIZED)
    
@@ -382,10 +381,10 @@ class GoogleLogin(APIView):
         else:
             return Response({'error': 'Google Token Failed to verify'}, status=status.HTTP_401_UNAUTHORIZED)
 
-def createGoogleAccount(idinfo,first_name,last_name):
+def createGoogleAccount(idinfo):
     email = idinfo.get('email')
-    first_name = first_name
-    last_name = last_name
+    first_name = idinfo.get('name')
+    last_name = idinfo.get('family_name')
     username = email.split('@')[0]
     image = idinfo.get('picture')
     print(" creating user ")

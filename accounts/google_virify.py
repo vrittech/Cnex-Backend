@@ -4,7 +4,7 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 from django.conf import settings
 
-GOOGLE_CLIENT_ID = '197998897092-qagliaukoha09ruuvjvae6q1gmb0b515.apps.googleusercontent.com'
+GOOGLE_CLIENT_ID = '976671591908-6mbvs6crsd63pd571781sihul4qc40hi.apps.googleusercontent.com'
 
 def VerifyGoogleToken(token):
     try:

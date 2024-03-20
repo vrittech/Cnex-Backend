@@ -37,7 +37,7 @@ class OrderItem(models.Model):
 
 class Wishlist(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser,related_name="wishlists", on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
 
 class Cart(models.Model):

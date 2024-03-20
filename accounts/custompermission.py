@@ -2,9 +2,23 @@ from rest_framework.permissions import BasePermission
 from . import roles
 
 def IsAuthenticated(request):
+    print(request.user)
     return bool(request.user and request.user.is_authenticated)
 
-def AdminLevelPermission(request):
+def ownerPermission(request,view,label):
+    if request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+        return True
+    
+    payload_user = view.get_object()
+    print(payload_user,label,request.user.id)
+    if request.user.id == payload_user.id:
+        print("return True for permission")
+        return True
+    else:
+        print("return False for permission")
+        False
+
+def AdminPermission(request):
     return IsAuthenticated(request) and request.user.role in [roles.ADMIN, roles.SUPER_ADMIN]
 
 class AccountPermission(BasePermission):
@@ -18,9 +32,10 @@ class AccountPermission(BasePermission):
         elif method_name == 'retrieve':
             return True
         elif method_name == 'update':
-            return AdminLevelPermission(request)
+            print("on going ")
+            return IsAuthenticated(request) and ownerPermission(request,view,'id')
         elif method_name == 'partial_update':
-            return AdminLevelPermission(request)
+            return ownerPermission(request,view,'id')
         elif method_name == 'destroy':
             return False
         else:
@@ -33,13 +48,13 @@ class AdminLevelPermission(BasePermission):
         if method_name == 'list':
             return True
         elif method_name == 'create':
-           return AdminLevelPermission(request)
+           return AdminPermission(request)
         elif method_name == 'retrieve':
-            return AdminLevelPermission(request)
+            return AdminPermission(request)
         elif method_name == 'update':
-            return AdminLevelPermission(request)
+            return AdminPermission(request)
         elif method_name == 'partial_update':
-            return AdminLevelPermission(request)
+            return AdminPermission(request)
         elif method_name == 'destroy':
             return False
         else:
@@ -51,7 +66,7 @@ class AllUserDataPermission(BasePermission):
         method_name = view.action
         # print(method_name)
         if method_name == 'list':
-            return AdminLevelPermission(request)
+            return AdminPermission(request)
         else:
             return False
 
