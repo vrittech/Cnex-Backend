@@ -110,7 +110,7 @@ class ProductWriteSerializers(serializers.ModelSerializer):
        
     def create(self, validated_data):
         images_data = self.context['request'].FILES # Extract image data
-        images_data.pop('featured_image')
+        # images_data.pop('featured_image')
         product = super().create(validated_data)
         for key,image in images_data.lists():
             ProductHaveImages.objects.create(product=product, image=image[0])
@@ -119,13 +119,20 @@ class ProductWriteSerializers(serializers.ModelSerializer):
         createProductDetailAfterVariation(variation_data,product.id,"create")
 
         return product
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+              
 
 def createProductDetailAfterVariation(variation_data,product,create_update):
+    variation_data = ast.literal_eval(variation_data)
+    print(type(variation_data),"::",type(variation_data[0]))
     # return True
-    processed_variation_data = [{**variation, 'product': product} for variation in variation_data]
+    processed_variation_data = [{**variation,'variation_options':variation.get('id') ,'product': product} for variation in variation_data]
+    print(processed_variation_data)
     if processed_variation_data:
         serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
         serializers.is_valid(raise_exception=True)
         serializers.save()
 
-    
+    # [{"id":13,"name":"red","quantity":"1","price":"20"},{"id":14,"name":"steel","quantity":"1","price":"20"},{"id":15,"name":"copper","quantity":"2","price":"34"}]

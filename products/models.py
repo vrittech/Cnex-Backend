@@ -81,7 +81,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=0) 
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
     is_best_sell = models.BooleanField(default = False)
-    collection = models.ManyToManyField(Collection,related_name="products")
+    collection = models.ManyToManyField(Collection,related_name="products",blank=True)
     is_publish = models.BooleanField(default = False)
     
     tags = models.ManyToManyField(Tags,blank=True)
@@ -129,7 +129,7 @@ class ProductDetailAfterVariation(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name="variations", on_delete=models.CASCADE)
     variation_options = models.OneToOneField(VariationOption,on_delete = models.PROTECT,)
-    price_override = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation
 
     created_date = models.DateTimeField(auto_now_add=True)

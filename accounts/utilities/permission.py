@@ -16,7 +16,8 @@ class AdminViewSetsPermission(BasePermission):
 
 class ShippingAddressViewsetsPermission(BasePermission):
     def has_permission(self, request, view):
+        print(request.user,request.user.role)
         if  view.action in ['list','retrieve']:
             return True
-        return AdminLevel(request)
+        return AllLevel(request)
         

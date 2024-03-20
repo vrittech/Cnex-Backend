@@ -12,6 +12,6 @@ class ProductDetailAfterVariationWriteSerializers(serializers.ModelSerializer):
         fields = '__all__'
     
     def validate_quantity(self,value):
-        if value > self.instance.product.quantity:
-            raise serializers.ValidationError("Quantity cannot exceed available stock.")
+        # if value > self.instance.product.quantity:
+        #     raise serializers.ValidationError("Quantity cannot exceed available stock.")
         return value
