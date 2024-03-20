@@ -4,6 +4,7 @@ from .product_have_images_serializer import ProductHaveImagesReadSerializers
 from .product_details_after_variation_serializer import ProductDetailAfterVariationWriteSerializers
 from ..models import Category,Brand,Collection
 from variations.models import VariationOption
+from order.models import Wishlist,Cart
 
 import ast
 
@@ -59,6 +60,38 @@ class VariationProducts_ProductRetrieveSerializers(serializers.ModelSerializer):
     
     def get_variation_value(self,obj):
         return obj.variation_options.value
+    
+
+class VariationProducts_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
+    # variation_options = VariationOption_VariationProducts_ProductRetrieveSerializers()
+
+    variation_name = serializers.SerializerMethodField()
+    variation_value = serializers.SerializerMethodField()
+    class Meta:
+        model = ProductDetailAfterVariation
+        fields =  ['variation_name','variation_value']
+
+    def get_variation_name(self,obj):
+        return obj.variation_options.variation.name
+    
+    def get_variation_value(self,obj):
+        return obj.variation_options.value
+    
+
+class VariationProducts_ProductReadAdminSerializers(serializers.ModelSerializer):
+    # variation_options = VariationOption_VariationProducts_ProductRetrieveSerializers()
+
+    variation_name = serializers.SerializerMethodField()
+    variation_value = serializers.SerializerMethodField()
+    class Meta:
+        model = ProductDetailAfterVariation
+        fields = ['variation_name','variation_value']
+
+    def get_variation_name(self,obj):
+        return obj.variation_options.variation.name
+    
+    def get_variation_value(self,obj):
+        return obj.variation_options.value
 
 class ProductReadSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -68,15 +101,31 @@ class ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating']
+    
+    def to_representation(self, instance):
+        product = super().to_representation(instance)
+        user = self.context['request'].user
+    
+        product['wishlist_exists'] = False
+        product['cart_exist'] = True  
+        if user.is_authenticated:
+            wishlist_obj = Wishlist.objects.filter(product_id = product.id)
+            cart_obj = Cart.objects.filter(product_id = product.id)
+            if wishlist_obj.exists():
+                product['wishlist_exist'] = True  
+            if cart_obj.exists():
+                product['cart_exist'] = True                            
+
+        return product
 
 class ProductReadAdminSerializers(serializers.ModelSerializer):
-    product_images = ProductHaveImagesReadSerializers(many = True)
+    # product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
-    variations = VariationProducts_ProductRetrieveSerializers(many = True)
+    variations = VariationProducts_ProductReadAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','product_type','featured_image','variations']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations']
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -84,9 +133,10 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     category = CategoryReadSerializers_ProductReadSerializers()
     collection = CollectionSerializers_ProductReadSerializers(many = True)
     tags = Tags_ProductReadSerializers(many = True)
+    variations = VariationProducts_ProductRetrieveAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -111,7 +161,8 @@ class ProductWriteSerializers(serializers.ModelSerializer):
        
     def create(self, validated_data):
         images_data = self.context['request'].FILES # Extract image data
-        # images_data.pop('featured_image')
+        images_data.pop('featured_image')
+     
         product = super().create(validated_data)
         for key,image in images_data.lists():
             ProductHaveImages.objects.create(product=product, image=image[0])
@@ -127,10 +178,7 @@ class ProductWriteSerializers(serializers.ModelSerializer):
 
 def createProductDetailAfterVariation(variation_data,product,create_update):
     variation_data = ast.literal_eval(variation_data)
-    print(type(variation_data),"::",type(variation_data[0]))
-    # return True
     processed_variation_data = [{**variation,'variation_options':variation.get('id') ,'product': product} for variation in variation_data]
-    print(processed_variation_data)
     if processed_variation_data:
         serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
         serializers.is_valid(raise_exception=True)

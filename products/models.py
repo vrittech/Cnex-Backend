@@ -5,6 +5,7 @@ import uuid
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator
 import ast
+from django.db.models import UniqueConstraint
 
 class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -128,7 +129,7 @@ class ProductHaveImages(models.Model):
 class ProductDetailAfterVariation(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name="variations", on_delete=models.CASCADE)
-    variation_options = models.OneToOneField(VariationOption,on_delete = models.PROTECT,)
+    variation_options = models.ForeignKey(VariationOption,on_delete = models.PROTECT,)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation
 
@@ -137,6 +138,11 @@ class ProductDetailAfterVariation(models.Model):
     
     def __str__(self):
         return self.product.name
+    
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['variation_options', 'product'], name='unique_variation_product')
+        ]
 
 class Rating(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

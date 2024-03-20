@@ -8,10 +8,32 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
+
+from products.models import Product,Category,Brand
+
+
+class BrandReadSerializers_WishlistReadSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ['name']
+
+class ParentCategoryReadSerializers_ProductReadSerializers_WishlistReadSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name','id']
+
+class CategoryReadSerializers_ProductReadSerializers_WishlistReadSerializers(serializers.ModelSerializer):
+    parent = ParentCategoryReadSerializers_ProductReadSerializers_WishlistReadSerializers()
+    class Meta:
+        model = Category
+        fields = ['name','parent','id']
+
 class ProductSerializer_WishlistProductsView(serializers.ModelSerializer):
+    category = CategoryReadSerializers_ProductReadSerializers_WishlistReadSerializers()
+    brand = BrandReadSerializers_WishlistReadSerializers()
     class Meta:
         model = Product
-        fields = ['name','slug','featured_image','title','price','quantity','description','discount','category','brand']
+        fields =  ['name','title','slug','public_id','description','price','category','quantity','brand','discount','featured_image','product_type','average_rating','total_rating']
 
 class WishlistProductsList(generics.ListAPIView):
     serializer_class = ProductSerializer_WishlistProductsView
