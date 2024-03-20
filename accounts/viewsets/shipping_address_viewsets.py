@@ -4,7 +4,7 @@ from ..utilities.importbase import *
 
 class ShippingAddressViewsets(viewsets.ModelViewSet):
     serializer_class = ShippingAddressReadSerializers
-    permission_classes = [AdminViewSetsPermission]
+    permission_classes = [ShippingAddressViewsetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = ShippingAddress.objects.all()
@@ -13,4 +13,7 @@ class ShippingAddressViewsets(viewsets.ModelViewSet):
         if self.action in ['create','update','partial_update']:
             return ShippingAddressWriteSerializers
         return super().get_serializer_class()
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(profile = self.request.user)
     

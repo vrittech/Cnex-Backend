@@ -62,14 +62,18 @@ class CustomUser(AbstractUser):
 
 class ShippingAddress(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    profile = models.ForeignKey(CustomUser,related_name = "shipping_address", on_delete=models.CASCADE)
+    provience = models.CharField(max_length = 300)
+    district = models.CharField(max_length = 300)
     address_type = models.CharField(max_length=255, choices=[
         ('home', 'Home Address'),
         ('office', 'Office Address'),
+        ('other', 'other Address')
     ])
+
     address = models.TextField()
-    location = models.CharField(max_length = 300)
     contact_number = models.CharField(max_length = 50)
+    is_default = models.BooleanField(default = False)
 
     def __str__(self):
         return str(self.profile.username) + ' '+ str(self.address_type)

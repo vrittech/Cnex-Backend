@@ -26,6 +26,6 @@ admin.site.register(CustomUser, UserAdmin)
 # admin.site.register(ShippingAddress)
 @admin.register(ShippingAddress)
 class AdminShippingAddress(admin.ModelAdmin):
-    list_display = ['profile','address_type','location']
+    list_display = ['profile','address_type','provience','district','is_default']
 
 
