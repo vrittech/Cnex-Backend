@@ -43,4 +43,12 @@ class Wishlist(models.Model):
 class Cart(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    products = models.ManyToManyField(ProductDetailAfterVariation)
+    quantity =  models.PositiveIntegerField(default = 1)
+    cart_date = models.DateTimeField(auto_now_add=True)
+    products = models.ManyToManyField(Product, through='CartItem')
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart,related_name='cart_items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,related_name='cart_items', on_delete=models.CASCADE)
+    variations = models.ManyToManyField(VariationOption,related_name='cart_items')
+    quantity = models.PositiveIntegerField()
