@@ -46,5 +46,5 @@ class Cart(models.Model):
     cart_date = models.DateTimeField(auto_now_add=True)
     
     product = models.ForeignKey(Product,related_name='carts', on_delete=models.CASCADE)
-    variations = models.ManyToManyField(VariationOption,related_name='carts')
+    variations = models.ManyToManyField(VariationOption,related_name='carts',blank = True)
     quantity = models.PositiveIntegerField()
