@@ -13,7 +13,7 @@ class CartViewsets(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,CartPermission]
     authentication_classes = [JWTAuthentication]
     
-    pagination_class = MyPageNumberPagination
+    # pagination_class = MyPageNumberPagination
     queryset  = Cart.objects.all()
 
     def get_serializer_class(self):

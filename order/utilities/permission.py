@@ -37,9 +37,7 @@ class WishlistPermission(BasePermission):
     
 class CartPermission(BasePermission):
     def has_permission(self, request, view):
-        if view.action in ['add_to_cart']:
-            return True
-        elif view.action in ['create','partial_update','update']:
+        if view.action in ['create','partial_update','update']:
             return True
         elif view.action in ['list','retrieve']:
             return AllLevel(request)
