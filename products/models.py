@@ -111,6 +111,10 @@ class Product(models.Model):
         self.tags.set(tags)
 
     @property
+    def has_variations(self):
+        return True
+
+    @property
     def average_rating(self):
         return 4
     

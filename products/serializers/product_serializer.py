@@ -3,7 +3,7 @@ from ..models import Product,ProductHaveImages,ProductDetailAfterVariation,Tags
 from .product_have_images_serializer import ProductHaveImagesReadSerializers
 from .product_details_after_variation_serializer import ProductDetailAfterVariationWriteSerializers
 from ..models import Category,Brand,Collection
-from variations.models import VariationOption
+from variations.models import VariationOption,Variation
 from order.models import Wishlist,Cart
 
 import ast
@@ -19,6 +19,17 @@ def str_to_list(data,value_to_convert):
         return mutable_data
     except ValueError as e:
         raise serializers.ValidationError({f'{value_to_convert}': str(e)})
+
+class VariationAdmin_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Variation
+        fields = ['id','name']    
+
+class VariationOptionRetrieveAdmin_VariationProducts_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
+    variation = VariationAdmin_ProductRetrieveAdminSerializers()
+    class Meta:
+        model = VariationOption
+        fields = ['variation','id','value']
 
 class CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
@@ -63,13 +74,30 @@ class VariationProducts_ProductRetrieveSerializers(serializers.ModelSerializer):
     
 
 class VariationProducts_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
-    # variation_options = VariationOption_VariationProducts_ProductRetrieveSerializers()
+    # variation_options = VariationOptionRetrieveAdmin_VariationProducts_ProductRetrieveAdminSerializers()
 
-    variation_name = serializers.SerializerMethodField()
-    variation_value = serializers.SerializerMethodField()
+    # variation_name = serializers.SerializerMethodField()
+    # variation_value = serializers.SerializerMethodField()
     class Meta:
         model = ProductDetailAfterVariation
-        fields =  ['variation_name','variation_value']
+        fields =  []
+    
+    def to_representation(self, instance):
+        representations = super().to_representation(instance)
+        price = instance.price
+        quantity = instance.quantity
+        variation = instance.variation_options
+        data = {
+            'variation':variation.variation.name,
+            'variation_id':variation.variation.id,
+            'variation_option_value':variation.value,
+            'variation_value_id':variation.id,
+            'price':price,
+            'quantity':quantity
+
+        }
+        representations['details'] = data
+        return representations
 
     def get_variation_name(self,obj):
         return obj.variation_options.variation.name
@@ -97,20 +125,21 @@ class ProductReadSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
-
+    # variations = VariationProducts_ProductRetrieveSerializers(many = True)
+    collection = CollectionSerializers_ProductReadSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating']
+        fields = ['has_variations','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating','collection']
     
     def to_representation(self, instance):
         product = super().to_representation(instance)
         user = self.context['request'].user
     
         product['wishlist_exists'] = False
-        product['cart_exist'] = True  
+        product['cart_exist'] = True   
         if user.is_authenticated:
-            wishlist_obj = Wishlist.objects.filter(product_id = product.id)
-            cart_obj = Cart.objects.filter(product_id = product.id)
+            wishlist_obj = Wishlist.objects.filter(user = user,products = instance)
+            cart_obj = Cart.objects.filter(user = user,products = instance)
             if wishlist_obj.exists():
                 product['wishlist_exist'] = True  
             if cart_obj.exists():
@@ -136,7 +165,7 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductRetrieveAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
+        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -147,6 +176,22 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
+    
+    def to_representation(self, instance):
+        product = super().to_representation(instance)
+        user = self.context['request'].user
+    
+        product['wishlist_exists'] = False
+        product['cart_exist'] = True  
+        if user.is_authenticated:
+            wishlist_obj = Wishlist.objects.filter(user = user,products = instance)
+            cart_obj = Cart.objects.filter(user = user,products = instance)
+            if wishlist_obj.exists():
+                product['wishlist_exist'] = True  
+            if cart_obj.exists():
+                product['cart_exist'] = True                            
+
+        return product
 
 class ProductWriteSerializers(serializers.ModelSerializer):
     class Meta:

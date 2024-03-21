@@ -5,7 +5,7 @@ from ..utilities.importbase import *
 class CategoryViewsets(viewsets.ModelViewSet):
     serializer_class = CategoryReadSerializers
     permission_classes = [AdminViewSetsPermission]
-    authentication_classes = [JWTAuthentication]
+    # authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Category.objects.all()
     lookup_field = 'slug'
@@ -14,3 +14,5 @@ class CategoryViewsets(viewsets.ModelViewSet):
             return CategoryWriteSerializers
         return super().get_serializer_class()
     
+    def get_authentication_classes(self):
+        return [JWTAuthentication()]

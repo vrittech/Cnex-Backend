@@ -12,7 +12,8 @@ def AllLevel(request):
 
 def ownerPermission(request,label):
     payload_user = getattr(request, label, None)
-    if request.user.id == payload_user:
+    print(payload_user)
+    if request.user.id == payload_user.id:
         return True
     else:
         False
@@ -23,7 +24,9 @@ class AdminViewSetsPermission(BasePermission):
     
 class WishlistPermission(BasePermission):
     def has_permission(self, request, view):
-        if view.action in ['create','partial_update','update']:
+        if view.action in ['add_to_wishlist']:
+            return True
+        elif view.action in ['create','partial_update','update']:
             return ownerPermission(request,'user')
         
         elif view.action in ['list','retrieve']:
