@@ -69,4 +69,3 @@ class ProductViewsets(viewsets.ModelViewSet):
             instance.save_tags(tags_data)
         else:
             print("tags error ")
-    

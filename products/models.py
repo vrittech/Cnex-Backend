@@ -121,6 +121,10 @@ class Product(models.Model):
     @property
     def total_rating(self):
         return 20
+    
+    def getPriceByvariation(self,variation_value):
+        price = self.variations.all().filter(variation_options = variation_value).first().price#.filter(variation_options__in = variation_value)
+        return price
 
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
