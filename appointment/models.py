@@ -16,8 +16,8 @@ class Services(models.Model): #by admin
     
 class Slots(models.Model): #time #by admin
     services = models.ForeignKey(Services,related_name = 'slots',on_delete = models.CASCADE)
-    from_time = models.CharField(max_length=255) #by admin, time slot list by admin
-    to_time = models.CharField(max_length=255) #by admin, time slot list by admin
+    from_time = models.TimeField() #by admin, time slot list by admin
+    to_time = models.TimeField() #by admin, time slot list by admin
     number_of_staffs = models.IntegerField(default = 1)
     
     def __str__(self) -> str:
@@ -28,6 +28,7 @@ class Appointment(models.Model): #by users
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     service = models.ManyToManyField(Services,related_name="Appointment") #Multiple servies, each services has price
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    appointment_date = models.DateField()
     payment_mode = models.CharField(max_length=255, choices=[
         ('esewa', 'Esewa'),
         ('khalti', 'Khalti'),

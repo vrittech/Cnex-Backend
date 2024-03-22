@@ -38,7 +38,7 @@ class CartViewsets(viewsets.ModelViewSet):
 
         total_price = 0.00
         discount = 0.00
-        shipping_price = 0
+        shipping_price = 20
 
         coupon_apply = False
         coupon_discount = 0
@@ -62,6 +62,7 @@ class CartViewsets(viewsets.ModelViewSet):
             'discount':discount,
             'quantity':cart_obj.count(),
             'checkout':details,
+            'shipping_price':shipping_price,
         }
         
         return Response({"message": "Cart checkout get successfully",'data':data}, status=status.HTTP_201_CREATED)
