@@ -132,15 +132,22 @@ class Product(models.Model):
         total_price = float(price)+float(self.price) - float(self.discount)
     
     def getDetailWithVariationList(self,variation_value_list):
-        variations = self.variations.all().filter(variations__in=variation_value_list)
+        product_detail_after_variations = self.variations.all().filter(variation_options__in=variation_value_list)
         data = {}
-        variations = {}
+        variations = []
+        variations_value = {}
         variation_price = 0.00
-        for var in variations:
-            variations['price'] = var.price
-            variations['value'] = var.value
-            variation_price = float(var.price)+variation_price
-        data['variations']  = variations
+
+        print(product_detail_after_variations,"::",variation_value_list)
+        for pdav in product_detail_after_variations:
+            variations_value['price'] = pdav.price
+            variations_value['value'] = pdav.variation_options.value
+            variation_price = float(pdav.price)+variation_price
+            print(pdav.price,pdav.variation_options.value)
+            variations.append(variations_value)
+
+        print("\n\n")
+        data['products']  = variations
         data['name'] = self.name
         data['slug'] = self.slug
         data['price'] = self.price

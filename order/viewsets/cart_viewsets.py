@@ -33,10 +33,9 @@ class CartViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], name="getCheckOutProducts", url_path="get-checkout-products")
     def getCheckOutProducts(self, request):
-        product_ids = request.data.get('products')
-        cart_obj = Cart.objects.filter(user=request.user,products__in = product_ids)
+        cart_ids = request.data.get('carts')
+        cart_obj = Cart.objects.filter(user=request.user,id__in = cart_ids)
 
-        quantity = 2
         total_price = 0.00
         discount = 0.00
         shipping_price = 0
@@ -44,20 +43,28 @@ class CartViewsets(viewsets.ModelViewSet):
         coupon_apply = False
         coupon_discount = 0
 
-        checkout = []
+        details = []
 
-        details = {}
+        products = {}
         for cart in cart_obj:
             variations  = cart.variations.all()
+            if not variations:
+                print("variation is empty ")
+                continue
             product_detail = cart.product.getDetailWithVariationList(variations)
             total_price = total_price + product_detail.get('tot_price')
-            discount = discount + float(self.product.discount)
-            details['variations'] = product_detail
-            checkout.append(details)
+            discount = discount + float(cart.product.discount)
+            products['variations'] = product_detail
+            details.append(products)
+
+        data = {
+            'total_price':total_price,
+            'discount':discount,
+            'quantity':cart_obj.count(),
+            'checkout':details,
+        }
         
-
-
-        return Response({"message": "Cart bulk deleted successfully",'data':checkout}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Cart checkout get successfully",'data':data}, status=status.HTTP_201_CREATED)
 
 
     
