@@ -37,10 +37,17 @@ class WishlistPermission(BasePermission):
     
 class CartPermission(BasePermission):
     def has_permission(self, request, view):
+    
         if view.action in ['create','partial_update','update']:
+            return True #validate user
+        elif view.action in ['getCheckOutProducts']:
             return True
         elif view.action in ['list','retrieve']:
             return AllLevel(request)
+        elif view.action in ['destroy']:
+            return True
+        elif view.action in ['cartBulkDelete']:
+            return True
         else:
             return False
     

@@ -4,8 +4,8 @@ from ..utilities.importbase import *
 
 class AppointmentViewsets(viewsets.ModelViewSet):
     serializer_class = AppointmentReadSerializers
-    permission_classes = [AdminViewSetsPermission]
-    authentication_classes = [JWTAuthentication]
+    # permission_classes = [AdminViewSetsPermission]
+    # authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Appointment.objects.all()
 

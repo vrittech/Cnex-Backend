@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.core.validators import MaxValueValidator
 import ast
 from django.db.models import UniqueConstraint
+from django.db.models import Sum
 
 class Brand(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -125,6 +126,31 @@ class Product(models.Model):
     def getPriceByvariation(self,variation_value):
         price = self.variations.all().filter(variation_options = variation_value).first().price#.filter(variation_options__in = variation_value)
         return price
+    
+    def getPriceByvariationList(self,variation_value_list): #total price for single prouct,
+        price = self.variations.all().filter(variations__in=variation_value_list).aggregate(total_price=Sum('product_price'))['total_price']#.filter(variation_options__in = variation_value)
+        total_price = float(price)+float(self.price) - float(self.discount)
+    
+    def getDetailWithVariationList(self,variation_value_list):
+        variations = self.variations.all().filter(variations__in=variation_value_list)
+        data = {}
+        variations = {}
+        variation_price = 0.00
+        for var in variations:
+            variations['price'] = var.price
+            variations['value'] = var.value
+            variation_price = float(var.price)+variation_price
+        data['variations']  = variations
+        data['name'] = self.name
+        data['slug'] = self.slug
+        data['price'] = self.price
+        data['discount'] = self.discount
+        data['tot_price'] = float(self.price)+variation_price
+        data['variation_price'] = variation_price
+        return data
+
+
+
 
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

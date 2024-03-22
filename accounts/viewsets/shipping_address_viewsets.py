@@ -6,7 +6,7 @@ class ShippingAddressViewsets(viewsets.ModelViewSet):
     serializer_class = ShippingAddressReadSerializers
     permission_classes = [ShippingAddressViewsetsPermission]
     authentication_classes = [JWTAuthentication]
-    pagination_class = MyPageNumberPagination
+    # pagination_class = MyPageNumberPagination
     queryset  = ShippingAddress.objects.all()
 
     def get_serializer_class(self):

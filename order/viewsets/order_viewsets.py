@@ -20,3 +20,5 @@ class OrderViewsets(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], name="cart_to_order", url_path="cart-to-order")
     def cart_to_order(self, request):
         return Response({"message": "add to order sucessfully."}, status=status.HTTP_201_CREATED)
+    
+    
