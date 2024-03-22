@@ -51,11 +51,16 @@ class CartViewsets(viewsets.ModelViewSet):
             if not variations:
                 print("variation is empty ")
                 continue
+            # print(cart)
             product_detail = cart.product.getDetailWithVariationList(variations)
+            # print("variations::",product_detail)
             total_price = total_price + product_detail.get('tot_price')
             discount = discount + float(cart.product.discount)
-            products['variations'] = product_detail
+            products['products'] = product_detail
+            # print(products)
             details.append(products)
+            products = {}
+            # print(details)
 
         data = {
             'total_price':total_price,

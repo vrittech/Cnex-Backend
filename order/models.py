@@ -49,5 +49,12 @@ class Cart(models.Model):
     variations = models.ManyToManyField(VariationOption,related_name='carts',blank = True)
     quantity = models.PositiveIntegerField()
 
+class Checkout(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carts = models.ManyToManyField(Cart,related_name="checkout")
+    
+
+
     
     
