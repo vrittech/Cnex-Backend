@@ -8,6 +8,9 @@ from rest_framework import status
 from ..utilities.permission  import  CartPermission
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from ..viewsets.cart_to_order import CartToOrder
+from django.views.decorators.csrf import csrf_exempt
+
 
 class CartViewsets(viewsets.ModelViewSet):
     serializer_class = CartReadSerializers
@@ -28,8 +31,15 @@ class CartViewsets(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], name="cartBulkDelete", url_path="bulk-delete")
     def cartBulkDelete(self, request):
         product_ids = request.data.get('products')
-        cart_obj = Cart.objects.filter(user=request.user,products__in = product_ids).delete()
+        cart_obj = Cart.objects.filter(user=request.user,product__in = product_ids).delete()
         return Response({"message": "Cart bulk deleted successfully"}, status=status.HTTP_201_CREATED)
+    
+    
+    @action(detail=False, methods=['post'], name="CartToOrder", url_path="cart-checkout")
+    def CartToOrder(self, request):
+        cart_ids = request.data.get('carts')
+        order_ids = CartToOrder(request,cart_ids)
+        return Response({"message": "checkout successfully",'order_id':order_ids}, status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['post'], name="getCheckOutProducts", url_path="get-checkout-products")
     def getCheckOutProducts(self, request):

@@ -40,7 +40,7 @@ class CartPermission(BasePermission):
     
         if view.action in ['create','partial_update','update']:
             return True #validate user
-        elif view.action in ['getCheckOutProducts']:
+        elif view.action in ['getCheckOutProducts','CartToOrder']:
             return True
         elif view.action in ['list','retrieve']:
             return AllLevel(request)
