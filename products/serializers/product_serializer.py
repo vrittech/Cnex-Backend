@@ -87,16 +87,14 @@ class VariationProducts_ProductRetrieveAdminSerializers(serializers.ModelSeriali
         price = instance.price
         quantity = instance.quantity
         variation = instance.variation_options
-        data = {
-            'variation':variation.variation.name,
-            'variation_id':variation.variation.id,
-            'variation_option_value':variation.value,
-            'variation_value_id':variation.id,
-            'price':price,
-            'quantity':quantity
 
-        }
-        representations['details'] = data
+        representations['variation']=variation.variation.name
+        representations['variation_id']=variation.variation.id
+        representations['variation_option_value']=variation.value
+        representations['variation_value_id']=variation.id
+        representations['price'] = price
+        representations['quantity'] = quantity
+    
         return representations
 
     def get_variation_name(self,obj):
