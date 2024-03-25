@@ -6,16 +6,17 @@ from django.db import transaction
 
 @transaction.atomic
 def CartToOrder(request,carts):
-   
+    print(request.data,"::cart to order")
     order_payload = {
         'user':request.user.id,
-        'delivery_address':1,
+        'delivery_address':request.data.get('shipping_id'),
         # 'coupons':'coupons'
         'quantity':2,
         'total_price':212,
         'order_status':'checkout',
         'payment_status':'cod'
     }
+    print(order_payload,"::cart to order payload")
 
     order_serializer = OrderWriteSerializers(data = order_payload)
     order_serializer.is_valid(raise_exception=True)

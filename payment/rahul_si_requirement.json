@@ -1,0 +1,103 @@
+[
+    {
+        "id": 0,
+        "varient_name": "color",
+        "varient_option": [
+            {
+                "id": 1,
+                "name": "red",
+                "quantity": "1",
+                "price": "100",
+                "selected": true
+            },
+            {
+                "id": 2,
+                "name": "green",
+                "quantity": "1",
+                "price": "200",
+                "selected": true
+            }
+        ],
+        "varient": {
+            "id": 1,
+            "options": [
+                {
+                    "id": 1,
+                    "value": "red"
+                },
+                {
+                    "id": 2,
+                    "value": "green"
+                }
+            ],
+            "name": "color",
+            "description": "color"
+        }
+    },
+    {
+        "id": 1,
+        "varient_name": "size",
+        "varient_option": [
+            {
+                "id": 3,
+                "name": "XL",
+                "quantity": "1",
+                "price": "10",
+                "selected": true
+            },
+            {
+                "id": 4,
+                "name": "S",
+                "quantity": "2",
+                "price": "20",
+                "selected": true
+            },
+            {
+                "id": 5,
+                "name": "L",
+                "quantity": "",
+                "price": "",
+                "selected": false
+            }
+        ],
+        "varient": {
+            "id": 2,
+            "options": [
+                {
+                    "id": 3,
+                    "value": "XL"
+                },
+                {
+                    "id": 4,
+                    "value": "S"
+                },
+                {
+                    "id": 5,
+                    "value": "L"
+                }
+            ],
+            "name": "size",
+            "description": "size"
+        }
+    }
+]
+
+
+"variations": [
+    {
+        "variation": "color",
+        "variation_id": 1,
+        "variation_option_value": "red",
+        "variation_value_id": 1,
+        "price": 10.0,
+        "quantity": 1
+    },
+    {
+        "variation": "color",
+        "variation_id": 1,
+        "variation_option_value": "green",
+        "variation_value_id": 2,
+        "price": 200.0,
+        "quantity": 2
+    },
+]
