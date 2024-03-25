@@ -49,6 +49,7 @@ urlpatterns = [
     path('api/',include('variations.urls')),
     path('api/',include('products.urls')),
     path('api/',include('order.urls')),
+    path('api/',include('payment.urls')),
     path('api/',include('appointment.urls')),
     path('api/',include('coupon.urls')),
     path('api/',include('compaign.urls')),

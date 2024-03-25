@@ -16,6 +16,7 @@ class Order(models.Model):
     quantity =  models.PositiveIntegerField(default = 1)
     payment_status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),
+        ('unpaid','unpaid'),
         ('half', 'Half Payment'),
         ('cod','Cash On Delivery'),
         ('refunded','Refunded'),

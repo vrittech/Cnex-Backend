@@ -21,7 +21,6 @@ router.register('wishlist',WishlistViewsets,basename='WishlistViewsets')
 urlpatterns = [
     path('',include(router.urls)),
     path('get-wishlist-product/',WishlistProductsList.as_view(),name="WishlistProductsList"),
-    # path('get-cart-product/',CartProductsList.as_view(),name="CartProductsList")
 ]
 
 
