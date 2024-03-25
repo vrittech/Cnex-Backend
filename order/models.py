@@ -14,6 +14,7 @@ class Order(models.Model):
     delivery_address = models.ForeignKey(ShippingAddress, on_delete=models.SET_NULL, null=True, blank=True)
     coupons = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
     quantity =  models.PositiveIntegerField(default = 1)
+    total_discount = models.PositiveIntegerField(default = 0)
     payment_status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),
         ('unpaid','unpaid'),
@@ -36,6 +37,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product,related_name='order_items', on_delete=models.CASCADE)
     variations = models.ManyToManyField(VariationOption,related_name='order_items')
     quantity = models.PositiveIntegerField()
+    discount = models.PositiveIntegerField(default = 0)
 
 class Wishlist(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

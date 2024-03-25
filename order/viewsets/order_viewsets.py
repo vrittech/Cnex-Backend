@@ -1,5 +1,5 @@
 from ..models import Order
-from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers
+from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers,OrderRetrieveAdminSerializers
 from ..serializers.order_item_serializer import OrderItemWriteSerializers
 from ..utilities.importbase import *
 from rest_framework.decorators import action
@@ -16,4 +16,6 @@ class OrderViewsets(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return OrderWriteSerializers
+        elif self.action in ['retrieve']:
+            return OrderRetrieveAdminSerializers
         return super().get_serializer_class()
