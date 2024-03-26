@@ -14,7 +14,7 @@ class Coupon(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default = True)
-    is_expired = models.BooleanField()
+    is_expired = models.BooleanField(default = False)
     limit = models.PositiveIntegerField()
     description = models.CharField(max_length = 4000,null = True,blank = True)
 

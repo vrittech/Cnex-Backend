@@ -25,11 +25,12 @@ class ProductViewsets(viewsets.ModelViewSet):
     
     filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
     search_fields = ['title','tags__name','name','category__name','collection__name']
-    ordering_fields = ['id','created_date']
+    ordering_fields = ['id','created_date','discount','rating']
 
     filterset_fields = {
         'category':['exact'],
         'product_type':['exact'],
+        'price': ['exact', 'gte', 'lte'],
     }
 
     lookup_field = 'slug'
