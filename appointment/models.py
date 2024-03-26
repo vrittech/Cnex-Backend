@@ -35,6 +35,13 @@ class Appointment(models.Model): #by users
         ('paid','Paid'),
         ('unpaid','unpaid'),
     ],)
+
+    appointment_status = models.CharField(max_length=255, choices=[
+        ('confirmed','confirmed'),
+        ('not-attened','Not Attened'),
+        ('cancelled','cancelled'),
+    ],default="confirmed")
+
     payment_mode = models.CharField(max_length=255, choices=[
         ('esewa', 'Esewa'),
         ('khalti', 'Khalti'),

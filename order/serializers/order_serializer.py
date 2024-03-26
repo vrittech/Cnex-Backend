@@ -14,7 +14,7 @@ class VariationSerializer_OrderItem_OrderReadSerializers(serializers.ModelSerial
 class ProductSerializer_OrderItem_OrderReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['name','slug','featured_image']
+        fields = ['name','slug','featured_image','product_type']
 
 class CustomUserSerializers_OrderReadSerializers(serializers.ModelSerializer):
     class Meta:

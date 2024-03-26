@@ -59,12 +59,20 @@ class ServicesWriteSerializers(serializers.ModelSerializer):
         if slots_data is not None:
             slots_data = json.loads(slots_data)
             for slot_data in slots_data:
-               
-                slot_instance = Slots.objects.get(id=slot_data.get('id'), services=service_instance.id)  # Retrieve the object to update
+                slot_id = slot_data.get('id')  # Check if ID is provided
+                print(slot_id," slot id")
+                if slot_id:
+                    slot_instance = Slots.objects.get(id=slot_id, services=service_instance.id)  # Retrieve the object to update
+                    print(slot_instance," slot instance")
+                else:
+                    slot_data['services'] = service_instance.id  # Set the service for new slot
+                    slot_instance = None  # Set slot_instance to None for new slot creation
+                
                 serializer = SlotsWriteSerializers(slot_instance, data=slot_data, partial=True)  # Initialize
 
-                # Validate and update the serializer
+                # Validate and update/create the serializer
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
 
         return service_instance
+
