@@ -68,7 +68,6 @@ class CartViewsets(viewsets.ModelViewSet):
                 coupon_discount = coupon_obj.first().discount
             else:
                 message = "Either coupon not exists or it is expired"
-                coupon_status = status.HTTP_400_BAD_REQUEST
                 
             
         cart_obj = Cart.objects.filter(user=request.user,id__in = cart_ids)

@@ -4,12 +4,9 @@ from .slots_serializer import SlotsWriteSerializers
 import json
 
 class SlotsReadSerializers_ServicesReadSerializers(serializers.ModelSerializer):
-    remaining_slots = serializers.SerializerMethodField()
     class Meta:
         model = Slots
         fields = '__all__'
-    def get_remaining_slots(self,obj):
-        return int(obj.number_of_staffs)-int(obj.appointment.all().count())
 
 class ServicesReadSerializers(serializers.ModelSerializer):
     slots = SlotsReadSerializers_ServicesReadSerializers(many = True)
