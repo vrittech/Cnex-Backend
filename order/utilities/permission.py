@@ -22,6 +22,8 @@ class AdminViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list','retrieve','ToReceiveOrder']:
             return True
+        elif view.action in ['BuyNow']:
+            return True
         return AdminLevel(request)
     
 class WishlistPermission(BasePermission):
@@ -42,7 +44,7 @@ class CartPermission(BasePermission):
     
         if view.action in ['create','partial_update','update']:
             return True #validate user
-        elif view.action in ['getCheckOutProducts','CartToOrder']:
+        elif view.action in ['getCheckOutProducts','CartToOrder','getCheckOutProductsBuyNow']:
             return True
         elif view.action in ['list','retrieve']:
             return AllLevel(request)

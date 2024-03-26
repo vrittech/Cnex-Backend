@@ -1,5 +1,5 @@
 from ..models import Order
-from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers,OrderRetrieveAdminSerializers
+from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers,OrderRetrieveAdminSerializers,BuyNowOrderWriteSerializers
 from ..serializers.order_item_serializer import OrderItemWriteSerializers
 from ..utilities.importbase import *
 from rest_framework.decorators import action
@@ -29,6 +29,8 @@ class OrderViewsets(viewsets.ModelViewSet):
             return OrderWriteSerializers
         elif self.action in ['retrieve']:
             return OrderRetrieveAdminSerializers
+        elif self.action in ['BuyNow']:
+            return BuyNowOrderWriteSerializers
         return super().get_serializer_class()
 
     def get_queryset(self):
@@ -42,4 +44,8 @@ class OrderViewsets(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
     def ToReceiveOrder(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+    @action(detail=False, methods=['post'], name="BuyNow", url_path="buy-now")
+    def BuyNow(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
     

@@ -85,3 +85,14 @@ class OrderWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+class BuyNowOrderWriteSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        order_items = self.context['request'].data.get('variations')
+        print(order_items, ";:order items ")
+        return instance
