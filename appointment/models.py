@@ -21,12 +21,13 @@ class Slots(models.Model): #time #by admin
     number_of_staffs = models.IntegerField(default = 1)
     
     def __str__(self) -> str:
-        return str(self.time_slot)
+        return str(self.from_time) + "-" + str(self.to_time)
 
 class Appointment(models.Model): #by users
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    service = models.ManyToManyField(Services,related_name="Appointment") #Multiple servies, each services has price
+    service = models.ForeignKey(Services,related_name="Appointment",on_delete = models.PROTECT) #Multiple servies, each services has price
+    slots = models.ForeignKey(Slots,related_name="appointment",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
     payment_mode = models.CharField(max_length=255, choices=[
