@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.response import Response
 from accounts import roles
+from django.db.models import Q
 
 class OrderViewsets(viewsets.ModelViewSet):
     serializer_class = OrderReadSerializers
@@ -33,6 +34,12 @@ class OrderViewsets(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
             return super().get_queryset()
+        elif self.request.method == "ToReceiveOrder" and self.request.user.role == roles.USER:
+            return super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
         elif self.request.user.role == roles.USER:
             return super().get_queryset().filter(user = self.request.user)
+   
+    @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
+    def ToReceiveOrder(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
     

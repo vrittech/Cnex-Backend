@@ -57,15 +57,19 @@ class CartViewsets(viewsets.ModelViewSet):
 
         coupon_discount = 0
         coupon_apply = False
+
+        message = "Cart checkout get successfully"
+        coupon_status = status.HTTP_201_CREATED
     
         if coupon_code:
             coupon_obj = Coupon.objects.filter(code = coupon_code)
             if coupon_obj.exists() and coupon_obj.first().is_verify == True:
                 coupon_apply = True
                 coupon_discount = coupon_obj.first().discount
-                pass
             else:
-                return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
+                message = "Either coupon not exists or it is expired"
+                coupon_status = status.HTTP_400_BAD_REQUEST
+                
             
         cart_obj = Cart.objects.filter(user=request.user,id__in = cart_ids)
 
@@ -102,7 +106,7 @@ class CartViewsets(viewsets.ModelViewSet):
             'coupon_discount':coupon_discount,
         }
         
-        return Response({"message": "Cart checkout get successfully",'data':data}, status=status.HTTP_201_CREATED)
+        return Response({"message": message,'data':data}, status=coupon_status)
 
 
     

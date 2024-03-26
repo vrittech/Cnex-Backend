@@ -16,6 +16,7 @@ class Coupon(models.Model):
     is_active = models.BooleanField(default = True)
     is_expired = models.BooleanField()
     limit = models.PositiveIntegerField()
+    description = models.CharField(max_length = 4000,null = True,blank = True)
 
     @property
     def is_verify(self):

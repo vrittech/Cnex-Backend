@@ -20,6 +20,8 @@ def ownerPermission(request,label):
 
 class AdminViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
+        if view.action in ['list','retrieve','ToReceiveOrder']:
+            return True
         return AdminLevel(request)
     
 class WishlistPermission(BasePermission):
