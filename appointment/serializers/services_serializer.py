@@ -51,3 +51,20 @@ class ServicesWriteSerializers(serializers.ModelSerializer):
             slots_serializer.save()
 
         return service_instance
+    
+    def update(self, instance, validated_data):
+        slots_data = self.context['request'].data.get('slots')
+        service_instance = super().update(instance, validated_data)
+
+        if slots_data is not None:
+            slots_data = json.loads(slots_data)
+            for slot_data in slots_data:
+               
+                slot_instance = Slots.objects.get(id=slot_data.get('id'), services=service_instance.id)  # Retrieve the object to update
+                serializer = SlotsWriteSerializers(slot_instance, data=slot_data, partial=True)  # Initialize
+
+                # Validate and update the serializer
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+
+        return service_instance

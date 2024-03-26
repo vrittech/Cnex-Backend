@@ -5,8 +5,7 @@ from ..models import Cart
 from django.db import transaction
 
 @transaction.atomic
-def CartToOrder(request,carts):
-    print(request.data,"::cart to order")
+def CartToOrder(request,carts,coupon_obj = None):
     order_payload = {
         'user':request.user.id,
         'delivery_address':request.data.get('shipping_id'),
@@ -16,6 +15,9 @@ def CartToOrder(request,carts):
         'order_status':'checkout',
         'payment_status':'cod'
     }
+    if coupon_obj != None:
+        print(coupon_obj," coupon")
+        order_payload['coupons'] = coupon_obj.first().id
     print(order_payload,"::cart to order payload")
 
     order_serializer = OrderWriteSerializers(data = order_payload)
