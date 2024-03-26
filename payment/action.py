@@ -7,7 +7,7 @@ from order.models import Order
 @receiver(post_save, sender=Payment)
 def PaymentPostSave(sender, instance, created, **kwargs):
     if created:
-        Order.objects.filter(id = instance.order_id).update(payment_status = "paid")
+        Order.objects.filter(id = instance.order_id).update(payment_status = "paid",order_status = "in-progress")
     
 
 @receiver(pre_save,sender=Payment)
