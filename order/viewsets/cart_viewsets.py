@@ -9,7 +9,6 @@ from ..utilities.permission  import  CartPermission
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from ..viewsets.cart_to_order import CartToOrder
-from django.views.decorators.csrf import csrf_exempt
 from coupon.models import Coupon
 
 
