@@ -10,6 +10,7 @@ class Services(models.Model): #by admin
     name =  models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image = models.ImageField(upload_to="appointment/services",blank=True,null=True)
+    is_active = models.BooleanField(default = True)
     
     def __str__(self) -> str:
         return self.name + " " + str(self.price)
@@ -30,12 +31,17 @@ class Appointment(models.Model): #by users
     slots = models.ForeignKey(Slots,related_name="appointment",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
+    payment_status= models.CharField(max_length=255, choices=[
+        ('paid','Paid'),
+        ('unpaid','unpaid'),
+    ],)
     payment_mode = models.CharField(max_length=255, choices=[
         ('esewa', 'Esewa'),
         ('khalti', 'Khalti'),
         ('fonepay', 'FonePay'),
+        ('offline', 'offline'),
     ])
     cancellation_reason = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.user.username + " " + str(self.service.first().name)
+        return self.user.username + " " + str(self.service.name)
