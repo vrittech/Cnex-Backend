@@ -16,6 +16,9 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
 from .models import CustomUser
 
 from . import roles
@@ -232,8 +235,6 @@ class CheckTokenExpireView(APIView):
             # If the token is expired or invalid
             return Response({'valid': False}, status=status.HTTP_401_UNAUTHORIZED)
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 class LoginView(APIView):
     @swagger_auto_schema(

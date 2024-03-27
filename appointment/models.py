@@ -56,7 +56,7 @@ class Slots(models.Model): #time #by admin
             return True
 
 class CheckoutAppointment(models.Model):
-    total_price = models.PositiveIntegerField()
+    total_price = models.PositiveIntegerField(editable = False)
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
 
 class ServicesItems(models.Model):
