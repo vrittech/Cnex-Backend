@@ -85,6 +85,8 @@ class Product(models.Model):
     is_best_sell = models.BooleanField(default = False)
     collection = models.ManyToManyField(Collection,related_name="products",blank=True)
     is_publish = models.BooleanField(default = False)
+
+    is_stock =  models.BooleanField(default = True) #true means in stock, false means out of stocks
     
     tags = models.ManyToManyField(Tags,blank=True)
 
@@ -121,6 +123,10 @@ class Product(models.Model):
     
     @property
     def total_rating(self):
+        return 20
+    
+    @property
+    def total_variations_quantity(self):
         return 20
     
     def getPriceByvariation(self,variation_value):

@@ -20,7 +20,7 @@ class Coupon(models.Model):
 
     @property
     def is_verify(self):
-        return True
+        return True #a user can use coupon one time only hints Order.objects.filter(user = request.user , coupons = coupon_obj.first()).exists() == False 
 
 
     

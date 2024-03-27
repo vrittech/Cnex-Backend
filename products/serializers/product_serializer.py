@@ -152,7 +152,7 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductReadAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations']
+        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)

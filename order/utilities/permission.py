@@ -26,6 +26,14 @@ class AdminViewSetsPermission(BasePermission):
             return True
         return AdminLevel(request)
     
+class OrderViewSetsPermission(BasePermission):
+    def has_permission(self, request, view):
+        if view.action in ['list','retrieve','ToReceiveOrder']:
+            return True
+        elif view.action in ['BuyNow']:
+            return True
+        return AdminLevel(request)
+    
 class WishlistPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['add_to_wishlist']:

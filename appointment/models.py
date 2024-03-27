@@ -49,14 +49,28 @@ class Slots(models.Model): #time #by admin
     
     def __str__(self) -> str:
         return str(self.from_time) + "-" + str(self.to_time)
+    
+    def is_slots_available(self,date):
+        appointments_obj = self.appointments.all().filter(appointment_date = date)
+        if (self.number_of_staffs-appointments_obj.count()) >0:
+            return True
 
-class Appointment(models.Model): #by users
-    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+class CheckoutAppointment(models.Model):
+    total_price = models.PositiveIntegerField()
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+
+class ServicesItems(models.Model):
+    checkout_appointment = models.ForeignKey(CheckoutAppointment,on_delete = models.PROTECT,related_name="services_items")
     service = models.ForeignKey(Services,related_name="appointments",on_delete = models.PROTECT) #Multiple servies, each services has price
     slots = models.ForeignKey(Slots,related_name="appointments",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
+
+class Appointment(models.Model): #by users
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT,related_name = "appointments_order")
+    checkout_appointment = models.ForeignKey(CheckoutAppointment,on_delete=models.PROTECT,related_name = "appointments_order")
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),
         ('unpaid','unpaid'),
@@ -66,7 +80,8 @@ class Appointment(models.Model): #by users
         ('confirmed','confirmed'),
         ('not-attened','Not Attened'),
         ('cancelled','cancelled'),
-    ],default="confirmed")
+        ('checkout','cancelled'),
+    ],default="checkout")
 
     payment_mode = models.CharField(max_length=255, choices=[
         ('esewa', 'Esewa'),
@@ -78,3 +93,5 @@ class Appointment(models.Model): #by users
 
     def __str__(self) -> str:
         return self.user.username + " " + str(self.service.name)
+
+

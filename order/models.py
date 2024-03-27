@@ -30,6 +30,12 @@ class Order(models.Model):
         ('checkout','checkout')
     ])
     order_date = models.DateTimeField(auto_now_add=True)
+    
+     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'coupons'], name='limit_coupon')
+        ]
 
 class OrderItem(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

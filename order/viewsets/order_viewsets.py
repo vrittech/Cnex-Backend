@@ -7,10 +7,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from accounts import roles
 from django.db.models import Q
+from ..utilities.permission import OrderViewSetsPermission
+from rest_framework.permissions import IsAuthenticated
 
 class OrderViewsets(viewsets.ModelViewSet):
     serializer_class = OrderReadSerializers
-    permission_classes = [AdminViewSetsPermission]
+    permission_classes = [IsAuthenticated,OrderViewSetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Order.objects.all()
@@ -22,6 +24,7 @@ class OrderViewsets(viewsets.ModelViewSet):
     filterset_fields = {
         'payment_status':['exact'],
         'order_status':['exact'],
+        'products__product_type':['exact'],
     }
 
     def get_serializer_class(self):
