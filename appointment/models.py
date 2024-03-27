@@ -17,14 +17,51 @@ class Services(models.Model): #by admin
         return self.name + " " + str(self.price)
     
     def getServicesSlotsAvailable(self,date):
+        services = {
+            'name':'doctor hearing',
+            'price':1200,
+            'id':4,
+            'slots':
+              [
+            {
+                'id':1,
+                'from_time':"10:00:00",
+                'to_time':"12:00:00",
+                'number_of_staffs':21,
+                'occupied':12,
+                'available':9,
+                'is_available':True
+            },
+            {
+                'id':2,
+                'from_time':"10:00:00",
+                'to_time':"12:00:00",
+                'number_of_staffs':21,
+                'occupied':12,
+                'available':9,
+                'is_available':True
+            },
+            {
+                'id':3,
+                'from_time':"10:00:00",
+                'to_time':"12:00:00",
+                'number_of_staffs':21,
+                'occupied':11,
+                'available':10,
+                'is_available':True
+            },
+        ]
+        }
+        return services
         slots = self.slots.all()
         slots_data = []
         for slot in slots:
-            appointments = slot.appointments.all().filter(appointment_date = date)
-            available = slot.number_of_staffs - appointments.count()
+            appointments = Appointment.objects.filter(checkout_appointment__services_items__slots = slot).filter(appointment_date = date)
+            available = appointments.number_of_staffs - appointments.count()
+
             slots_data.append({
                 'id':slot.id,
-                'from_time':slot.from_time,
+                'from_time':appointments.checkout_appointment.from_time,
                 'to_time':slot.to_time,
                 'number_of_staffs':slot.number_of_staffs,
                 'occupied':appointments.count(),
@@ -49,8 +86,6 @@ class Services(models.Model): #by admin
         appointments = slots.first().appointments.all().filter(appointment_date = date)
         available = slots.first().number_of_staffs - appointments.count()
         return available>0
-        
-            
       
 class Slots(models.Model): #time #by admin
     services = models.ForeignKey(Services,related_name = 'slots',on_delete = models.CASCADE)
@@ -76,6 +111,11 @@ class ServicesItems(models.Model):
     slots = models.ForeignKey(Slots,related_name="appointments",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['checkout_appointment', 'slots'], name='checkout_service_slots_unique')
+        ]
 
 class Appointment(models.Model): #by users
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -103,6 +143,6 @@ class Appointment(models.Model): #by users
     cancellation_reason = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.user.username + " " + str(self.service.name)
+        return self.user.username
 
 
