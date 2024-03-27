@@ -2,6 +2,7 @@ from django.db import models
 from .models import *
 from accounts.models import CustomUser
 import uuid
+from django.db.models import Count
 # Create your models here.
 
 
@@ -15,6 +16,31 @@ class Services(models.Model): #by admin
     def __str__(self) -> str:
         return self.name + " " + str(self.price)
     
+    def getServicesSlotsAvailable(self,date):
+        slots = self.slots.all()
+        slots_data = []
+        for slot in slots:
+            appointments = slot.appointments.all().filter(appointment_date = date)
+            available = slot.number_of_staffs - appointments.count()
+            slots_data.append({
+                'id':slot.id,
+                'from_time':slot.from_time,
+                'to_time':slot.to_time,
+                'number_of_staffs':slot.number_of_staffs,
+                'occupied':appointments.count(),
+                'available':available,
+                'is_available':available>0
+            })
+
+        services_detail = {
+            'id':self.id,
+            'name':self.name,
+            'price':self.price,
+            'slots':slots_data,
+        }
+           
+        return services_detail
+      
 class Slots(models.Model): #time #by admin
     services = models.ForeignKey(Services,related_name = 'slots',on_delete = models.CASCADE)
     from_time = models.TimeField() #by admin, time slot list by admin
@@ -27,8 +53,8 @@ class Slots(models.Model): #time #by admin
 class Appointment(models.Model): #by users
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    service = models.ForeignKey(Services,related_name="Appointment",on_delete = models.PROTECT) #Multiple servies, each services has price
-    slots = models.ForeignKey(Slots,related_name="appointment",on_delete = models.PROTECT)
+    service = models.ForeignKey(Services,related_name="appointments",on_delete = models.PROTECT) #Multiple servies, each services has price
+    slots = models.ForeignKey(Slots,related_name="appointments",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
     payment_status= models.CharField(max_length=255, choices=[

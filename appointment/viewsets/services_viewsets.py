@@ -3,6 +3,7 @@ from ..serializers.services_serializer import ServicesReadSerializers,ServicesWr
 from ..utilities.importbase import *
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 class ServicesViewsets(viewsets.ModelViewSet):
     serializer_class = ServicesReadSerializers
@@ -19,9 +20,13 @@ class ServicesViewsets(viewsets.ModelViewSet):
         elif self.action in ['list']:
             return super().get_serializer_class()
     
-    # @action(detail=False, methods=['post'], name="cartBulkDelete", url_path="bulk-delete")
-    # def (self, request):
-    #     product_ids = request.data.get('products')
-    #     cart_obj = Cart.objects.filter(user=request.user,product__in = product_ids).delete()
-    #     return Response({"message": "Cart bulk deleted successfully"}, status=status.HTTP_201_CREATED)
+    @action(detail=False, methods=['post'], name="ServicesAvailable", url_path="get-services-available")
+    def ServicesAvailable(self, request):
+        date = request.data.get('date')
+        service_id = request.data.get('servcie_id')
+        print(date,service_id," required date.")
+        services_obj = Services.objects.get(id = service_id)
+        slots_available = services_obj.getServicesSlotsAvailable(date)
+        return Response({'services':slots_available}, status=status.HTTP_201_CREATED)
+
     
