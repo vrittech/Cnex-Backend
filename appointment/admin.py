@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.s
 
-admin.site.register(Slots)
+admin.site.register([Slots,ServicesItems,CheckoutAppointment])
 
 class AdminSlotsInline(admin.TabularInline):
     model = Slots

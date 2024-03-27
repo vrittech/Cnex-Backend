@@ -40,6 +40,17 @@ class Services(models.Model): #by admin
         }
            
         return services_detail
+    
+    def isServicesSlotsAvailable(self,date,slots):
+        slots = self.slots.all().filter(id = slots)
+        if slots.exists() == False:
+            return False
+        
+        appointments = slots.first().appointments.all().filter(appointment_date = date)
+        available = slots.first().number_of_staffs - appointments.count()
+        return available>0
+        
+            
       
 class Slots(models.Model): #time #by admin
     services = models.ForeignKey(Services,related_name = 'slots',on_delete = models.CASCADE)
@@ -56,7 +67,7 @@ class Slots(models.Model): #time #by admin
             return True
 
 class CheckoutAppointment(models.Model):
-    total_price = models.PositiveIntegerField(editable = False)
+    total_price = models.PositiveIntegerField()
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
 
 class ServicesItems(models.Model):
@@ -69,7 +80,7 @@ class ServicesItems(models.Model):
 class Appointment(models.Model): #by users
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT,related_name = "appointments_order")
-    checkout_appointment = models.ForeignKey(CheckoutAppointment,on_delete=models.PROTECT,related_name = "appointments_order")
+    checkout_appointment = models.OneToOneField(CheckoutAppointment,on_delete=models.PROTECT,related_name = "appointments_order")
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),

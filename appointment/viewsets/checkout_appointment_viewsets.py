@@ -7,6 +7,12 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from ..models import Services
+from django.db.models import Sum
+from rest_framework import serializers
+from ..utilities.check_services_available import checkServicesAvailable
+from rest_framework.decorators import action
+from django.core.exceptions import ValidationError
 
 class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
     serializer_class = CheckoutAppointmentReadSerializers
@@ -35,8 +41,26 @@ class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
         operation_description="",
     )
 
+    @action(detail=False, methods=['post'], name="checkOutAppointment", url_path="services-checkout")
+    def checkOutAppointment(self, request):
+        services = request.data.get('services')
+        if not checkServicesAvailable(services):
+            return Response({'message':'some services are not available at given date'},status=status.HTTP_400_BAD_REQUEST)
+        services_ids = [service.get('service') for service in services]
+        user = request.data.get('user') #user owner permission 
+        service_objs = Services.objects.filter(id__in = services_ids)
+        total_service_price = service_objs.aggregate(total_price = Sum('price')).get('total_price',0)
+        services_serializer = ServicesReadSerializers_Checkout(service_objs,many = True)
+        return Response({"message": "checkout successfully",'total_price':total_service_price,'services':services_serializer.data}, status=status.HTTP_201_CREATED)
+
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        services = request.data.get('services')
+        if not checkServicesAvailable(services):
+            return Response({'message':'some services are not available at given date'},status=status.HTTP_400_BAD_REQUEST)
+        return super().create(request, *args, **kwargs)
+    
+
+class ServicesReadSerializers_Checkout(serializers.ModelSerializer):
+    class Meta:
+        model = Services
+        fields = ['name','id','price']
