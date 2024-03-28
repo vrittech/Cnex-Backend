@@ -39,7 +39,7 @@ def PaymentServicePostSave(sender, instance, created, **kwargs):
             'appointment_status':'confirmed',
             'payment_mode':instance.payment_mode,
         }
-        Appointment.objects.create(payload)
+        Appointment.objects.create(**payload)
     
 
 @receiver(pre_save,sender=PaymentService)
