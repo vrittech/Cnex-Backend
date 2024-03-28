@@ -98,8 +98,7 @@ class Appointment(models.Model): #this is order
         ('confirmed','confirmed'),
         ('not-attened','Not Attened'),
         ('cancelled','cancelled'),
-        ('checkout','cancelled'),
-    ],default="checkout")
+    ])
 
     payment_mode = models.CharField(max_length=255, choices=[
         ('esewa', 'Esewa'),

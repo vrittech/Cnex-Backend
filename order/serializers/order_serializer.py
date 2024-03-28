@@ -94,5 +94,5 @@ class BuyNowOrderWriteSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         instance = super().create(validated_data)
         order_items = self.context['request'].data.get('variations')
-        print(order_items, ";:order items ")
+        print(order_items, "::order items ")
         return instance

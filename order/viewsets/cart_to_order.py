@@ -16,9 +16,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         'payment_status':'cod'
     }
     if coupon_obj != None:
-        print(coupon_obj," coupon")
         order_payload['coupons'] = coupon_obj.first().id
-    print(order_payload,"::cart to order payload")
 
     order_serializer = OrderWriteSerializers(data = order_payload)
     order_serializer.is_valid(raise_exception=True)
@@ -39,6 +37,8 @@ def CartToOrder(request,carts,coupon_obj = None):
     order_items_serializers = OrderItemWriteSerializers(data = order_items,many = True)
     order_items_serializers.is_valid(raise_exception=True)
     order_items_serializers.save()
+
+    Cart.objects.filter(id__in = carts,user = request.user).delete()
 
     return order_serializer.data.get('id')
     
