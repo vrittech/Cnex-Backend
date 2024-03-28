@@ -77,25 +77,28 @@ class CartViewsets(viewsets.ModelViewSet):
 
         details = []
 
-        products = {}
+        
         for cart in cart_obj:
             variations  = cart.variations.all()
             if not variations:
                 print("variation is empty ")
                 continue
-            # print(cart)
             product_detail = cart.product.getDetailWithVariationList(variations)
-            # print("variations::",product_detail)
-            total_price = total_price + product_detail.get('tot_price')
+
+            product_total_price = (float(product_detail.get('product_price'))+float(product_detail.get('variation_price'))) * cart.quantity
+            total_price = total_price + product_total_price
             discount = discount + float(cart.product.discount)
-            products['products'] = product_detail
-            # print(products)
+            products = {
+                'products':product_detail,
+                'quantity':cart.quantity,
+                'product_total_price':product_total_price
+            }
             details.append(products)
-            products = {}
-            # print(details)
+        
 
         data = {
-            'total_price':total_price,
+            'total_price':total_price-discount+shipping_price-coupon_discount,
+            'products_variations_quantity_price':total_price,
             'discount':discount,
             'quantity':cart_obj.count(),
             'checkout':details,

@@ -139,36 +139,31 @@ class Product(models.Model):
     
     def getDetailWithVariationList(self,variation_value_list):
         product_detail_after_variations = self.variations.all().filter(variation_options__in=variation_value_list)
-        data = {}
+        
         variations = []
-        variations_value = {}
         variation_price = 0.00
 
-        # print(product_detail_after_variations,"::",variation_value_list)s
         for pdav in product_detail_after_variations:
-            variations_value['price'] = pdav.price
-            variations_value['value'] = pdav.variation_options.value
+            variations_value = {
+                'price':pdav.price,
+                'value':pdav.variation_options.value
+
+            }
+          
             variation_price = float(pdav.price)+variation_price
-            # print(pdav.price,pdav.variation_options.value)
             variations.append(variations_value)
-            # print(variations_value,"::",variations)
 
-        
-        # print(variations," list")
-
-        print("\n\n")
-        data['variations']  = variations
-        data['name'] = self.name
-        data['slug'] = self.slug
-        data['price'] = self.price
-        data['discount'] = self.discount
-        data['tot_price'] = float(self.price)+variation_price
-        data['variation_price'] = variation_price
-        # print(data)
+        data = {
+            'variations':variations,
+            'name':self.name,
+            'slug':self.slug,
+            'price':self.price,
+            'discount':self.discount,
+            'product_price':self.price,
+            'variation_price':variation_price
+            
+        }
         return data
-
-
-
 
 class ProductHaveImages(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
