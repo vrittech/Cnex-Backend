@@ -8,13 +8,19 @@ from appointment.models import Appointment,CheckoutAppointment
 @receiver(post_save, sender=Payment)
 def PaymentPostSave(sender, instance, created, **kwargs):
     if created:
-        Order.objects.filter(id = instance.order_id).update(payment_status = "paid",order_status = "in-progress")
+        order_obj = Order.objects.filter(id = instance.order_id)
+        if order_obj.exists():
+            payment_status = "unpaid"
+            if order_obj.first().total_price == instance.ammount:
+                payment_status = "paid"
+            else:
+                payment_status = "unpaid"
+            order_obj.update(payment_status = payment_status,order_status = "in-progress")
     
 
 @receiver(pre_save,sender=Payment)
 def PaymentPreSave(sender,instance,**kwargs):
     pass
-
 
 
 @receiver(post_save, sender=PaymentService)
