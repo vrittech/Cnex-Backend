@@ -180,10 +180,16 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
         user = self.context['request'].user
     
         product['wishlist_exists'] = False
+        product['is_rate'] = False
+
         if user.is_authenticated:
             wishlist_obj = Wishlist.objects.filter(user = user,products = instance)
             if wishlist_obj.exists():
-                product['wishlist_exist'] = True                            
+                product['wishlist_exist'] = True   
+
+            rate_obj = user.rating.all().filter(product = instance)
+            if rate_obj.exists():
+                product['is_rate'] = True                            
 
         return product
 
