@@ -25,8 +25,8 @@ class Rating(models.Model):
         
 
 class Review(models.Model):
-    user = models.ForeignKey(CustomUser,related_name = "rating", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,related_name = "rating", on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser,related_name = "review", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,related_name = "review", on_delete=models.CASCADE)
     message = models.TextField(null = True)
     image = models.ImageField(null=True,upload_to="review/images")
 

@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'payment',
     'appointment',
     'compaign',
-    'deliverycharge'
+    'deliverycharge',
+    'reviewrating',
 ]
 
 ASGI_APPLICATION = 'cnex.asgi.application'

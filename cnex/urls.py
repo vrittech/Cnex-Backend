@@ -54,6 +54,7 @@ urlpatterns = [
     path('api/',include('coupon.urls')),
     path('api/',include('compaign.urls')),
     path('api/',include('deliverycharge.urls')),
+    path('api/',include('reviewrating.urls')),
     
 
     # path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
