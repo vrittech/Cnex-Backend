@@ -127,7 +127,7 @@ class ProductReadSerializers(serializers.ModelSerializer):
     collection = CollectionSerializers_ProductReadSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['has_variations','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating','collection']
+        fields = ['has_variations','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','discount','featured_image','product_type','average_rating','total_rating','collection','is_stock']
     
     def to_representation(self, instance):
         product = super().to_representation(instance)
@@ -152,7 +152,7 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductReadAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
+        fields = ['is_stock','id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -163,7 +163,7 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductRetrieveAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
+        fields = ['is_stock','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
@@ -173,7 +173,7 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductRetrieveSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
+        fields = ['is_stock','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
     
     def to_representation(self, instance):
         product = super().to_representation(instance)
