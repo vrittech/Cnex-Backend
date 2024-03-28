@@ -3,15 +3,16 @@ from ..serializers.order_serializer import OrderWriteSerializers
 from ..serializers.order_item_serializer import OrderItemWriteSerializers
 from ..models import Cart
 from django.db import transaction
+from ..utilities.hisab_kitab_from_karts import CartsHisabKitab
 
 @transaction.atomic
 def CartToOrder(request,carts,coupon_obj = None):
+    hisab_kitab_data = CartsHisabKitab(request)
     order_payload = {
         'user':request.user.id,
         'delivery_address':request.data.get('shipping_id'),
-        # 'coupons':'coupons'
-        'quantity':2,
-        'total_price':212,
+        'quantity':hisab_kitab_data.get('quantity'),
+        'total_price':hisab_kitab_data.get('total_price'),
         'order_status':'checkout',
         'payment_status':'cod'
     }
