@@ -11,10 +11,20 @@ def PaymentPostSave(sender, instance, created, **kwargs):
         order_obj = Order.objects.filter(id = instance.order_id)
         if order_obj.exists():
             payment_status = "unpaid"
-            if order_obj.first().total_price == instance.ammount:
-                payment_status = "paid"
+            if order_obj.first().order_items.all().count() == 1 and order_obj.first().order_items.all().first().product.product_type == "pre-order":
+                print(" this order is pre order")
+                if instance.ammount == order_obj.first().total_price:
+                    print("half payment")
+                    payment_status = "paid"
+                else:
+                    payment_status = "half"   
+                    print("half payment")             
             else:
-                payment_status = "unpaid"
+                print(" this order is regular order")
+                if order_obj.first().total_price == instance.ammount:
+                    payment_status = "paid"
+                else:
+                    payment_status = "unpaid"
             order_obj.update(payment_status = payment_status,order_status = "in-progress")
     
 
