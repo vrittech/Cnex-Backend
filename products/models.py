@@ -1,9 +1,7 @@
 from django.db import models
-from accounts.models import CustomUser
 from variations.models import Variation,VariationOption
 import uuid
 from django.utils.text import slugify
-from django.core.validators import MaxValueValidator
 import ast
 from django.db.models import UniqueConstraint
 from django.db.models import Sum
@@ -190,30 +188,3 @@ class ProductDetailAfterVariation(models.Model):
         constraints = [
             UniqueConstraint(fields=['variation_options', 'product'], name='unique_variation_product')
         ]
-
-class Rating(models.Model):
-    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    user = models.ForeignKey(CustomUser,related_name = "rating", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,related_name = "rating", on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
-
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
-        return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'product'], name='unique_rating')
-        ]
-
-
-
-#variation are based on category, we have to define each category with variation group.
-    
-#each category have any one of variation group.
-#variation group are collection of attribute, each group have multiple variation
-#attributes are value
-        
-        
