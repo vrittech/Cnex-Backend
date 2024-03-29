@@ -4,6 +4,7 @@ from products.models import ProductDetailAfterVariation,Product
 from variations.models import  VariationOption
 from coupon.models import Coupon
 import uuid
+from django.db.models import UniqueConstraint
 
 # Create your models here.
 class Order(models.Model):

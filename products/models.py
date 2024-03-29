@@ -38,7 +38,7 @@ class Collection(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length = 2000,null = True,blank = True)
-    is_active = models.BooleanField(default = False)
+    is_active = models.BooleanField(default = True)
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

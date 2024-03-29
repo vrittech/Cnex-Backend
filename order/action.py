@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save,post_save , pre_delete
 from django.dispatch import receiver
-from .models import Order,OrderItem
+from .models import Order,OrderItem,Cart
 
 
 @receiver(post_save, sender=Order)
@@ -19,5 +19,4 @@ def OrderItemPostSave(sender, instance, created, **kwargs):
 def OrderItemPreSave(sender,instance,**kwargs):
     
     pass
-
 

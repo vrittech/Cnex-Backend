@@ -14,3 +14,4 @@ class AppointmentViewsets(viewsets.ModelViewSet):
             return AppointmentWriteSerializers
         return super().get_serializer_class()
     
+    

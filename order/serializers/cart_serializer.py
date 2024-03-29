@@ -48,3 +48,32 @@ class CartWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = '__all__'
+
+    def validate(self, data):
+
+        if self.context['request'].method == "create":
+            user = data['user']
+            product = data['product']
+            variations = data['variations']
+            quantity = data['quantity']
+
+            existing_cart_item = Cart.objects.filter(
+                user=user,
+                product=product,
+                variations__in=variations
+            ).first()
+
+            if existing_cart_item:
+                data['existing_cart_item'] = existing_cart_item  # Store existing cart item in data
+                return data  # Return data for updating existing cart item
+
+        return data  # Proceed with the creation of a new cart item
+    
+    def create(self, validated_data):
+        existing_cart_item = validated_data.pop('existing_cart_item', None)
+
+        if existing_cart_item:
+            existing_cart_item.quantity += validated_data['quantity']
+            existing_cart_item.save()
+            return existing_cart_item  # Return the updated existing cart item
+        return super().create(validated_data)
