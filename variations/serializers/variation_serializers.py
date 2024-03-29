@@ -29,3 +29,23 @@ class VariationWriteSerializers(serializers.ModelSerializer):
         serializers.save()
 
         return variation
+    
+    def update(self, instance, validated_data):
+        created_instance = super().update(instance, validated_data)
+        options = self.initial_data.get('option')
+      
+        for option in options:
+            is_id = option.get('id')
+            option['variation'] = created_instance.id
+
+            if is_id:
+                variation_option_instance = VariationOption.objects.get(id = is_id)
+                serializers = VariationOptionWriteSerializers(variation_option_instance,data = option,partial=True)
+                serializers.is_valid(raise_exception=True)
+                serializers.save()
+            else:
+                serializers = VariationOptionWriteSerializers(data = option)
+                serializers.is_valid(raise_exception=True)
+                serializers.save()
+           
+        return created_instance
