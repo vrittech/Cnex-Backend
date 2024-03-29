@@ -27,3 +27,20 @@ class Rating(models.Model):
             models.UniqueConstraint(fields=['user', 'product'], name='unique_rating')
         ]
         
+
+class AppRating(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
+    user = models.OneToOneField(CustomUser,related_name = "apprating", on_delete=models.CASCADE)
+
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
+    
+    message = models.TextField(null = True)
+    image = models.ImageField(null=True,upload_to="review/images")
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)
+    
+        
