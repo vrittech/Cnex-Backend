@@ -3,6 +3,7 @@ from ..serializers.rating_serializers import RatingReadSerializers,RatingWriteSe
 from ..utilities.importbase import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from accounts.models import roles
 
 class RatingViewsets(viewsets.ModelViewSet):
     serializer_class = RatingReadSerializers
@@ -28,12 +29,11 @@ class RatingViewsets(viewsets.ModelViewSet):
         return super().get_serializer_class()
     
     def get_queryset(self):
-        if self.request.method in ['allRatings']:
-            return super().get_queryset().all()
+        if self.action in ['allRatings']:
+            return super().get_queryset()
+        elif self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
+            return super().get_queryset()
         return super().get_queryset().filter(user = self.request.user)
-    
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
     
     @action(detail=False, methods=['get'], name="allRatings", url_path="get-all-rating")
     def allRatings(self, request,*args,**kwargs):

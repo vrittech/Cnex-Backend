@@ -6,7 +6,7 @@ class CollectionViewsets(viewsets.ModelViewSet):
     serializer_class = CollectionReadSerializers
     permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
-    pagination_class = MyPageNumberPagination
+    # pagination_class = MyPageNumberPagination
     queryset  = Collection.objects.all()
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

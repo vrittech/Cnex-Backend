@@ -13,11 +13,10 @@ class AppRatingViewsets(viewsets.ModelViewSet):
 
     filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
     search_fields = ['id']
-    ordering_fields = ['rating']
+    # ordering_fields = ['']
 
     filterset_fields = {
         'user':['exact'],
-        'product':['exact'],
         'rating':['exact'],
     }
 
