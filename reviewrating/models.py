@@ -42,6 +42,8 @@ class AppRating(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    is_active = models.BooleanField(default = True)
+
     def __str__(self) -> str:
         return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)
     

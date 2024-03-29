@@ -137,7 +137,7 @@ class ProductReadSerializers(serializers.ModelSerializer):
         product['cart_exist'] = True   
         if user.is_authenticated:
             wishlist_obj = Wishlist.objects.filter(user = user,products = instance)
-            cart_obj = Cart.objects.filter(user = user,products = instance)
+            cart_obj = Cart.objects.filter(user = user,product = instance)
             if wishlist_obj.exists():
                 product['wishlist_exist'] = True  
             if cart_obj.exists():

@@ -7,7 +7,7 @@ from products.models import Product
 class CustomUserReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username','email','full_name','phone']
+        fields = ['username','email','full_name','phone','image']
 
 class ProductReadSerializers_RatingReadSerializers(serializers.ModelSerializer):
     class Meta:

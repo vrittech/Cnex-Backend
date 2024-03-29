@@ -15,6 +15,9 @@ from django.utils.decorators import method_decorator
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
+from rest_framework.decorators import action
+from reviewrating.models import Rating
+from order.models import Order,OrderItem
 
 class ProductViewsets(viewsets.ModelViewSet):
     serializer_class = ProductReadSerializers
@@ -32,6 +35,7 @@ class ProductViewsets(viewsets.ModelViewSet):
         'product_type':['exact'],
         'price': ['exact', 'gte', 'lte'],
         'is_manage_stock':['exact'],
+        'collection':['exact'],
     }
 
     lookup_field = 'slug'
@@ -54,6 +58,19 @@ class ProductViewsets(viewsets.ModelViewSet):
                 return super().get_serializer_class()
         else:
             return super().get_serializer_class()
+        
+    def get_queryset(self):
+        if self.request.user.is_authenticated and self.action in ['MyReviewProducts']:
+            my_rating_products = self.request.user.rating.all().values_list('product',flat=True)
+            return super().get_queryset().filter(id__in = my_rating_products)
+        
+        elif self.request.user.is_authenticated and self.action in ['RemainingReviewProducts']:
+            order_products = Order.objects.filter(user = self.request.user).values_list('products',flat=True)
+            my_rating_products = self.request.user.rating.all().values_list('product',flat=True)
+            all_products = super().get_queryset().filter(id__in = order_products).exclude(id__in = my_rating_products)
+            return all_products
+
+        return super().get_queryset()
             
     # @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):
@@ -71,3 +88,14 @@ class ProductViewsets(viewsets.ModelViewSet):
             instance.save_tags(tags_data)
         else:
             print("tags error ")
+
+    @action(detail=False, methods=['get'], name="MyReviewProducts", url_path="my-review-products")
+    def MyReviewProducts(self, request,*args,**kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+    @action(detail=False, methods=['get'], name="RemainingReviewProducts", url_path="my-remaining-products")
+    def RemainingReviewProducts(self, request,*args,**kwargs):
+        return super().list(request, *args, **kwargs)
+
+        

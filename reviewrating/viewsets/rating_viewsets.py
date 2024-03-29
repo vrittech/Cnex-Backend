@@ -38,6 +38,7 @@ class RatingViewsets(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], name="allRatings", url_path="get-all-rating")
     def allRatings(self, request,*args,**kwargs):
         return super().list(request, *args, **kwargs)
+
         
 
     

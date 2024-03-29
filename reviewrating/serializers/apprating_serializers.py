@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 class CustomUserReadSerializers_AppRatingRatingReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username','email','full_name']
+        fields = ['username','email','full_name','phone']
 
 class AppRatingRatingReadSerializers(serializers.ModelSerializer):
     user = CustomUserReadSerializers_AppRatingRatingReadSerializers()

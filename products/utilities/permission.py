@@ -11,6 +11,8 @@ class AdminViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list','retrieve']:
             return True
+        elif view.action in ['MyReviewProducts','RemainingReviewProducts']:
+            return True
         else:
             return AdminLevel(request)
         
