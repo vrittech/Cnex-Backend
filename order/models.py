@@ -12,6 +12,8 @@ class Order(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_price = models.DecimalField(max_digits=10, decimal_places=2,default = 0)#
+    is_delivery_free = models.BooleanField(default = False) 
     delivery_address = models.ForeignKey(ShippingAddress, on_delete=models.SET_NULL, null=True, blank=True)
     coupons = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
     quantity =  models.PositiveIntegerField(default = 1)

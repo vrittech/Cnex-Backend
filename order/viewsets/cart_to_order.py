@@ -14,6 +14,8 @@ def CartToOrder(request,carts,coupon_obj = None):
         'quantity':hisab_kitab_data.get('quantity'),
         'total_price':hisab_kitab_data.get('total_price'),
         'order_status':'checkout',
+        'shipping_price':hisab_kitab_data.get('shipping_price'),
+        'is_delivery_free':hisab_kitab_data.get('shipping_price').get('delivery_charge_detail').get('is_delivery_free'),
         'payment_status':'cod'
     }
     if coupon_obj != None:

@@ -36,6 +36,7 @@ class ProductViewsets(viewsets.ModelViewSet):
         'price': ['exact', 'gte', 'lte'],
         'is_manage_stock':['exact'],
         'collection':['exact'],
+        'collection__is_active':['exact'],
     }
 
     lookup_field = 'slug'

@@ -1,6 +1,7 @@
 
 from coupon.models import Coupon
 from ..models import Cart
+from deliverycharge.models import DeliveryCharge
 
 def CartsHisabKitab(request):
     cart_ids = request.data.get('carts')
@@ -24,7 +25,6 @@ def CartsHisabKitab(request):
 
     total_price = 0.00
     discount = 0.00
-    shipping_price = 20
 
     details = []
 
@@ -46,14 +46,32 @@ def CartsHisabKitab(request):
         }
         details.append(products)
     
+    final_total_price = discount-float(coupon_discount)
+    delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=final_total_price, max_price__gte=final_total_price)
+    if delivery_charge_obj.exists():
+        delivery_charge_dict = delivery_charge_obj.first().get_delivery_charge()
+        delivery_charge = delivery_charge_dict.get('total_delivery_charge')
+    else:
+        delivery_charge_dict =   {
+                'delivery_charge':0,
+                'is_delivery_free':False,
+                'min':0,
+                'max':0,
+                'total_delivery_charge':0
+            }
+       
+        delivery_charge = delivery_charge_dict.get('total_delivery_charge')
+
+    final_total_price = float(delivery_charge) + final_total_price
 
     data = {
-        'total_price':total_price-discount+shipping_price-float(coupon_discount),
+        'total_price':final_total_price,
         'products_variations_quantity_price':total_price,
         'discount':discount,
         'quantity':cart_obj.count(),
         'checkout':details,
-        'shipping_price':shipping_price,
+        'shipping_price':delivery_charge,
+        'delivery_charge_detail':delivery_charge_dict,
         'coupon_apply':coupon_apply,
         'coupon_discount':coupon_discount,
         'message':message,

@@ -10,6 +10,27 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    def get_delivery_charge(self):
+     
+        charges = self
+        if charges.is_delivery_free:
+            {
+                'delivery_charge':charges.delivery_charge,
+                'is_delivery_free':charges.is_delivery_free,
+                'min':charges.min,
+                'max':charges.max,
+                'total_delivery_charge':0
+            }
+        else:
+                {
+                'delivery_charge':charges.delivery_charge,
+                'is_delivery_free':charges.is_delivery_free,
+                'min':charges.min,
+                'max':charges.max,
+                'total_delivery_charge':charges.delivery_charge
+            }
+       
+
     def clean(self):
         # Check if there are any existing records that overlap with the current price range
         overlapping_ranges = DeliveryCharge.objects.filter(
@@ -19,6 +40,10 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
 
         if overlapping_ranges.exists():
             raise ValidationError("Price range overlaps with existing records.")
+        
+        if self.max_price<=self.min_price:
+            raise ValidationError("max price range must be greater min price range.")
+
 
     def save(self, *args, **kwargs):
         self.clean()  # Run the clean method to validate the object before saving
