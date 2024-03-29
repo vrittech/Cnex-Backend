@@ -9,6 +9,7 @@ from accounts import roles
 from django.db.models import Q
 from ..utilities.permission import OrderViewSetsPermission
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Sum
 
 class OrderViewsets(viewsets.ModelViewSet):
     serializer_class = OrderReadSerializers
@@ -47,8 +48,7 @@ class OrderViewsets(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
     def ToReceiveOrder(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-
-    @action(detail=False, methods=['post'], name="BuyNow", url_path="buy-now")
-    def BuyNow(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
     
+    @action(detail=False, methods=['get'], name="customerOrder", url_path="customer-order") #need to make , remaining.
+    def customerOrder(self, request, *args, **kwargs):
+        user_total_prices = Order.objects.annotate(total_order_price=Sum('total_price')).distinct() 
