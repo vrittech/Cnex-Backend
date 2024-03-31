@@ -48,7 +48,7 @@ class WishlistProductsList(generics.ListAPIView):
     ordering_fields = ['id','created_date']
 
     filterset_fields = {
-        'products__product_type':['exact'],
+        'product_type':['exact'],
     }
 
     def get_queryset(self):
