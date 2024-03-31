@@ -195,7 +195,7 @@ CACHES = {
         'KEY_PREFIX': os.getenv('REDIS_CACHE_KEY_PREFIX'),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'MASTER_NAME': 'mymaster_suchanapark_local',
+            'MASTER_NAME': 'mymaster_cnex_local',
         }
     }
 }

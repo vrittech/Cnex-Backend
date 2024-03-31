@@ -15,6 +15,7 @@ from rest_framework_simplejwt.tokens import RefreshToken,TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics
+from rest_framework.decorators import action
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -128,6 +129,18 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
 
             # Return the custom response
         return Response(response_data, status=status.HTTP_201_CREATED)
+    
+    
+    @action(detail=False, methods=['get'], name="otpVerify", url_path="otp-verify")
+    def cartCount(self, request):
+        my_cart = self.get_queryset().count()
+        return Response({"my_cart_quantity":my_cart}, status=status.HTTP_201_CREATED)
+    
+    @action(detail=False, methods=['get'], name="getOtp", url_path="getOtp")
+    def cartCount(self, request):
+        my_cart = self.get_queryset().count()
+        return Response({"my_cart_quantity":my_cart}, status=status.HTTP_201_CREATED)
+    
 
 
 class RoleViewSet(APIView):

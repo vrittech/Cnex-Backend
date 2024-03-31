@@ -48,6 +48,7 @@ def CartsHisabKitab(request):
     
     final_total_price = discount-float(coupon_discount)
     delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=final_total_price, max_price__gte=final_total_price)
+    print(delivery_charge_obj,  " delivery chaarge obj")
     if delivery_charge_obj.exists():
         delivery_charge_dict = delivery_charge_obj.first().get_delivery_charge()
         delivery_charge = delivery_charge_dict.get('total_delivery_charge')

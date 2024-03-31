@@ -54,7 +54,11 @@ class CartViewsets(viewsets.ModelViewSet):
     def getCheckOutProducts(self, request):
         data = CartsHisabKitab(request)
         return Response({"message": data.get('message'),'data':data}, status=status.HTTP_201_CREATED)
-
+    
+    @action(detail=False, methods=['get'], name="cartCount", url_path="my-total-cart")
+    def cartCount(self, request):
+        my_cart = self.get_queryset().count()
+        return Response({"my_cart_quantity":my_cart}, status=status.HTTP_201_CREATED)
     
 
     

@@ -7,7 +7,7 @@ class HelpAndSupportViewsets(viewsets.ModelViewSet):
     serializer_class = HelpAndSupportReadSerializers
     permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
-    pagination_class = MyPageNumberPagination
+    # pagination_class = MyPageNumberPagination
     queryset  = HelpAndSupport.objects.all()
 
     def get_serializer_class(self):
