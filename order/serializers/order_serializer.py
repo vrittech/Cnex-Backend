@@ -5,6 +5,7 @@ from accounts.models import CustomUser,ShippingAddress
 from ..models import OrderItem
 from variations.models import VariationOption
 from coupon.models import Coupon
+from django.db.models import Sum
 
 class VariationSerializer_OrderItem_OrderReadSerializers(serializers.ModelSerializer):
     class Meta:
@@ -57,14 +58,13 @@ class OrderReadSerializers(serializers.ModelSerializer):
     user = CustomUserSerializers_OrderReadSerializers()
     order_items = OrderItem_OrderReadSerializers(many = True)
     delivery_address = ShippingAddressSerializers_OrderReadSerializers()
+    overall_price = serializers.SerializerMethodField()
     class Meta:
         model = Order
-        fields = ['id','quantity','total_price','quantity','payment_status','order_status','order_date','coupons','delivery_address','user','order_items']
+        fields = ['overall_price','id','quantity','total_price','quantity','payment_status','order_status','order_date','coupons','delivery_address','user','order_items']
 
-class OrderReadAdminSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
+    def get_overall_price(self,obj):
+        return obj.user.orders.all().aggregate(total_price=Sum('total_price'))['total_price']
 
 class OrderRetrieveSerializers(serializers.ModelSerializer):
     class Meta:

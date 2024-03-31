@@ -1,5 +1,5 @@
 from ..models import Order
-from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers,OrderRetrieveAdminSerializers,BuyNowOrderWriteSerializers
+from ..serializers.order_serializer import OrderReadSerializers,OrderWriteSerializers,OrderRetrieveAdminSerializers
 from ..serializers.order_item_serializer import OrderItemWriteSerializers
 from ..utilities.importbase import *
 from rest_framework.decorators import action
@@ -33,8 +33,6 @@ class OrderViewsets(viewsets.ModelViewSet):
             return OrderWriteSerializers
         elif self.action in ['retrieve']:
             return OrderRetrieveAdminSerializers
-        elif self.action in ['BuyNow']:
-            return BuyNowOrderWriteSerializers
         return super().get_serializer_class()
 
     def get_queryset(self):
@@ -49,6 +47,9 @@ class OrderViewsets(viewsets.ModelViewSet):
     def ToReceiveOrder(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
     
-    @action(detail=False, methods=['get'], name="customerOrder", url_path="customer-order") #need to make , remaining.
+    @action(detail=False, methods=['get'], name="customerOrder", url_path="customer-order")
     def customerOrder(self, request, *args, **kwargs):
-        user_total_prices = Order.objects.annotate(total_order_price=Sum('total_price')).distinct() 
+        queryset = self.get_queryset().order_by('user').distinct('user')#.annotate(total_prices=Sum('total_price'))
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(queryset, many=True)
+        return Response(serializer.data)
