@@ -124,6 +124,10 @@ class Product(models.Model):
         return 20
     
     @property
+    def initial_quantity(self):
+        return self.order_items.all().count()+self.quantity
+    
+    @property
     def total_variations_quantity(self):
         return 20
     

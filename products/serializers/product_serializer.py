@@ -111,7 +111,7 @@ class VariationProducts_ProductReadAdminSerializers(serializers.ModelSerializer)
     variation_value = serializers.SerializerMethodField()
     class Meta:
         model = ProductDetailAfterVariation
-        fields = ['variation_name','variation_value']
+        fields = ['variation_name','variation_value','quantity']
 
     def get_variation_name(self,obj):
         return obj.variation_options.variation.name
@@ -152,7 +152,7 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductReadAdminSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['is_stock','id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
+        fields = ['is_stock','initial_quantity','id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)

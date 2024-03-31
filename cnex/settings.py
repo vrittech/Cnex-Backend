@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables from myconfig.env file
-dotenv_path = os.path.join(os.path.dirname(__file__), 'env_local')
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
