@@ -59,3 +59,7 @@ class CustomPasswordResetSerializer(serializers.Serializer):
 class EmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
+ 
+class NumberSerializer(serializers.Serializer):
+    number = serializers.CharField()
+

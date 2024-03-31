@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status, viewsets, response
-from .serializers import EmailSerializer, CustomPasswordResetSerializer, TokenValidationSerializer
+from .serializers import EmailSerializer, CustomPasswordResetSerializer, TokenValidationSerializer,NumberSerializer
 from accounts.models import CustomUser
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -67,7 +67,7 @@ class NumberCheckView(generics.GenericAPIView):
         user = str(user)
         return user[0]+''.join(random.choices(string.digits, k=4)) + user[-1]
     
-    serializer_class = EmailSerializer
+    serializer_class = NumberSerializer
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
