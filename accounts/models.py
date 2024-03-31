@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from .roles import roles_data,roles_data_dict
 from .import roles
 import uuid
+from django.db.models import Sum
 
 class CustomUser(AbstractUser):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
@@ -59,6 +60,14 @@ class CustomUser(AbstractUser):
             return self.first_name + " " + self.last_name
         except:
             return self.username
+    
+    @property
+    def ordered_price(self):
+        return self.orders.all().aggregate(total_price=Sum('total_price'))['total_price']
+    
+    @property
+    def total_rating(self):
+        return self.rating.all().count()
 
 class ShippingAddress(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

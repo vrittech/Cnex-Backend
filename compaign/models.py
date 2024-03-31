@@ -14,6 +14,12 @@ class Faqs(models.Model):
 class PrivacyPolicy(models.Model):
     description = models.TextField()
 
+class HelpAndSupport(models.Model):
+    description = models.TextField()
+
+class TermAndCondition(models.Model):
+    description = models.TextField()
+
 
 
     
