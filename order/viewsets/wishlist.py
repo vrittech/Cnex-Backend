@@ -43,6 +43,14 @@ class WishlistProductsList(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
 
+    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    search_fields = ['id']
+    ordering_fields = ['id','created_date']
+
+    filterset_fields = {
+        'products__product_type':['exact'],
+    }
+
     def get_queryset(self):
         wishlist = Wishlist.objects.filter(user = self.request.user)
         if wishlist.exists():

@@ -9,7 +9,7 @@ from django.db.models import UniqueConstraint
 # Create your models here.
 class Order(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     products = models.ManyToManyField(Product, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_price = models.DecimalField(max_digits=10, decimal_places=2,default = 0)#
@@ -43,7 +43,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     order = models.ForeignKey(Order,related_name='order_items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,related_name='order_items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,related_name='order_items', on_delete=models.PROTECT)
     variations = models.ManyToManyField(VariationOption,related_name='order_items')
     quantity = models.PositiveIntegerField()
     discount = models.PositiveIntegerField(default = 0)

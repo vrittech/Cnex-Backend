@@ -128,8 +128,13 @@ class Product(models.Model):
         return 20
     
     def getPriceByvariation(self,variation_value):
-        price = self.variations.all().filter(variation_options = variation_value).first().price#.filter(variation_options__in = variation_value)
-        return price
+        print(self.id,self.variations.all())
+        if self.variations.all().filter(variation_options = variation_value).exists():
+            price = self.variations.all().filter(variation_options = variation_value).first().price#.filter(variation_options__in = variation_value)
+            return price
+        
+        else:
+            return 0
     
     def getPriceByvariationList(self,variation_value_list): #total price for single prouct,
         price = self.variations.all().filter(variations__in=variation_value_list).aggregate(total_price=Sum('product_price'))['total_price']#.filter(variation_options__in = variation_value)
