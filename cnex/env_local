@@ -21,11 +21,13 @@ REDIS_CACHE_PASSWORD=
 REDIS_CACHE_KEY_PREFIX=cnex
 
 
-#Email
+# #Email
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_HOST_USER=manojdas.py@gmail.com
 EMAIL_HOST_PASSWORD=snhz riaw dfjl mncb
+
+
 
 
 

@@ -50,7 +50,9 @@ def CartsHisabKitab(request):
     delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=final_total_price, max_price__gte=final_total_price)
     print(delivery_charge_obj,  " delivery chaarge obj")
     if delivery_charge_obj.exists():
+        print(" exists ")
         delivery_charge_dict = delivery_charge_obj.first().get_delivery_charge()
+        print(" exists A",delivery_charge_dict)
         delivery_charge = delivery_charge_dict.get('total_delivery_charge')
     else:
         delivery_charge_dict =   {

@@ -43,6 +43,7 @@ class EmailCheckView(generics.GenericAPIView):
             subject = 'Password Reset OTP'
             reset_verification = "reset_password"
             sendMail(email, otp,subject,reset_verification)
+            print(otp, " otp ")
             
             cache_key = f"password_reset_otp_{user.id}"
             cache.set(cache_key, otp, timeout=otp_time_expired)

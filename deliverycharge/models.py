@@ -14,23 +14,23 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
      
         charges = self
         if charges.is_delivery_free:
-            {
+            return {
                 'delivery_charge':charges.delivery_charge,
                 'is_delivery_free':charges.is_delivery_free,
-                'min':charges.min,
-                'max':charges.max,
+                'min_price':charges.min_price,
+                'max_price':charges.max_price,
                 'total_delivery_charge':0
             }
         else:
-                {
+            return {
                 'delivery_charge':charges.delivery_charge,
                 'is_delivery_free':charges.is_delivery_free,
-                'min':charges.min,
-                'max':charges.max,
+                'min_price':charges.min_price,
+                'max_price':charges.max_price,
                 'total_delivery_charge':charges.delivery_charge
             }
+        
        
-
     def clean(self):
         # Check if there are any existing records that overlap with the current price range
         overlapping_ranges = DeliveryCharge.objects.filter(
