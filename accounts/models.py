@@ -74,12 +74,7 @@ class ShippingAddress(models.Model):
     profile = models.ForeignKey(CustomUser,related_name = "shipping_address", on_delete=models.CASCADE)
     provience = models.CharField(max_length = 300)
     district = models.CharField(max_length = 300)
-    address_type = models.CharField(max_length=255, choices=[
-        ('home', 'Home Address'),
-        ('office', 'Office Address'),
-        ('other', 'other Address')
-    ])
-
+    address_type = models.CharField(max_length=300)
     address = models.TextField()
     contact_number = models.CharField(max_length = 50)
     email = models.EmailField(max_length=100,null = True)  
