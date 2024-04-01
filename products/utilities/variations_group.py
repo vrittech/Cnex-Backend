@@ -40,7 +40,7 @@ def ArrangeVariationGroup(variations):
             }
         }
         if main_dict.get(var.get('variation')):
-            main_dict[var.get('variation')]['varient_option'].append(main_variations.get('varient_option'))
+            main_dict[var.get('variation')]['varient_option'].append(main_variations.get('varient_option')[0])
         else:
             main_dict[var.get('variation')] = main_variations
         # main_list.append(main_variations)
