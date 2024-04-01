@@ -31,9 +31,9 @@ def CartsHisabKitab(request):
     
     for cart in cart_obj:
         variations  = cart.variations.all()
-        if not variations:
-            print("variation is empty ")
-            continue
+        # if not variations:
+        #     print("variation is empty ")
+        #     continue
         product_detail = cart.product.getDetailWithVariationList(variations)
 
         product_total_price = (float(product_detail.get('product_price'))+float(product_detail.get('variation_price'))) * cart.quantity
@@ -46,8 +46,8 @@ def CartsHisabKitab(request):
         }
         details.append(products)
     
-    final_total_price = discount-float(coupon_discount)
-    delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=final_total_price, max_price__gte=final_total_price)
+
+    delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=total_price, max_price__gte=total_price)
     if delivery_charge_obj.exists():
         delivery_charge_dict = delivery_charge_obj.first().get_delivery_charge()
         delivery_charge = delivery_charge_dict.get('total_delivery_charge')
@@ -62,6 +62,7 @@ def CartsHisabKitab(request):
        
         delivery_charge = delivery_charge_dict.get('total_delivery_charge')
 
+    final_total_price = total_price-discount-float(coupon_discount)
     final_total_price = float(delivery_charge) + final_total_price
 
     data = {

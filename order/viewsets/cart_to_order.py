@@ -33,8 +33,10 @@ def CartToOrder(request,carts,coupon_obj = None):
             'order':order_serializer.data.get('id'),
             'product':cart_obj.product.id,
             'quantity':cart_obj.quantity,
-            'variations':list(cart_obj.variations.values_list('id', flat=True)),
         }
+        variations = list(cart_obj.variations.values_list('id', flat=True))
+        if len(variations)>0:
+            items_payload['variations'] = variations
         order_items.append(items_payload)
     
     order_items_serializers = OrderItemWriteSerializers(data = order_items,many = True)

@@ -168,7 +168,6 @@ class Product(models.Model):
             'discount':self.discount,
             'product_price':self.price,
             'variation_price':variation_price
-            
         }
         return data
 

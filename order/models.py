@@ -44,7 +44,7 @@ class OrderItem(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     order = models.ForeignKey(Order,related_name='order_items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product,related_name='order_items', on_delete=models.PROTECT)
-    variations = models.ManyToManyField(VariationOption,related_name='order_items')
+    variations = models.ManyToManyField(VariationOption,related_name='order_items',blank=True)
     quantity = models.PositiveIntegerField()
     discount = models.PositiveIntegerField(default = 0)
 

@@ -194,6 +194,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'manojdas.py@gmail.com'
 EMAIL_HOST_PASSWORD = 'snhz riaw dfjl mncb'
 
+SMS_KEY_PASSWORD = os.getenv('SMS_KEY_PASSWORD')
 
 CACHES = {
     'default': {

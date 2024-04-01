@@ -11,7 +11,7 @@ class Rating(models.Model):
     user = models.ForeignKey(CustomUser,related_name = "rating", on_delete=models.CASCADE)
     product = models.ForeignKey(Product,related_name = "rating", on_delete=models.CASCADE)
 
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     
     message = models.TextField(null = True)
     image = models.ImageField(null=True,upload_to="review/images")
@@ -34,7 +34,7 @@ class AppRating(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.OneToOneField(CustomUser,related_name = "apprating", on_delete=models.CASCADE)
 
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     
     message = models.TextField(null = True)
     image = models.ImageField(null=True,upload_to="review/images")

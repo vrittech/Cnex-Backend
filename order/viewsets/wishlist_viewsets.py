@@ -31,7 +31,7 @@ class WishlistViewsets(viewsets.ModelViewSet):
     def add_to_wishlist(self, request):
         product_ids = [request.data.get('products')]
         wishlist_obj = Wishlist.objects.filter(user=request.user).first()
-
+    
         if wishlist_obj:
             existing_products = wishlist_obj.products.filter(pk__in=product_ids)
             if existing_products.exists():

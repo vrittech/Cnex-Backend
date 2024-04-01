@@ -134,15 +134,11 @@ class ProductReadSerializers(serializers.ModelSerializer):
         user = self.context['request'].user
     
         product['wishlist_exists'] = False
-        product['cart_exist'] = True   
         if user.is_authenticated:
             wishlist_obj = Wishlist.objects.filter(user = user,products = instance)
-            cart_obj = Cart.objects.filter(user = user,product = instance)
             if wishlist_obj.exists():
-                product['wishlist_exist'] = True  
-            if cart_obj.exists():
-                product['cart_exist'] = True                            
-
+                product['wishlist_exists'] = True  
+           
         return product
 
 class ProductReadAdminSerializers(serializers.ModelSerializer):
@@ -189,7 +185,8 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
 
             rate_obj = user.rating.all().filter(product = instance)
             if rate_obj.exists():
-                product['is_rate'] = True                            
+                product['is_rate'] = True  
+                # product['rate_id'] = rate_obj.first().id                            
 
         return product
 
