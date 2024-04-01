@@ -71,8 +71,8 @@ class CustomPasswordResetView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={"kwargs":kwargs})
         serializer.is_valid(raise_exception=True)
-        
-        user = CustomUser.objects.get(email = serializer.data.get('email'))
+     
+        user = CustomUser.objects.get(Q(email = serializer.data.get('email')) | Q(phone = serializer.data.get('email')))
         if serializer.validated_data.get('token_validate') == True:
             user.password = serializer.data.get('password')
             user.save()

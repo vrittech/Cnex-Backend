@@ -3,9 +3,10 @@ from accounts.models import CustomUser
 from django.contrib.auth.hashers import make_password
 
 from django.core.cache import cache
+from django.db.models import Q
 
 def TokenValidate(token,email):
-    user = CustomUser.objects.filter(email = email)
+    user = CustomUser.objects.filter(Q(email=email) | Q(phone = email))
     if user.exists():
         user = user.first()
         user_check_key = f"password_reset_otp_{user.id}"
@@ -17,7 +18,7 @@ def TokenValidate(token,email):
 
 class TokenValidationSerializer(serializers.Serializer):
     otp = serializers.CharField()
-    email = serializers.EmailField()
+    email = serializers.CharField()
     
     def validate_otp(self, value):
         # Perform your token validation logic here
@@ -30,7 +31,7 @@ class TokenValidationSerializer(serializers.Serializer):
 class CustomPasswordResetSerializer(serializers.Serializer):
     token = serializers.CharField(min_length=5)
     password = serializers.CharField(min_length=4)
-    email = serializers.EmailField()
+    email = serializers.CharField()
 
     class Meta:
         fields = '__all__'
