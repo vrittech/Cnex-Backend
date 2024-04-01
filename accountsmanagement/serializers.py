@@ -56,10 +56,5 @@ class CustomPasswordResetSerializer(serializers.Serializer):
         return attrs
 
  
-class EmailSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-
- 
-class NumberSerializer(serializers.Serializer):
-    number = serializers.CharField()
-
+class EmailNumberSerializer(serializers.Serializer):
+    email = serializers.CharField()

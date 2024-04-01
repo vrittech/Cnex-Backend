@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status, viewsets, response
-from .serializers import EmailSerializer, CustomPasswordResetSerializer, TokenValidationSerializer,NumberSerializer
+from .serializers import EmailNumberSerializer, CustomPasswordResetSerializer, TokenValidationSerializer
 from accounts.models import CustomUser
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -31,20 +31,20 @@ class EmailCheckView(generics.GenericAPIView):
         user = str(user)
         return user[0]+''.join(random.choices(string.digits, k=4)) + user[-1]
     
-    serializer_class = EmailSerializer
+    serializer_class = EmailNumberSerializer
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.data["email"]
-        user = CustomUser.objects.filter(Q(email=email) | Q(number = email)).first()
+        user = CustomUser.objects.filter(Q(email=email) | Q(phone = email)).first()
         if user:
         
             otp = self.generate_otp(user.id)
 
             reset_verification = "reset_password"
+            subject = 'Cnex Password Reset OTP'
             if '@' in email:
                 email = user.email
-                subject = 'Cnex Password Reset OTP'
                 sendMail(email, otp,subject,reset_verification)
             else:
                 SendSms(contact=email,otp=otp,message=subject)
@@ -64,43 +64,6 @@ class EmailCheckView(generics.GenericAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         
-
-class NumberCheckView(generics.GenericAPIView):
-
-    def generate_otp(self,user):
-        # Generate a random 6-digit OTP
-        user = str(user)
-        return user[0]+''.join(random.choices(string.digits, k=4)) + user[-1]
-    
-    serializer_class = NumberSerializer
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.data["email"]
-        user = CustomUser.objects.filter(email=email).first()
-        if user:
-        
-            otp = self.generate_otp(user.id)
-            email = user.email
-            subject = 'Password Reset OTP'
-            reset_verification = "reset_password"
-            sendMail(email, otp,subject,reset_verification)
-            
-            cache_key = f"password_reset_otp_{user.id}"
-            cache.set(cache_key, otp, timeout=otp_time_expired)
-
-            return response.Response(
-                {
-                "message": "password reset otp has been sent to your email address"
-                },
-                status=status.HTTP_200_OK,
-            )
-        else:
-            return response.Response(
-                {"message": "User doesn't exists"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
 
 class CustomPasswordResetView(generics.GenericAPIView):
     serializer_class = CustomPasswordResetSerializer
