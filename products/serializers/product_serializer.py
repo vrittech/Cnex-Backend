@@ -5,6 +5,7 @@ from .product_details_after_variation_serializer import ProductDetailAfterVariat
 from ..models import Category,Brand,Collection
 from variations.models import VariationOption,Variation
 from order.models import Wishlist,Cart
+from ..utilities.variations_group import ArrangeVariationGroup
 
 import ast
 
@@ -160,6 +161,13 @@ class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['is_stock','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','tags','discount','product_type','featured_image','is_best_sell','is_manage_stock','is_publish','variations']
+    
+    def to_representation(self, instance):
+        representations  = super().to_representation(instance)
+        variations = representations.get('variations')
+        representations['variations_group'] = ArrangeVariationGroup(variations)
+    
+        return representations
 
 class ProductRetrieveSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)

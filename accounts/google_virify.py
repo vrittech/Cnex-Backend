@@ -20,4 +20,4 @@ def VerifyGoogleToken(token):
     except ValueError as e:
         # Invalid token
         print(f'Error verifying Google ID token: {e}')
-        return None
+        return None,False
