@@ -14,7 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from .sms_sender import SendSms
+from django.db.models import Q
 from django.core.cache import cache
 
 import random
@@ -35,16 +36,19 @@ class EmailCheckView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.data["email"]
-        user = CustomUser.objects.filter(email=email).first()
+        user = CustomUser.objects.filter(Q(email=email) | Q(number = email)).first()
         if user:
         
             otp = self.generate_otp(user.id)
-            email = user.email
-            subject = 'Password Reset OTP'
+
             reset_verification = "reset_password"
-            sendMail(email, otp,subject,reset_verification)
-            print(otp, " otp ")
-            
+            if '@' in email:
+                email = user.email
+                subject = 'Cnex Password Reset OTP'
+                sendMail(email, otp,subject,reset_verification)
+            else:
+                SendSms(contact=email,otp=otp,message=subject)
+          
             cache_key = f"password_reset_otp_{user.id}"
             cache.set(cache_key, otp, timeout=otp_time_expired)
 
