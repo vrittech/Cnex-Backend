@@ -25,7 +25,7 @@ def VerifyGoogleToken(token):
 
 
 # Example usage for validating authorization code
-client_id = 'AIzaSyDuLmMEqlA8lVI7bArHikBgCzChmVrjetg'
+client_id = 'com.vrit.cnex'
 client_secret = 'YOUR_CLIENT_SECRET'
 # code = 'AUTHORIZATION_CODE'
 redirect_uri = 'YOUR_REDIRECT_URI'
@@ -61,3 +61,29 @@ def validate_refresh_token():
 
     response = requests.post(url, headers=headers, data=data)
     return response.json()
+
+def generateSecreteKey(request):
+
+    import jwt
+    from time import timezone
+    from datetime import timedelta,datetime
+
+    headers = {'kid': settings.APPLE_CLIENT_ID}
+
+    payload = {'iss': settings.APPLE_TEAM_ID,
+    'iat': datetime.now(),
+    'exp': datetime.now() + timedelta(days=180),
+    'aud': 'https://appleid.apple.com',
+    'sub': settings.APPLE_CLIENT_ID,
+    }
+    
+    client_secret = jwt.encode(
+            payload, 
+            settings.APPLE_PRIVATE_KEY, 
+            algorithm='ES256', 
+            headers=headers
+        ).decode("utf-8")
+    
+    print(client_secret)
+    return client_secret
+

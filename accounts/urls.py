@@ -18,7 +18,7 @@ router.register('shipping-address', ShippingAddressViewsets, basename="ShippingA
 # router.register('permissions', views.PermissionViewSet, basename="permission")
 
 # router.register("permission-has-group",PermissionHasGroupViewSet,basename="PermissionHasGroupViewSet")
-
+from .google_virify import generateSecreteKey
 
 urlpatterns = [    
     path('auth/login/', LoginView.as_view()),
@@ -41,5 +41,6 @@ urlpatterns = [
     path('google-login/', views.GoogleLogin.as_view(), name="GoogleLogin"),
 
     path('apple-login/', views.AppleLogin.as_view(), name="AppleLogin"),
+    path('generate-secrete-key/', generateSecreteKey, name="AppleLogin"),
     # path('user-has-groups/',)
 ]
