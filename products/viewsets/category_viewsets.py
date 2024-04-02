@@ -7,7 +7,7 @@ class CategoryViewsets(viewsets.ModelViewSet):
     permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
-    queryset  = Category.objects.all()
+    queryset  = Category.objects.all().order_by('created_date')
     lookup_field = 'slug'
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

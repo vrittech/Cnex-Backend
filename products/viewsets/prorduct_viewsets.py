@@ -63,7 +63,7 @@ class ProductViewsets(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_authenticated and self.action in ['MyReviewProducts']:
             my_rating_products = self.request.user.rating.all().values_list('product',flat=True)
-            return super().get_queryset().filter(id__in = my_rating_products)
+            return super().get_queryset().filter(id__in = my_rating_products).order_by('created_date')
         
         elif self.request.user.is_authenticated and self.action in ['RemainingReviewProducts']:
             order_products = Order.objects.filter(user = self.request.user).values_list('products',flat=True)
@@ -71,7 +71,7 @@ class ProductViewsets(viewsets.ModelViewSet):
             all_products = super().get_queryset().filter(id__in = order_products).exclude(id__in = my_rating_products)
             return all_products
 
-        return super().get_queryset()
+        return super().get_queryset().order_by('created_date')
             
     # @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):
