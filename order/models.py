@@ -47,6 +47,7 @@ class OrderItem(models.Model):
     variations = models.ManyToManyField(VariationOption,related_name='order_items',blank=True)
     quantity = models.PositiveIntegerField()
     price = models.PositiveIntegerField(default = 0)
+    total_price = models.PositiveIntegerField(default = 0)
     discount = models.PositiveIntegerField(default = 0)
     variations_price = models.PositiveIntegerField(default = 0)
 

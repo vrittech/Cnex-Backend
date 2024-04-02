@@ -15,7 +15,7 @@ def SendSms(message,contact,otp):
 
 def ContactMe(user_email,user_phone,full_name,subject,message):
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = settings.EMAIL_HOST_USER
-    message = "A client  {full_name}, {user_email},mobile number {user_phone} Try to contact you "+message
+    recipient_list = [settings.EMAIL_HOST_USER]
+    message = f"A client  {full_name}, {user_email},mobile number {user_phone} Try to contact you "+message
     send_mail(subject, '', email_from, recipient_list,html_message=message)
     return True

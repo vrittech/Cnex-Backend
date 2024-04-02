@@ -42,17 +42,17 @@ class OrderItem_OrderReadSerializers(serializers.ModelSerializer):
 class OrderItem_OrderRetrieveAdminSerializers(serializers.ModelSerializer):
     product = ProductSerializer_OrderItem_OrderReadSerializers()
     variations = VariationSerializer_OrderItem_OrderReadSerializers(many = True)
-    unit_price = serializers.SerializerMethodField()
-    total_price = serializers.SerializerMethodField()
+    # unit_price = serializers.SerializerMethodField()
+    # total_price = serializers.SerializerMethodField()
     class Meta:
         model = OrderItem
         fields = '__all__'
      
-    def get_unit_price(self,obj):
-        return 20
+    # def get_unit_price(self,obj):
+    #     return 20
     
-    def get_total_price(self,obj):
-        return 2323
+    # def get_total_price(self,obj):
+    #     return 2323
     
 class CouponSerializer_OrderRetrieveAdminSerializers(serializers.ModelSerializer):
     class Meta:
