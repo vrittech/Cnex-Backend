@@ -211,7 +211,10 @@ class ProductWriteSerializers(serializers.ModelSerializer):
        
     def create(self, validated_data):
         images_data = self.context['request'].FILES # Extract image data
-        images_data.pop('featured_image')
+        try:
+            images_data.pop('featured_image')
+        except:
+            pass
      
         product = super().create(validated_data)
         for key,image in images_data.lists():
