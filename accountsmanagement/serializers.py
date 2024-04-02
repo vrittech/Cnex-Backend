@@ -12,6 +12,7 @@ def TokenValidate(token,email):
         user_check_key = f"password_reset_otp_{user.id}"
         token_access = cache.get(user_check_key)
         if token_access == token:
+            user.is_verified = True
             return True
     return False
     

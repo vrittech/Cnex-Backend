@@ -21,7 +21,7 @@ from django.core.cache import cache
 import random
 import string
 
-otp_time_expired = 50000
+otp_time_expired = 120
 site_f  = "https://lims.dftqc.gov.np" #http://localhost:4200"#"https://dev-lims.netlify.app"#"https://lims.dftqc.gov.np"
 
 class EmailCheckView(generics.GenericAPIView):
