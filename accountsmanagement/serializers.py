@@ -60,3 +60,12 @@ class CustomPasswordResetSerializer(serializers.Serializer):
  
 class EmailNumberSerializer(serializers.Serializer):
     email = serializers.CharField()
+
+
+class ContactMeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    subject = serializers.CharField()
+    messageg = serializers.CharField()
+    phone = serializers.CharField()
+    full_name =  serializers.CharField()
+

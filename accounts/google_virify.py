@@ -25,9 +25,9 @@ def VerifyGoogleToken(token):
 
 
 # Example usage for validating authorization code
-client_id = 'YOUR_CLIENT_ID'
+client_id = 'AIzaSyDuLmMEqlA8lVI7bArHikBgCzChmVrjetg'
 client_secret = 'YOUR_CLIENT_SECRET'
-code = 'AUTHORIZATION_CODE'
+# code = 'AUTHORIZATION_CODE'
 redirect_uri = 'YOUR_REDIRECT_URI'
 
 def VerifyAppleToken(token):
@@ -38,7 +38,7 @@ def VerifyAppleToken(token):
     data = {
         'client_id': client_id,
         'client_secret': client_secret,
-        'code': code,
+        'code': token,
         'grant_type': 'authorization_code',
         'redirect_uri': redirect_uri
     }

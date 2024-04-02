@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status, viewsets, response
-from .serializers import EmailNumberSerializer, CustomPasswordResetSerializer, TokenValidationSerializer
+from .serializers import EmailNumberSerializer, CustomPasswordResetSerializer, TokenValidationSerializer,ContactMeSerializer
 from accounts.models import CustomUser
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .sms_sender import SendSms
+from .sms_sender import SendSms,ContactMe
 from django.db.models import Q
 from django.core.cache import cache
 
@@ -108,7 +108,6 @@ class VerifyUserPasswordToken(generics.GenericAPIView):
 class SendEmailVerificationLink(APIView):
     
     def post(self, request, *args, **kwargs):
-        import uuid
         email = request.data.get('email')
         user = CustomUser.objects.filter(email=email).first()
 
@@ -184,4 +183,27 @@ def sendMail(email, reset_url,subject,reset_verification):
     recipient_list = [email]
     plain_message = ""
     send_mail(subject, plain_message, email_from, recipient_list,html_message=html_contents)
+
+
+class ContactmeView(generics.GenericAPIView):    
+    serializer_class = ContactMeSerializer
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.data["email"]
+        subject = serializer.data["subject"]
+        full_name = serializer.data["full_name"]
+        message = serializer.data["message"]
+        phone = serializer.data["phone"]
+        
+        ContactMe(email,phone,full_name,subject,message)
+           
+        return response.Response(
+            {
+            "message": "Email has sent to Cnex Owner, please kindly wait for response"
+            },
+            status=status.HTTP_200_OK,
+        )
+     
     
