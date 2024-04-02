@@ -22,3 +22,42 @@ def VerifyGoogleToken(token):
         # Invalid token
         print(f'Error verifying Google ID token: {e}')
         return None,False
+
+
+# Example usage for validating authorization code
+client_id = 'YOUR_CLIENT_ID'
+client_secret = 'YOUR_CLIENT_SECRET'
+code = 'AUTHORIZATION_CODE'
+redirect_uri = 'YOUR_REDIRECT_URI'
+
+def VerifyAppleToken(token):
+    url = "https://appleid.apple.com/auth/token"
+    headers = {
+        'content-type': 'application/x-www-form-urlencoded'
+    }
+    data = {
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'code': code,
+        'grant_type': 'authorization_code',
+        'redirect_uri': redirect_uri
+    }
+
+    response = requests.post(url, headers=headers, data=data)
+    return response.json()
+
+def validate_refresh_token():
+    refresh_token = 'REFRESH_TOKEN'
+    url = "https://appleid.apple.com/auth/token"
+    headers = {
+        'content-type': 'application/x-www-form-urlencoded'
+    }
+    data = {
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token
+    }
+
+    response = requests.post(url, headers=headers, data=data)
+    return response.json()

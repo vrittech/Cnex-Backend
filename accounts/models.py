@@ -36,6 +36,8 @@ class CustomUser(AbstractUser):
         (system_provider, 'system'),
         (google_provider, 'google'),
         (facebook_provider, 'facebook'), 
+        (4, 'apple'), 
+
     )
     provider = models.PositiveSmallIntegerField(choices=provider_CHOICES,default = system_provider)
 

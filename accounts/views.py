@@ -35,7 +35,7 @@ from accounts.serializers.custom_user_serializers import (
 from .custompermission import AccountPermission,AllUserDataPermission
 from .pagination import PageNumberPagination
 
-from .google_virify import VerifyGoogleToken
+from .google_virify import VerifyGoogleToken,VerifyAppleToken
 
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
@@ -395,6 +395,41 @@ class GoogleLogin(APIView):
         else:
             return Response({'error': 'Google Token Failed to verify'}, status=status.HTTP_401_UNAUTHORIZED)
 
+class AppleLogin(APIView):
+    @csrf_exempt
+    def post(self, request):
+    
+        google_id_token = request.data.get('idToken',False)
+
+        if google_id_token == False:
+            return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        idinfo,is_verify = VerifyAppleToken(google_id_token)
+       
+        if idinfo:
+            user,success_user = createAppleAccount(idinfo)
+        else:
+            return Response({'error': 'Invalid ID token.'}, status=status.HTTP_401_UNAUTHORIZED)
+   
+        # If the user is authenticated, log them in and generate tokens
+        if success_user == True:
+            if user.is_active == False:
+                return Response({'error': 'Your Account is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
+            # login(request, user)
+            refresh = RefreshToken.for_user(user)
+            user_obj = CustomUserSerializer(user,context={'request': request}) 
+            return Response({
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+                'user': user_obj.data,
+                'message': 'Login successful',
+            }, status=status.HTTP_200_OK)
+
+        # If the user is not authenticated, return an error message
+        else:
+            return Response({'error': 'Google Token Failed to verify'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 def createGoogleAccount(idinfo):
     email = idinfo.get('email')
     first_name = idinfo.get('name')
@@ -411,6 +446,22 @@ def createGoogleAccount(idinfo):
         print(user, " creating user")
     return user , True
 
+
+def createAppleAccount(idinfo):
+    email = idinfo.get('email')
+    first_name = idinfo.get('name')
+    last_name = idinfo.get('family_name')
+    username = email.split('@')[0]
+    image = idinfo.get('picture')
+    print(" creating user ")
+    user = CustomUser.objects.filter(email = email)
+    if user.exists():
+        user = CustomUser.objects.get(email = email)
+        print(user  , " user already exists")
+    else:    
+        user = CustomUser.objects.create(email = email , first_name = first_name , last_name = last_name, username=username,role = 5,old_password_change_case = False,provider = 4)
+        print(user, " creating user")
+    return user , True
    
 
 

@@ -38,6 +38,8 @@ urlpatterns = [
     
     # path('user-details/<str:username>/', views.UserDetailsView.as_view(), name="user_details"),
 
-    path('google-login/', views.GoogleLogin.as_view(), name="user_details"),
+    path('google-login/', views.GoogleLogin.as_view(), name="GoogleLogin"),
+
+    path('apple-login/', views.AppleLogin.as_view(), name="AppleLogin"),
     # path('user-has-groups/',)
 ]
