@@ -7,7 +7,7 @@ class BrandViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [AdminViewSetsPermission]
     pagination_class = MyPageNumberPagination
-    queryset  = Brand.objects.all().order_by('created_date')
+    queryset  = Brand.objects.all().order_by('-created_date')
     swagger_schema_title = 'Brand API'
 
     def get_serializer_class(self):
