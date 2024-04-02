@@ -35,7 +35,7 @@ class ProductSerializer_WishlistProductsView(serializers.ModelSerializer):
     brand = BrandReadSerializers_WishlistReadSerializers()
     class Meta:
         model = Product
-        fields =  ['name','title','slug','public_id','description','price','category','quantity','brand','discount','featured_image','product_type','average_rating','total_rating']
+        fields =  ['product_id','has_variations','is_stock','total_sale','name','title','slug','public_id','description','price','category','quantity','brand','discount','featured_image','product_type','average_rating','total_rating']
 
 class WishlistProductsList(generics.ListAPIView):
     serializer_class = ProductSerializer_WishlistProductsView

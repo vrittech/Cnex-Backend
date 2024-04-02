@@ -113,7 +113,11 @@ class Product(models.Model):
 
     @property
     def has_variations(self):
-        return True
+        return self.variations.all().exists()
+    
+    @property
+    def total_sale(self):
+        return self.order_items.all().exists()
 
     @property
     def average_rating(self):
@@ -121,7 +125,7 @@ class Product(models.Model):
     
     @property
     def total_rating(self):
-        return 20
+        return self.rating.all().count()
     
     @property
     def initial_quantity(self):
