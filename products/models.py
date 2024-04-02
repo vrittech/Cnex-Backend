@@ -147,6 +147,7 @@ class Product(models.Model):
     def getPriceByvariationList(self,variation_value_list): #total price for single prouct,
         price = self.variations.all().filter(variations__in=variation_value_list).aggregate(total_price=Sum('product_price'))['total_price']#.filter(variation_options__in = variation_value)
         total_price = float(price)+float(self.price) - float(self.discount)
+        return total_price
     
     def getDetailWithVariationList(self,variation_value_list):
         product_detail_after_variations = self.variations.all().filter(variation_options__in=variation_value_list)

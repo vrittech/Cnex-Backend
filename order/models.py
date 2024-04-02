@@ -46,7 +46,9 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product,related_name='order_items', on_delete=models.PROTECT)
     variations = models.ManyToManyField(VariationOption,related_name='order_items',blank=True)
     quantity = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(default = 0)
     discount = models.PositiveIntegerField(default = 0)
+    variations_price = models.PositiveIntegerField(default = 0)
 
 class Wishlist(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
