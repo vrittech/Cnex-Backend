@@ -57,7 +57,6 @@ class ServicesWriteSerializers(serializers.ModelSerializer):
             slots_data = json.loads(slots_data)
             for slot_data in slots_data:
                 slot_id = slot_data.get('id')  # Check if ID is provided
-                print(slot_id," slot id")
                 if slot_id:
                     slot_instance = Slots.objects.get(id=slot_id, services=service_instance.id)  # Retrieve the object to update
                     print(slot_instance," slot instance")

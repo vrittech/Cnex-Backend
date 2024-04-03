@@ -23,7 +23,9 @@ def ArrangeVariationGroup(variations):
 
     main_dict = {}
 
+
     for var in variations:
+        print(var," \n")
         main_variations = {
             'varient_name':var.get('variation'),
             'id':var.get('variation_id'),
@@ -33,6 +35,7 @@ def ArrangeVariationGroup(variations):
                 'quantity':var.get('quantity'),
                 'price':var.get('price'),
                 'selected':True,
+                'product_detail_after_variation_id':var.get('id')
             }],
             'varient':{
                 'id':var.get('variation_id'),

@@ -38,7 +38,9 @@ def CartToOrder(request,carts,coupon_obj = None):
         }
         variations = list(cart_obj.variations.values_list('id', flat=True))
         if len(variations)>0:
+            print("length aksjhdkajshd ")
             items_payload['variations'] = variations
+            print("length manoj das ")
             items_payload['variations_price']=cart_obj.product.getPriceByvariationList(variations)
         order_items.append(items_payload)
     

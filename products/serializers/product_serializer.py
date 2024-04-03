@@ -95,6 +95,7 @@ class VariationProducts_ProductRetrieveAdminSerializers(serializers.ModelSeriali
         representations['variation_value_id']=variation.id
         representations['price'] = price
         representations['quantity'] = quantity
+        representations['id']=instance.id
     
         return representations
 
@@ -226,15 +227,46 @@ class ProductWriteSerializers(serializers.ModelSerializer):
         return product
     
     def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+        images_data = self.context['request'].FILES # Extract image data
+        try:
+            images_data.pop('featured_image')
+        except:
+            pass
+        updated_instance = super().update(instance, validated_data)
+
+        for key,image in images_data.lists():
+            ProductHaveImages.objects.create(product=updated_instance, image=image[0])
+
+        variation_data = self.initial_data.get('variation_options')
+        createProductDetailAfterVariation(variation_data,updated_instance.id,"update")
+
+        return updated_instance
               
 
 def createProductDetailAfterVariation(variation_data,product,create_update):
-    variation_data = ast.literal_eval(variation_data)
-    processed_variation_data = [{**variation,'variation_options':variation.get('id') ,'product': product} for variation in variation_data]
-    if processed_variation_data:
-        serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
-
+    if create_update == "create":
+        variation_data = ast.literal_eval(variation_data)
+        print(variation_data, " variation_data")
+        processed_variation_data = [{**variation,'variation_options':variation.get('id') ,'product': product} for variation in variation_data]
+        if processed_variation_data:
+            serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
+            serializers.is_valid(raise_exception=True)
+            serializers.save()
+    else:
+        print(" update ")
+        variation_data = ast.literal_eval(variation_data)
+        for variation in variation_data:
+            create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
+            product_detail_after_variation_id = variation.get('product_detail_after_variation_id')
+            if product_detail_after_variation_id:
+                product_detail_after_variation__obj = ProductDetailAfterVariation.objects.get(id = product_detail_after_variation_id)
+            else:
+                product_detail_after_variation__obj = None
+            
+            serializers = ProductDetailAfterVariationWriteSerializers(product_detail_after_variation__obj,data=create_payload, partial=True)
+            serializers.is_valid(raise_exception=True)
+            serializers.save()
+    
+    
+               
     # [{"id":13,"name":"red","quantity":"1","price":"20"},{"id":14,"name":"steel","quantity":"1","price":"20"},{"id":15,"name":"copper","quantity":"2","price":"34"}]
