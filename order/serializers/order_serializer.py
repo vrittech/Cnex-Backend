@@ -63,6 +63,7 @@ class OrderReadSerializers(serializers.ModelSerializer):
     user = CustomUserSerializers_OrderReadSerializers()
     order_items = OrderItem_OrderReadSerializers(many = True)
     delivery_address = ShippingAddressSerializers_OrderReadSerializers()
+    coupons = CouponSerializer_OrderRetrieveAdminSerializers()
     class Meta:
         model = Order
         fields = ['id','quantity','total_price','quantity','payment_status','order_status','order_date','coupons','delivery_address','user','order_items']

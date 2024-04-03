@@ -238,7 +238,8 @@ class ProductWriteSerializers(serializers.ModelSerializer):
             ProductHaveImages.objects.create(product=updated_instance, image=image[0])
 
         variation_data = self.initial_data.get('variation_options')
-        createProductDetailAfterVariation(variation_data,updated_instance.id,"update")
+        if variation_data:
+            createProductDetailAfterVariation(variation_data,updated_instance.id,"update")
 
         return updated_instance
               
@@ -252,8 +253,7 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
             serializers.is_valid(raise_exception=True)
             serializers.save()
-    else:
-        print(" update ")
+    elif create_update == "update":
         variation_data = ast.literal_eval(variation_data)
         for variation in variation_data:
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 

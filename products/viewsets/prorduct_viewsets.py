@@ -75,7 +75,6 @@ class ProductViewsets(viewsets.ModelViewSet):
             
     # @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):
-        print(" with out cache")
         return super().list(request, *args, **kwargs)
     
     def create(self, request, *args, **kwargs):
