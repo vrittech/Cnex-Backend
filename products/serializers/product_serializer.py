@@ -178,7 +178,7 @@ class ProductRetrieveSerializers(serializers.ModelSerializer):
     variations = VariationProducts_ProductRetrieveSerializers(many = True)
     class Meta:
         model = Product
-        fields = ['is_stock','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
+        fields = ['total_sale','is_stock','id','name','title','slug','public_id','description','price','category','quantity','brand','product_images','collection','featured_image','variations','product_type','discount','average_rating','total_rating']
     
     def to_representation(self, instance):
         product = super().to_representation(instance)

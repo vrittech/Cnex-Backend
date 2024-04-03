@@ -121,7 +121,13 @@ class Product(models.Model):
 
     @property
     def average_rating(self):
-        return 4
+        total_rating = self.rating.all()
+        if total_rating.exists():
+            total_rating = int(total_rating.aggregate(total_rating=Sum('rating'))['total_rating'])
+            return total_rating/self.rating.all().count()
+        else:
+            return 0
+     
     
     @property
     def total_rating(self):
