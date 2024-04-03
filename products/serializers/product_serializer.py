@@ -264,13 +264,13 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
         variation_data = ast.literal_eval(variation_data)
         for variation in variation_data:
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
-            product_detail_after_variation_id = variation.get('product_detail_after_variation_id')
-            if product_detail_after_variation_id:
-                product_detail_after_variation__obj = ProductDetailAfterVariation.objects.get(id = product_detail_after_variation_id)
+            product_have_variation_obj = ProductDetailAfterVariation.objects.filter(product_id = product,variation_options = variation.get('id'))
+            if product_have_variation_obj.exists():
+                product_have_variation_obj = product_have_variation_obj.first()
             else:
-                product_detail_after_variation__obj = None
+                product_have_variation_obj = None
             
-            serializers = ProductDetailAfterVariationWriteSerializers(product_detail_after_variation__obj,data=create_payload, partial=True)
+            serializers = ProductDetailAfterVariationWriteSerializers(product_have_variation_obj,data=create_payload, partial=True)
             serializers.is_valid(raise_exception=True)
             serializers.save()
     
