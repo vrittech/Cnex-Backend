@@ -6,8 +6,8 @@ from django.conf import settings
 
 # GOOGLE_CLIENT_ID = '976671591908-6mbvs6crsd63pd571781sihul4qc40hi.apps.googleusercontent.com'
 # GOOGLE_CLIENT_ID = '976671591908-sugqc0jsn1e4fasbhmnoe4rmcvk1665l.apps.googleusercontent.com'
-GOOGLE_CLIENT_ID = '976671591908-c496ffugo7650vm3k8kegrv4sd6rg34t.apps.googleusercontent.com'
-
+# GOOGLE_CLIENT_ID = '976671591908-c496ffugo7650vm3k8kegrv4sd6rg34t.apps.googleusercontent.com'
+GOOGLE_CLIENT_ID = "109885216359799829993"
 
 def VerifyGoogleToken(token):
     try:
