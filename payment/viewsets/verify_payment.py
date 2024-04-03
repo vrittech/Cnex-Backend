@@ -37,8 +37,8 @@ def createPayment(data, payment_mode):
 
 def EsewaVerify(data):
     verification_url = f"https://rc.esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
-    merchantId = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R"  
-    merchantSecret = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==" 
+    merchantId = "Jl1FOQQLSzELBBcMGQZTOxMNSz8RE09JJTVUICBINC82Mw=="#"JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R"  
+    merchantSecret = "WBALEhldDhYcEhI="#"BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==" 
 
     headers = {
         'merchantId': merchantId,

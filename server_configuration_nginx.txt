@@ -1,5 +1,5 @@
 server {
-    server_name cnex.vrittechnologies.com;
+    server_name cnex.com.np;
 
     location / {
         proxy_pass http://54.253.102.115:8000;
@@ -11,26 +11,35 @@ server {
 
     listen [::]:443 ssl ipv6only=on; # managed by Certbot
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/cnex.vrittechnologies.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/cnex.vrittechnologies.com/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/cnex.com.np/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/cnex.com.np/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
 }
 server {
-    if ($host = cnex.vrittechnologies.com) {
+    if ($host = cnex.com.np) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
     listen 80;
-    server_name cnex.vrittechnologies.com;
+    server_name cnex.com.np;
     return 404; # managed by Certbot
 
 
 }
 
 
+
+ssl_certificate /etc/letsencrypt/live/cnex.com.np/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/cnex.com.np/privkey.pem; # managed by Certbot
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+sudo certbot --nginx -d backend.cnex.com.np
 
 
 
