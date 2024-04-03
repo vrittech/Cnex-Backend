@@ -70,6 +70,10 @@ class CustomUser(AbstractUser):
     @property
     def total_rating(self):
         return self.rating.all().count()
+    
+    @property
+    def is_app_review(self):
+        return self.apprating.all().exists()
 
 class ShippingAddress(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)

@@ -43,6 +43,13 @@ class CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer
         model = Category
         fields = ['name','parent','id']
 
+class CategoryReadSerializers_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
+    childs = CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers(many = True)
+    parent = CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers()
+    class Meta:
+        model = Category
+        fields = ['name','id','childs','parent']
+
 class BrandReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Brand
@@ -155,7 +162,7 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)
     brand = BrandReadSerializers_ProductReadSerializers()
-    category = CategoryReadSerializers_ProductReadSerializers()
+    category = CategoryReadSerializers_ProductRetrieveAdminSerializers()
     collection = CollectionSerializers_ProductReadSerializers(many = True)
     tags = Tags_ProductReadSerializers(many = True)
     variations = VariationProducts_ProductRetrieveAdminSerializers(many = True)

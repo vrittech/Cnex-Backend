@@ -35,7 +35,7 @@ def ArrangeVariationGroup(variations):
                 'quantity':var.get('quantity'),
                 'price':var.get('price'),
                 'selected':True,
-                'product_detail_after_variation_id':var.get('id')
+                # 'product_detail_after_variation_id':var.get('id')
             }],
             'varient':{
                 'id':var.get('variation_id'),
