@@ -370,7 +370,7 @@ class GoogleLogin(APIView):
 
         if google_id_token == False:
             return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
-        print(google_id_token,)
+        print(google_id_token," google token id")
         decoded_token = auth.verify_id_token(google_id_token)
         user_id = decoded_token['uid']
         user = auth.get_user(user_id)

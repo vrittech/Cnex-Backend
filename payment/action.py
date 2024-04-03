@@ -12,15 +12,11 @@ def PaymentPostSave(sender, instance, created, **kwargs):
         if order_obj.exists():
             payment_status = "unpaid"
             if order_obj.first().order_items.all().count() == 1 and order_obj.first().order_items.all().first().product.product_type == "pre-order":
-                print(" this order is pre order")
                 if instance.ammount == order_obj.first().total_price:
-                    print("half payment")
                     payment_status = "paid"
                 else:
                     payment_status = "half"   
-                    print("half payment")             
             else:
-                print(" this order is regular order")
                 if order_obj.first().total_price == instance.ammount:
                     payment_status = "paid"
                 else:

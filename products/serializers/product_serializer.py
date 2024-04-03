@@ -35,20 +35,20 @@ class VariationOptionRetrieveAdmin_VariationProducts_ProductRetrieveAdminSeriali
 class CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name','id']
+        fields = ['name','slug','id']
 
 class CategoryReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     parent = CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers()
     class Meta:
         model = Category
-        fields = ['name','parent','id']
+        fields = ['name','slug','parent','id']
 
 class CategoryReadSerializers_ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     childs = CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers(many = True)
     parent = CategoryReadSerializers_CategoryReadSerializers_ProductReadSerializers()
     class Meta:
         model = Category
-        fields = ['name','id','childs','parent']
+        fields = ['name','slug','id','childs','parent']
 
 class BrandReadSerializers_ProductReadSerializers(serializers.ModelSerializer):
     class Meta:
