@@ -221,8 +221,8 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB, for file uploads
 import firebase_admin
 from firebase_admin import credentials
 
-# Initialize Firebase Admin SDK
-SERVICE_ACCOUNT_KEY_PATH = os.path.join(BASE_DIR, 'media', 'cnex_firebase.json')
+# # Initialize Firebase Admin SDK
+# SERVICE_ACCOUNT_KEY_PATH = os.path.join(BASE_DIR, 'media', 'cnex_firebase.json')
 
-cred = credentials.Certificate(SERVICE_ACCOUNT_KEY_PATH)
-firebase_admin.initialize_app(cred)
+# cred = credentials.Certificate(SERVICE_ACCOUNT_KEY_PATH)
+# firebase_admin.initialize_app(cred)
