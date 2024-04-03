@@ -216,18 +216,3 @@ MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgtS7Qxob1z7AZ1j4DoIe9pHL/1YR/XtJP
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB, for POST forms
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB, for file uploads
-
-
-import firebase_admin
-from firebase_admin import credentials
-
-# SERVICE_ACCOUNT_KEY_PATH = os.path.join(BASE_DIR, 'media', 'serviceAccountKey.json')
-
-# # Initialize Firebase Admin SDK
-# cred = credentials.Certificate(SERVICE_ACCOUNT_KEY_PATH)
-
-# # Initialize Firebase Admin SDK
-SERVICE_ACCOUNT_KEY_PATH = "C:/Users/dell/Desktop/virits/cnex_firebase.json"
-
-cred = credentials.Certificate(SERVICE_ACCOUNT_KEY_PATH)
-firebase_admin.initialize_app(cred)

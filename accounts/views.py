@@ -41,7 +41,7 @@ from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 cache_time = 300 # 300 is 5 minute
-from firebase_admin import auth
+from django.db.models import Q
 
 
 class CustomUserSerializerViewSet(viewsets.ModelViewSet):
@@ -361,6 +361,12 @@ class UserDetailsView(generics.RetrieveAPIView):
     lookup_field = "username"
     # permission_classes = [IsAuthenticated]
 
+# import firebase_admin
+# from firebase_admin import credentials
+# SERVICE_ACCOUNT_KEY_PATH = "C:/Users/dell/Desktop/virits/cnex_firebase.json"
+# cred = credentials.Certificate("C:/Users/dell/Desktop/virits/cnex_firebase.json")
+# firebase_admin.initialize_app(cred)
+
 
 class GoogleLogin(APIView):
     @csrf_exempt
@@ -370,11 +376,7 @@ class GoogleLogin(APIView):
 
         if google_id_token == False:
             return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
-        print(google_id_token," google token id")
-        decoded_token = auth.verify_id_token(google_id_token)
-        user_id = decoded_token['uid']
-        user = auth.get_user(user_id)
-        print(decoded_token,user_id,user)
+     
         idinfo,is_verify = VerifyGoogleToken(google_id_token)
        
         if idinfo:
@@ -441,15 +443,14 @@ def createGoogleAccount(idinfo):
     last_name = idinfo.get('family_name')
     username = email.split('@')[0]
     image = idinfo.get('picture')
-    print(" creating user ")
-    user = CustomUser.objects.filter(email = email)
+    user = CustomUser.objects.filter(Q(email = email) | Q(username = username))
     if user.exists():
-        user = CustomUser.objects.get(email = email)
-        print(user  , " user already exists")
+        user = user.first()
+        return user,True
     else:    
-        user = CustomUser.objects.create(email = email , first_name = first_name , last_name = last_name, username=username,role = 5,old_password_change_case = False,provider = 2)
+        user = CustomUser.objects.create(email = email , first_name = first_name , last_name = last_name, username=username,role = 5,old_password_change_case = False,provider = 2,is_verified = True)
         print(user, " creating user")
-    return user , True
+        return user , True
 
 
 def createAppleAccount(idinfo):

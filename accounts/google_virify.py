@@ -4,26 +4,20 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 from django.conf import settings
 
-# GOOGLE_CLIENT_ID = '976671591908-6mbvs6crsd63pd571781sihul4qc40hi.apps.googleusercontent.com'
-# GOOGLE_CLIENT_ID = '976671591908-sugqc0jsn1e4fasbhmnoe4rmcvk1665l.apps.googleusercontent.com'
-# GOOGLE_CLIENT_ID = '976671591908-c496ffugo7650vm3k8kegrv4sd6rg34t.apps.googleusercontent.com'
-GOOGLE_CLIENT_ID = "109885216359799829993"
-
+GOOGLE_CLIENT_ID = ["840477817407-fudv992qklqqln48ggmpk0na5o76ni5n.apps.googleusercontent.com","840477817407-c2slaq8uhp8d5jpdd81plvg960j6aam7.apps.googleusercontent.com"]
 def VerifyGoogleToken(token):
     try:
         idinfo = id_token.verify_oauth2_token(
             token,
             requests.Request(),
             GOOGLE_CLIENT_ID
-        )
-        # Check that the token is valid for this app
-        if idinfo['aud'] not in [GOOGLE_CLIENT_ID]:
-            raise ValueError('Invalid audience.')
+        )    
         return idinfo,True
     except ValueError as e:
         # Invalid token
         print(f'Error verifying Google ID token: {e}')
         return None,False
+        
 
 
 # Example usage for validating authorization code
