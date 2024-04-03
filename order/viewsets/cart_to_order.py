@@ -29,19 +29,30 @@ def CartToOrder(request,carts,coupon_obj = None):
 
     for cart in carts:
         cart_obj = Cart.objects.get(id = cart)
+        variations = list(cart_obj.variations.values_list('id', flat=True))
+
+        if len(variations)>0:
+            total_variations_price = cart_obj.product.getPriceByvariationList(variations)
+        else:
+            total_variations_price = 0
+
         items_payload = {
             'order':order_serializer.data.get('id'),
             'product':cart_obj.product.id,
             'quantity':cart_obj.quantity,
             'price':cart_obj.product.price,
             'discount':cart_obj.product.discount,
+            'total_price':float(cart_obj.product.price)*float(cart_obj.quantity)+float(total_variations_price)+-float(cart_obj.product.discount)
         }
-        variations = list(cart_obj.variations.values_list('id', flat=True))
+
         if len(variations)>0:
-            print("length aksjhdkajshd ")
             items_payload['variations'] = variations
-            print("length manoj das ")
             items_payload['variations_price']=cart_obj.product.getPriceByvariationList(variations)
+            total_variations_price = cart_obj.product.getPriceByvariationList(variations)
+        else:
+            total_variations_price = 0
+        
+        
         order_items.append(items_payload)
     
     order_items_serializers = OrderItemWriteSerializers(data = order_items,many = True)
