@@ -19,7 +19,7 @@ class CartViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     
     # pagination_class = MyPageNumberPagination
-    queryset  = Cart.objects.all().filter(product__product_type = "product_type")
+    queryset  = Cart.objects.all().filter(product__product_type = "regular")
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
