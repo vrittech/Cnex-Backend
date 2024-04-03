@@ -64,8 +64,8 @@ class EmailNumberSerializer(serializers.Serializer):
 
 class ContactMeSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    subject = serializers.CharField()
+    subject = serializers.CharField(required = False)
     message = serializers.CharField()
-    phone = serializers.CharField()
+    phone = serializers.CharField(required = False)
     full_name =  serializers.CharField()
 

@@ -192,10 +192,10 @@ class ContactmeView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         email = serializer.data["email"]
-        subject = serializer.data["subject"]
+        subject = serializer.data.get('subject')
         full_name = serializer.data["full_name"]
         message = serializer.data["message"]
-        phone = serializer.data["phone"]
+        phone = serializer.data.get("phone")
         
         ContactMe(email,phone,full_name,subject,message)
            
