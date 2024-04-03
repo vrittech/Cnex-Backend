@@ -41,6 +41,7 @@ from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 cache_time = 300 # 300 is 5 minute
+from firebase_admin import auth
 
 
 class CustomUserSerializerViewSet(viewsets.ModelViewSet):
@@ -370,6 +371,10 @@ class GoogleLogin(APIView):
         if google_id_token == False:
             return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
         
+        decoded_token = auth.verify_id_token(google_id_token)
+        user_id = decoded_token['uid']
+        user = auth.get_user(user_id)
+        print(decoded_token,user_id,user)
         idinfo,is_verify = VerifyGoogleToken(google_id_token)
        
         if idinfo:
