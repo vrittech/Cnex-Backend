@@ -28,13 +28,13 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_HOSTS').split(',') if host != '']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+    # 'daphne',
     # 'admin_interface',
     # "colorfield",
     'django.contrib.admin',
@@ -247,3 +247,8 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 DEFAULT_FILE_STORAGE = 'cnex.custom_storage.MediaStorage'
 
 AWS_DEFAULT_ACL = 'public-read'  # Set the default ACL for uploaded files to public-read
+
+
+#ESEWA
+ESEWA_MERCHANT_ID = os.getenv('ESEWA_MERCHANT_ID')
+ESEWA_MERCHANT_SECRETE = os.getenv('ESEWA_MERCHANT_SECRETE')

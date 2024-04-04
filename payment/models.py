@@ -7,7 +7,7 @@ class Payment(models.Model): #payment products
     order = models.ForeignKey(Order,related_name = "payment",on_delete = models.PROTECT)
     ammount = models.FloatField()
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
-    refrence_id = models.CharField(max_length = 4000,default = 'cod')
+    refrence_id = models.CharField(max_length = 4000,unique = True)
     remarks = models.CharField(max_length = 3000,null = True,blank = True)
     status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),
@@ -17,12 +17,17 @@ class Payment(models.Model): #payment products
         ('refunded','Refunded'),
     ],)
 
+class PaymentFail(models.Model):
+    order = models.ForeignKey(Order,related_name = "payment_fail",on_delete = models.PROTECT)
+    payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
+    refrence_id = models.CharField(max_length = 4000)
+    server_response = models.CharField(max_length = 3000,null = True,blank = True)
 
 class PaymentService(models.Model):
     order = models.ForeignKey(CheckoutAppointment,related_name = "payment",on_delete = models.PROTECT)
     ammount = models.FloatField()
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
-    refrence_id = models.CharField(max_length = 4000,default = 'cod')
+    refrence_id = models.CharField(max_length = 4000,unique = True)
     remarks = models.CharField(max_length = 3000,null = True,blank = True)
     status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),

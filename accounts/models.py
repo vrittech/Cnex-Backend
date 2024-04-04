@@ -8,7 +8,7 @@ from django.db.models import Sum
 
 class CustomUser(AbstractUser):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    phone = models.CharField(max_length=15 ,unique=True,null=True , default = '')
+    phone = models.CharField(max_length=15,null=True , default = '')
     email = models.EmailField(max_length=255,unique=True)
     username = models.CharField(max_length=255,unique=True)  
 
