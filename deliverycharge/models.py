@@ -37,8 +37,6 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
             min_price__lt=self.max_price,
             max_price__gt=self.min_price
         )
-        if overlapping_ranges.exists():
-            overlapping_ranges = overlapping_ranges.exclude(pk=self.pk)
 
         if overlapping_ranges.exists():
             raise ValidationError("Price range overlaps with existing records.")
