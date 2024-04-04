@@ -35,7 +35,8 @@ from accounts.serializers.custom_user_serializers import (
 from .custompermission import AccountPermission,AllUserDataPermission
 from .pagination import PageNumberPagination
 
-from .google_virify import VerifyGoogleToken,VerifyAppleToken
+from .google_virify import VerifyGoogleToken
+from .apple_verify import VerifyAppleToken
 
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
@@ -412,6 +413,7 @@ class AppleLogin(APIView):
             return Response({'error': 'No ID token provided.'}, status=status.HTTP_400_BAD_REQUEST)
         
         idinfo,is_verify = VerifyAppleToken(google_id_token)
+        return Response(idinfo)
        
         if idinfo:
             user,success_user = createAppleAccount(idinfo)

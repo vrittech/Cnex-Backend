@@ -41,6 +41,4 @@ urlpatterns = [
     path('google-login/', views.GoogleLogin.as_view(), name="GoogleLogin"),
 
     path('apple-login/', views.AppleLogin.as_view(), name="AppleLogin"),
-    path('generate-secrete-key/', generateSecreteKey, name="AppleLogin"),
-    # path('user-has-groups/',)
 ]
