@@ -40,7 +40,8 @@ class OrderViewsets(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
             return super().get_queryset()
-        elif self.request.method == "ToReceiveOrder" and self.request.user.role == roles.USER:
+        elif self.action == "ToReceiveOrder" and self.request.user.role == roles.USER:
+            print("received order ")
             return super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
         elif self.request.user.role == roles.USER:
             return super().get_queryset().filter(user = self.request.user)

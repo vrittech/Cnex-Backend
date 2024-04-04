@@ -40,7 +40,7 @@ class CartViewsets(viewsets.ModelViewSet):
         coupon_code = request.data.get('coupon_code')
         coupon_obj = None
         if coupon_code:
-            coupon_obj = Coupon.objects.filter(code = coupon_code)
+            coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
             if coupon_obj.exists() and coupon_obj.first().is_verify == True:
                 pass
             else:
