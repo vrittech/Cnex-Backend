@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_HOSTS').split(',') if host 
 # Application definition
 
 INSTALLED_APPS = [
-    # 'daphne',
+    'daphne',
     # 'admin_interface',
     # "colorfield",
     'django.contrib.admin',
