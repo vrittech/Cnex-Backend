@@ -1,15 +1,30 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from ..models import Payment,PaymentFail
+from order.models import Order
 import requests
 from django.db.models import Q
 from django.conf import settings
+from ..serializers.payment_verify_serializers import PaymentVerifyReadSerializers
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from ..utilities.permission import PaymentVerifyPermission
 
 class PaymentVerify(APIView):
+    permission_classes = [IsAuthenticated,PaymentVerifyPermission]
+    authentication_classes = [JWTAuthentication]
+
     def post(self, request, *args, **kwargs):
-        # Implement your payment verification logic here
-        # You can access request.data to get the POST data
-        # Example payment verification logic:
+        serializer = PaymentVerifyReadSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        order_obj = Order.objects.filter(user = request.user,order_id = request.data.get('order_id'))
+        if not order_obj.exists():
+            PaymentsFail(payment_response,request.data)
+            return Response({'message': 'order not exists'}, status=400)
+
+        if request.data.get('payment_type') == "cod":
+            VerifyOrder(request.data)
         response_payment_verify, is_verify = payment_verify(request.data)
         if is_verify:
             payment_response,is_payment = createPayment(response_payment_verify, request.data.get('payment_type'))
@@ -51,7 +66,6 @@ def createPayment(data, payment_mode):
         return "user have already Payment",False
 
 def EsewaVerify(data):
-    import json
     verification_url = f"https://esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
 
     headers = {
@@ -76,6 +90,7 @@ def KhaltiVerify(data):
     # Implement Khalti payment verification logic here
     return None, False  # Placeholder implementation
 
+
 def PaymentsFail(response , data):
     data = {
         "payment_mode":data.get('payment_type'),
@@ -83,7 +98,10 @@ def PaymentsFail(response , data):
         "order_id":data.get('order_id'),
         "server_response":response,
     }
-    print(data)
     PaymentFail.objects.create(**data)
+
+def VerifyOrder(data):
+    Order.objects.filter(id = data.get('order_id'),order_status = "checkout").update(payment_status = "cod",order_status="in-progress")
+    return True
     
 
