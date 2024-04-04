@@ -4,7 +4,7 @@ from appointment.models import CheckoutAppointment
 
 # Create your models here.
 class Payment(models.Model): #payment products
-    order = models.ForeignKey(Order,related_name = "payment",on_delete = models.PROTECT)
+    order = models.ForeignKey(Order,related_name = "payment",on_delete = models.SET_NULL,null = True)
     ammount = models.FloatField()
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
     refrence_id = models.CharField(max_length = 4000,unique = True)
@@ -18,13 +18,13 @@ class Payment(models.Model): #payment products
     ],)
 
 class PaymentFail(models.Model):
-    order = models.ForeignKey(Order,related_name = "payment_fail",on_delete = models.PROTECT)
+    order = models.ForeignKey(Order,related_name = "payment_fail",on_delete = models.SET_NULL,null = True)
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
     refrence_id = models.CharField(max_length = 4000)
     server_response = models.CharField(max_length = 3000,null = True,blank = True)
 
 class PaymentService(models.Model):
-    order = models.ForeignKey(CheckoutAppointment,related_name = "payment",on_delete = models.PROTECT)
+    order = models.ForeignKey(CheckoutAppointment,related_name = "payment",on_delete = models.SET_NULL,null = True)
     ammount = models.FloatField()
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
     refrence_id = models.CharField(max_length = 4000,unique = True)
