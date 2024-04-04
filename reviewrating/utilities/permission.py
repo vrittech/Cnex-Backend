@@ -12,4 +12,10 @@ class AdminViewSetsPermission(BasePermission):
         if view.action in ['list']:
             return True
         return AdminLevel(request)
+    
+class RatingViewsetsSetsPermission(BasePermission):
+    def has_permission(self, request, view):
+        if view.action in ['list']:
+            return True
+        return IsAuthenticated(request)
         

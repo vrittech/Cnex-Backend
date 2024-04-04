@@ -4,10 +4,11 @@ from ..utilities.importbase import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from accounts.models import roles
+from ..utilities.permission import RatingViewsetsSetsPermission
 
 class RatingViewsets(viewsets.ModelViewSet):
     serializer_class = RatingReadSerializers
-    permission_classes = [IsAuthenticated]
+    permission_classes = [RatingViewsetsSetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Rating.objects.all()
