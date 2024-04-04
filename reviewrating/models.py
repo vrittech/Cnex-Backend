@@ -45,6 +45,6 @@ class AppRating(models.Model):
     is_active = models.BooleanField(default = True)
 
     def __str__(self) -> str:
-        return str(self.user.username)+" "+str(self.product) +":"+ str(self.rating)
+        return str(self.user.username)+":"+ str(self.rating)
     
         
