@@ -16,3 +16,8 @@ requests
 django-admin-interface==0.28.5
 
 django-redis==5.4.0
+
+# whitenoise
+django-storages
+boto3
+

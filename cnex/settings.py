@@ -28,7 +28,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_HOSTS').split(',') if host != '']
 
 # Application definition
@@ -69,6 +69,8 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',#for media,static serving dphane
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -216,3 +218,32 @@ MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgtS7Qxob1z7AZ1j4DoIe9pHL/1YR/XtJP
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB, for POST forms
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB, for file uploads
+
+
+
+# settings.py
+
+# Import required modules
+import os
+from storages.backends.s3boto3 import S3Boto3Storage
+
+# Set AWS credentials
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+# Set custom domain for static and media files (Optional)
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Static files (CSS, JavaScript, images)
+STATICFILES_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+STATICFILES_STORAGE =  'cnex.custom_storage.StaticStorage'
+
+# Media files (Uploaded files)
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'cnex.custom_storage.MediaStorage'
+
+AWS_DEFAULT_ACL = 'public-read'  # Set the default ACL for uploaded files to public-read
