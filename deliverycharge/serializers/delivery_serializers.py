@@ -19,7 +19,7 @@ class DeliveryChargeWriteSerializers(serializers.ModelSerializer):
         overlapping_ranges = DeliveryCharge.objects.filter(
             min_price__lt=data.get('max_price'),
             max_price__gt=data.get('min_price'),
-        ).exclude(pk=self.pk)
+        )
 
         if overlapping_ranges.exists():
             raise serializers.ValidationError("Price range overlaps with existing records.")
