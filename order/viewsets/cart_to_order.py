@@ -42,13 +42,13 @@ def CartToOrder(request,carts,coupon_obj = None):
             'quantity':cart_obj.quantity,
             'price':cart_obj.product.price,
             'discount':cart_obj.product.discount,
-            'total_price':float(cart_obj.product.price)*float(cart_obj.quantity)+float(total_variations_price)+-float(cart_obj.product.discount)
+            'price_with_variation':cart_obj.product.price + total_variations_price,
+            'total_price':float(cart_obj.product.price)*float(cart_obj.quantity)+float(total_variations_price)-float(cart_obj.product.discount)
         }
 
         if len(variations)>0:
             items_payload['variations'] = variations
             items_payload['variations_price']=cart_obj.product.getPriceByvariationList(variations)
-            total_variations_price = cart_obj.product.getPriceByvariationList(variations)
         else:
             total_variations_price = 0
         

@@ -50,6 +50,7 @@ class OrderItem(models.Model):
     total_price = models.PositiveIntegerField(default = 0)
     discount = models.PositiveIntegerField(default = 0)
     variations_price = models.PositiveIntegerField(default = 0)
+    price_with_variation = models.PositiveBigIntegerField(default= 0)
 
 class Wishlist(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
