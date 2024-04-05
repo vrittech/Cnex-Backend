@@ -82,7 +82,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
     is_best_sell = models.BooleanField(default = False)
     collection = models.ManyToManyField(Collection,related_name="products",blank=True)
-    is_publish = models.BooleanField(default = False)
+    is_publish = models.BooleanField(default = True)
 
     is_stock =  models.BooleanField(default = True) #true means in stock, false means out of stocks
     
