@@ -77,7 +77,7 @@ class Product(models.Model):
     discount = models.DecimalField(max_digits = 10,decimal_places=2,null = True)
     product_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
     is_manage_stock = models.BooleanField(default = False)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL,null = True)
     quantity = models.PositiveIntegerField(default=0) 
     brand = models.ForeignKey(Brand,related_name = "products",on_delete = models.SET_NULL,null = True)
     is_best_sell = models.BooleanField(default = False)

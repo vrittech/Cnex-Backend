@@ -17,4 +17,5 @@ def VerifyAppleToken(token):
             "The token is invalid or expired. Please login again."
         )
     user_data = jwt.decode(token, options={"verify_signature": False})
-    return user_data
+    print(user_data, " apple login ")
+    return user_data,True
