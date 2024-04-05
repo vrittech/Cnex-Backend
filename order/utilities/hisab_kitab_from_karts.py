@@ -27,7 +27,7 @@ def CartsHisabKitab(request):
 
         product_total_price = (float(product_detail.get('product_price'))+float(product_detail.get('variation_price'))) * cart.quantity
         total_price = total_price + product_total_price
-        discount = discount + float(cart.product.discount)
+        discount = discount + float(cart.product.discount)*cart.quantity
         products = {
             'products':product_detail,
             'quantity':cart.quantity,
