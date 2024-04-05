@@ -74,7 +74,7 @@ class CheckoutAppointment(models.Model):
 
 class ServicesItems(models.Model):
     checkout_appointment = models.ForeignKey(CheckoutAppointment,on_delete = models.PROTECT,related_name="services_items")
-    service = models.ForeignKey(Services,related_name="appointments_items",on_delete = models.PROTECT) #Multiple servies, each services has price
+    service = models.ForeignKey(Services,related_name="appointments_items",on_delete = models.CASCADE) #Multiple servies, each services has price
     slots = models.ForeignKey(Slots,related_name="appointments_items",on_delete = models.PROTECT)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
@@ -87,7 +87,7 @@ class ServicesItems(models.Model):
 class Appointment(models.Model): #this is order
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT,related_name = "appointments_order")
-    checkout_appointment = models.OneToOneField(CheckoutAppointment,on_delete=models.PROTECT,related_name = "appointments_order")
+    checkout_appointment = models.OneToOneField(CheckoutAppointment,on_delete=models.CASCADE,related_name = "appointments_order")
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status= models.CharField(max_length=255, choices=[
         ('paid','Paid'),
