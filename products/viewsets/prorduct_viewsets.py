@@ -71,7 +71,10 @@ class ProductViewsets(viewsets.ModelViewSet):
             all_products = super().get_queryset().filter(id__in = order_products).exclude(id__in = my_rating_products)
             return all_products
 
-        return super().get_queryset().order_by('-created_date')
+        elif self.request.user.is_authenticated and self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+            return super().get_queryset().order_by('-created_date')
+
+        return super().get_queryset().filter(is_publish = True).order_by('-created_date')
             
     # @method_decorator(cache_page(cache_time,key_prefix="ProductViewsets"))
     def list(self, request, *args, **kwargs):
