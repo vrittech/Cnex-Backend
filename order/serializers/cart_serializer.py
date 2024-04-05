@@ -58,7 +58,7 @@ class CartWriteSerializers(serializers.ModelSerializer):
             variations = data.get('variations')
             quantity = data['quantity']
 
-            pre_order_valid = Cart.objects.filter(product__type = "pre-order",user = user) #if pre order exists then delete from cart
+            pre_order_valid = Cart.objects.filter(product__product_type = "pre-order",user = user) #if pre order exists then delete from cart
             if pre_order_valid.exists():
                 pre_order_valid.delete()
 
