@@ -9,6 +9,7 @@ from ..serializers.payment_verify_serializers import PaymentVerifyReadSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from ..utilities.permission import PaymentVerifyPermission
+from ..utilities.esewa_verify import VerifyOrder,payment_verify,PaymentsFail
 
 class PaymentVerify(APIView):
     permission_classes = [IsAuthenticated,PaymentVerifyPermission]
@@ -33,20 +34,12 @@ class PaymentVerify(APIView):
             if is_payment:
                 return Response({'message': 'Payment verified successfully'}, status=200)
             else:
-                PaymentsFail(payment_response,request.data)
+                PaymentsFail(payment_response,request.data,"product")
                 return Response({'message': payment_response}, status=400)
 
         else:
-            PaymentsFail(response_payment_verify,request.data)
+            PaymentsFail(response_payment_verify,request.data,"product")
             return Response({'message': response_payment_verify}, status=400)
-
-def payment_verify(data):
-    if data.get('payment_type') == "esewa":
-        return EsewaVerify(data)
-    elif data.get('payment_type') == "khalti":
-        return KhaltiVerify(data)
-    else:
-        return None, False  # Return None and False if payment type is not recognized
 
 def createPayment(data, payment_mode):
     if payment_mode == "esewa":
@@ -67,43 +60,4 @@ def createPayment(data, payment_mode):
     else:
         return "user have already Payment",False
 
-def EsewaVerify(data):
-    verification_url = f"https://esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
-
-    headers = {
-        'merchantId': settings.ESEWA_MERCHANT_ID,
-        'merchantSecret': settings.ESEWA_MERCHANT_SECRETE
-    }
-
-    response = requests.get(verification_url, headers=headers)
-    try:
-        response_data = response.json()[0] # Parse JSON response
-    except:
-        return response.json(),False
-    
-    if response_data.get('transactionDetails').get('status') == "COMPLETE":
-        if response_data.get('productId') != data.get('order_id'):
-            return "Order id not match",False
-        return response_data, True   
-    else:
-        return response_data, False
-
-def KhaltiVerify(data):
-    # Implement Khalti payment verification logic here
-    return None, False  # Placeholder implementation
-
-
-def PaymentsFail(response , data):
-    data = {
-        "payment_mode":data.get('payment_type'),
-        "refrence_id":data.get('refId'),
-        "order_id":data.get('order_id'),
-        "server_response":response,
-    }
-    PaymentFail.objects.create(**data)
-
-def VerifyOrder(data):
-    order = Order.objects.filter(id = data.get('order_id'),order_status = "checkout").update(payment_status = "cod",order_status="in-progress")
-    return order
-    
 

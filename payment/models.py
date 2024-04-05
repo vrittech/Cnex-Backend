@@ -21,6 +21,7 @@ class PaymentFail(models.Model):
     order = models.ForeignKey(Order,related_name = "payment_fail",on_delete = models.SET_NULL,null = True)
     payment_mode = models.CharField(max_length = 100,choices = (('khalti','Khalti'),('esewa','Esewa'),('cod','Cash On Ddelivery')))
     refrence_id = models.CharField(max_length = 4000)
+    services_product = models.CharField(max_length = 100)
     server_response = models.CharField(max_length = 3000,null = True,blank = True)
 
 class PaymentService(models.Model):
