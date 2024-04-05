@@ -57,7 +57,7 @@ def CartsHisabKitab(request):
             coupon_apply = True
             coupon_discount = coupon_obj.first().discount
             if coupon_obj.first().discount_type == "percentage":
-                coupon_discount = coupon_obj.first().discount/100*total_price
+                coupon_discount = float(coupon_obj.first().discount)/100*float(total_price)
 
         else:
             message = "Either coupon not exists or it is expired"
