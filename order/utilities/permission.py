@@ -5,7 +5,7 @@ def IsAuthenticated(request):
     return bool(request.user and request.user.is_authenticated)
 
 def AdminLevel(request):
-    return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN,roles.USER])
+    return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN])
 
 def AllLevel(request):
     return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN,roles.USER])
@@ -29,8 +29,6 @@ class AdminViewSetsPermission(BasePermission):
 class OrderViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list','retrieve','ToReceiveOrder']:
-            return True
-        elif view.action in ['BuyNow']:
             return True
         return AdminLevel(request)
     

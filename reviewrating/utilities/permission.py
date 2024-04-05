@@ -17,5 +17,7 @@ class RatingViewsetsSetsPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list']:
             return True
+        elif view.action in ['allRatings']:
+            return True
         return IsAuthenticated(request)
         

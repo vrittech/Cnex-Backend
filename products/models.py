@@ -117,7 +117,7 @@ class Product(models.Model):
     
     @property
     def total_sale(self):
-        return self.order_items.all().exists()
+        return self.order_items.all().count()
 
     @property
     def average_rating(self):
