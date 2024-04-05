@@ -32,9 +32,6 @@ def CartsHisabKitab(request):
     
     for cart in cart_obj:
         variations  = cart.variations.all()
-        # if not variations:
-        #     print("variation is empty ")
-        #     continue
         product_detail = cart.product.getDetailWithVariationList(variations)
 
         product_total_price = (float(product_detail.get('product_price'))+float(product_detail.get('variation_price'))) * cart.quantity
@@ -66,8 +63,6 @@ def CartsHisabKitab(request):
     final_total_price = total_price-discount-float(coupon_discount)
     final_total_price = float(delivery_charge) + final_total_price
 
-    print(cart_obj.aggregate(total_quantity = Sum('quantity')))
-
     data = {
         'total_price':final_total_price,
         'products_variations_quantity_price':total_price,
@@ -80,5 +75,4 @@ def CartsHisabKitab(request):
         'coupon_discount':coupon_discount,
         'message':message,
     }
-    print(data, " hisab kitab ")
     return data

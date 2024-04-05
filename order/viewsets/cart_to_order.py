@@ -13,6 +13,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         'delivery_address':request.data.get('shipping_id'),
         'quantity':hisab_kitab_data.get('quantity'),
         'total_price':hisab_kitab_data.get('total_price'),
+        'discount':hisab_kitab_data.get('discount'),
         'order_status':'checkout',
         'shipping_price':hisab_kitab_data.get('shipping_price'),
         'is_delivery_free':hisab_kitab_data.get('delivery_charge_detail').get('is_delivery_free'),
