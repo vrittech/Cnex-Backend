@@ -137,12 +137,12 @@ def sendMail(email, reset_url,subject,reset_verification):
             <table align="center" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; font-family: Poppins; background: whitesmoke; padding: 20px; border-radius: 6px;">
                 <tr>
                     <td align="center" bgcolor="#FFFFFF" style="padding: 20px;">
-                        <img src="https://cnex.vercel.app/assets/logo-Ds_vvW8g.png" alt="" width="132" style="display: block; margin: 0 auto;">
+                        <img src="https://cnex.com.np/assets/logo-Ds_vvW8g.png" alt="" width="132" style="display: block; margin: 0 auto;">
                         <p style="color: #0B53A7; font-weight: 600; font-size: 18px; margin-top: 20px;">Cnex</p>
                         <p style="color: #0B53A7; font-weight: 600; font-size: 18px; margin-top: 20px;">Please verify your account</p>
                         <p style="text-align: center; font-weight: 400;">Click the button below to verify your account.</p>
                         <a href="{reset_url}" style="text-decoration: none; background: #0B53A7; color: #FFFFFF; padding: 10px 20px; border-radius: 3px; display: inline-block; margin-top: 15px;">Verify Your Account</a>
-                        <p style="text-align: center; margin-top: 20px;">Please visit <a href="https://cnex.vercel.app/" style="text-decoration: none; color: #0B53A7; font-weight: 600;">https://cnex.vercel.app/</a> for any enquiries.</p>
+                        <p style="text-align: center; margin-top: 20px;">Please visit <a href="https://cnex.com.np/" style="text-decoration: none; color: #0B53A7; font-weight: 600;">https://cnex.com.np/</a> for any enquiries.</p>
                         <p style="margin: 0; text-align: center;"><span style="font-weight: 600;">Tel:</span>+977 97798000000</p>
                         <p style="margin: 0; text-align: center; text-decoration: none;"><span style="font-weight: 600;">Fax:</span>+97798000000 <span style="font-weight: 600; margin-left: 10px;">E-mail:</span> info@cnex.com</p>
                     </td>
@@ -155,12 +155,12 @@ def sendMail(email, reset_url,subject,reset_verification):
             <table align="center" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; font-family: Poppins; background: whitesmoke; padding: 20px; border-radius: 6px;">
                 <tr>
                     <td align="center" bgcolor="#FFFFFF" style="padding: 20px;">
-                        <img src="https://cnex.vercel.app/assets/logo-Ds_vvW8g.png" alt="" width="132" style="display: block; margin: 0 auto;">
+                        <img src="https://cnex.com.np/assets/logo-Ds_vvW8g.png" alt="" width="132" style="display: block; margin: 0 auto;">
                         <p style="color: #0B53A7; font-weight: 600; font-size: 18px; margin-top: 20px;">Cnex</p>
                         <p style="color: #0B53A7; font-weight: 600; font-size: 18px; margin-top: 20px;">Please change your Password</p>
                         <p style="text-align: center; font-weight: 400;">Your OTP code to reset password is</p>
-                        <a href="#" style="text-decoration: none; background: #0B53A7; color: #FFFFFF; padding: 10px 20px; border-radius: 3px; display: inline-block; margin-top: 15px;">{reset_url}</a>
-                        <p style="text-align: center; margin-top: 20px;">Please visit <a href="https://cnex.vercel.app/" style="text-decoration: none; color: #0B53A7; font-weight: 600;">https://cnex.vercel.app</a> for any enquiries.</p>
+                        <span style="text-decoration: none; background: #0B53A7; color: #FFFFFF; padding: 10px 20px; border-radius: 3px; display: inline-block; margin-top: 15px;">{reset_url}</span>
+                        <p style="text-align: center; margin-top: 20px;">Please visit <a href="https://cnex.com.np/" style="text-decoration: none; color: #0B53A7; font-weight: 600;">https://cnex.com.np</a> for any enquiries.</p>
                         <p style="margin: 0; text-align: center;"><span style="font-weight: 600;">Tel:</span> 01-5244366</p>
                         <p style="margin: 0; text-align: center; text-decoration: none;"><span style="font-weight: 600;">Phone:</span> +977 9802348565 <span style="font-weight: 600; margin-left: 10px;">E-mail:</span> support@cnex.com</p>
                     </td>
