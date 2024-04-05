@@ -42,7 +42,7 @@ class EmailCheckView(generics.GenericAPIView):
             otp = self.generate_otp(user.id)
 
             reset_verification = "reset_password"
-            subject = 'Cnex Password Reset OTP'
+            subject = 'Cnex OTP'
             if '@' in email:
                 email = user.email
                 sendMail(email, otp,subject,reset_verification)

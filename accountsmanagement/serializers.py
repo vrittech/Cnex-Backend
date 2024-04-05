@@ -9,6 +9,7 @@ def TokenValidate(token,email):
     user = CustomUser.objects.filter(Q(email=email) | Q(phone = email))
     if user.exists():
         user = user.first()
+        user.save()
         user_check_key = f"password_reset_otp_{user.id}"
         token_access = cache.get(user_check_key)
         if token_access == token:

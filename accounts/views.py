@@ -403,6 +403,20 @@ class GoogleLogin(APIView):
         # If the user is not authenticated, return an error message
         else:
             return Response({'error': 'Google Token Failed to verify'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+def createGoogleAccount(idinfo):
+    email = idinfo.get('email')
+    first_name = idinfo.get('name')
+    last_name = idinfo.get('family_name')
+    username = email.split('@')[0]
+    image = idinfo.get('picture')
+    user = CustomUser.objects.filter(Q(email = email) | Q(username = username))
+    if user.exists():
+        user = user.first()
+        return user,True
+    else:    
+        user = CustomUser.objects.create(email = email , first_name = first_name , last_name = last_name, username=username,role = 5,old_password_change_case = False,provider = 2,is_verified = True)
+        return user , True
 
 class AppleLogin(APIView):
     @csrf_exempt
@@ -448,8 +462,7 @@ def createAppleAccount(idinfo):
     if user.exists():
         user = CustomUser.objects.get(Q(email = email) | Q(username = username))
     else:    
-        user = CustomUser.objects.create(email = email , first_name = first_name, username=username,role = 5,old_password_change_case = False,provider = 4)
-        print(user, " creating user")
+        user = CustomUser.objects.create(email = email,is_verified = True , first_name = first_name, username=username,role = 5,old_password_change_case = False,provider = 4)
     return user , True
    
 
