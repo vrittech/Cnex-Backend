@@ -74,7 +74,7 @@ class Product(models.Model):
     slug = models.SlugField(unique = True,blank=True,max_length = 5000)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    discount = models.DecimalField(max_digits = 10,decimal_places=2,null = True)
+    discount = models.DecimalField(max_digits = 10,decimal_places=2,default = 0)
     product_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
     is_manage_stock = models.BooleanField(default = False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,null = True)
