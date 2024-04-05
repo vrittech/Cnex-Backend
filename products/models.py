@@ -71,7 +71,7 @@ class Product(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True) #editable=False
     name = models.CharField(max_length=5000)
     title = models.CharField(max_length = 2000,null = True)
-    slug = models.SlugField(unique = True,blank=True)
+    slug = models.SlugField(unique = True,blank=True,max_length = 5000)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     discount = models.DecimalField(max_digits = 10,decimal_places=2,null = True)
