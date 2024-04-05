@@ -69,7 +69,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True) #editable=False
-    name = models.CharField(max_length=2000)
+    name = models.CharField(max_length=5000)
     title = models.CharField(max_length = 2000,null = True)
     slug = models.SlugField(unique = True,blank=True)
     description = models.TextField()
