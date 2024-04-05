@@ -2,6 +2,7 @@
 from coupon.models import Coupon
 from ..models import Cart
 from deliverycharge.models import DeliveryCharge
+from django.db.models import Sum
 
 def CartsHisabKitab(request):
     cart_ids = request.data.get('carts')
@@ -65,11 +66,13 @@ def CartsHisabKitab(request):
     final_total_price = total_price-discount-float(coupon_discount)
     final_total_price = float(delivery_charge) + final_total_price
 
+    print(cart_obj.aggregate(total_quantity = Sum('quantity')))
+
     data = {
         'total_price':final_total_price,
         'products_variations_quantity_price':total_price,
         'discount':discount,
-        'quantity':cart_obj.count(),
+        'quantity':cart_obj.aggregate(total_quantity = Sum('quantity'))['total_quantity'],
         'checkout':details,
         'shipping_price':delivery_charge,
         'delivery_charge_detail':delivery_charge_dict,
@@ -77,4 +80,5 @@ def CartsHisabKitab(request):
         'coupon_discount':coupon_discount,
         'message':message,
     }
+    print(data, " hisab kitab ")
     return data

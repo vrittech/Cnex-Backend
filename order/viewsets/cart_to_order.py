@@ -16,7 +16,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         'order_status':'checkout',
         'shipping_price':hisab_kitab_data.get('shipping_price'),
         'is_delivery_free':hisab_kitab_data.get('delivery_charge_detail').get('is_delivery_free'),
-        'payment_status':'cod'
+        'payment_status':'unpaid'
     }
     if coupon_obj != None:
         order_payload['coupons'] = coupon_obj.first().id

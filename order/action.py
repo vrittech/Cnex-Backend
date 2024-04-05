@@ -17,6 +17,5 @@ def OrderItemPostSave(sender, instance, created, **kwargs):
 
 @receiver(pre_save,sender=OrderItem)
 def OrderItemPreSave(sender,instance,**kwargs):
-    
     pass
 
