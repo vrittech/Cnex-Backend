@@ -11,16 +11,7 @@ def CartsHisabKitab(request):
     coupon_discount = 0
     coupon_apply = False
 
-    message = "Cart checkout get successfully"
-
-    if coupon_code:
-        coupon_obj = Coupon.objects.filter(code = coupon_code)
-        if coupon_obj.exists() and coupon_obj.first().is_verify == True:
-            coupon_apply = True
-            coupon_discount = coupon_obj.first().discount
-        else:
-            message = "Either coupon not exists or it is expired"
-            
+    message = "Cart checkout get successfully"            
         
     cart_obj = Cart.objects.filter(user=request.user,id__in = cart_ids)
 
@@ -59,6 +50,17 @@ def CartsHisabKitab(request):
             }
        
         delivery_charge = delivery_charge_dict.get('total_delivery_charge')
+
+    if coupon_code:
+        coupon_obj = Coupon.objects.filter(code = coupon_code)
+        if coupon_obj.exists() and coupon_obj.first().is_verify == True:
+            coupon_apply = True
+            coupon_discount = coupon_obj.first().discount
+            if coupon_obj.first().discount_type == "percentage":
+                coupon_discount = coupon_obj.first().discount/100*total_price
+
+        else:
+            message = "Either coupon not exists or it is expired"
 
     final_total_price = total_price-discount-float(coupon_discount)
     final_total_price = float(delivery_charge) + final_total_price
