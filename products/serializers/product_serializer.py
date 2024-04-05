@@ -6,6 +6,7 @@ from ..models import Category,Brand,Collection
 from variations.models import VariationOption,Variation
 from order.models import Wishlist,Cart
 from ..utilities.variations_group import ArrangeVariationGroup
+from django.db import transaction
 
 import ast
 
@@ -216,7 +217,8 @@ class ProductWriteSerializers(serializers.ModelSerializer):
             data = str_to_list(data,'collection')
             return super().to_internal_value(data)
         return super().to_internal_value(data)
-       
+    
+    @transaction.atomic
     def create(self, validated_data):
         images_data = self.context['request'].FILES # Extract image data
         try:
@@ -233,6 +235,7 @@ class ProductWriteSerializers(serializers.ModelSerializer):
 
         return product
     
+    @transaction.atomic
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES # Extract image data
         try:
@@ -254,7 +257,6 @@ class ProductWriteSerializers(serializers.ModelSerializer):
 def createProductDetailAfterVariation(variation_data,product,create_update):
     if create_update == "create":
         variation_data = ast.literal_eval(variation_data)
-        print(variation_data, " variation_data")
         processed_variation_data = [{**variation,'variation_options':variation.get('id') ,'product': product} for variation in variation_data]
         if processed_variation_data:
             serializers = ProductDetailAfterVariationWriteSerializers(data=processed_variation_data, many=True)
