@@ -9,9 +9,10 @@ def ProductPostSave(sender, instance, created, **kwargs):
 
 @receiver(pre_save,sender=Product)
 def ProductPreSave(sender,instance,**kwargs):
-    if instance.is_stock == True:
-        instance.product_type = "regular"
-    else:
-        instance.product_type = "pre-order"
+    if instance.pk:
+        if instance.is_stock == True:
+            instance.product_type = "regular"
+        else:
+            instance.product_type = "pre-order"
          
 
