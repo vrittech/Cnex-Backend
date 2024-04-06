@@ -75,7 +75,7 @@ class CheckoutAppointment(models.Model):
 class ServicesItems(models.Model):
     checkout_appointment = models.ForeignKey(CheckoutAppointment,on_delete = models.PROTECT,related_name="services_items")
     service = models.ForeignKey(Services,related_name="appointments_items",on_delete = models.CASCADE) #Multiple servies, each services has price
-    slots = models.ForeignKey(Slots,related_name="appointments_items",on_delete = models.PROTECT)
+    slots = models.ForeignKey(Slots,related_name="appointments_items",on_delete = models.CASCADE)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
 

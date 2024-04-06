@@ -192,7 +192,7 @@ class ProductHaveImages(models.Model):
 class ProductDetailAfterVariation(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name="variations", on_delete=models.CASCADE)
-    variation_options = models.ForeignKey(VariationOption,on_delete = models.PROTECT,)
+    variation_options = models.ForeignKey(VariationOption,on_delete = models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2,null = True,blank=True,default = 0)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation
 
