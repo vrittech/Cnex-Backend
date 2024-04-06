@@ -74,7 +74,7 @@ class Product(models.Model):
     slug = models.SlugField(unique = True,blank=True,max_length = 5000)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    discount = models.DecimalField(max_digits = 10,null=True,decimal_places=2,default = 0)
+    discount = models.DecimalField(max_digits = 10,decimal_places=2,default = 0)
     product_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
     is_manage_stock = models.BooleanField(default = False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,null = True)
@@ -193,7 +193,7 @@ class ProductDetailAfterVariation(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     product = models.ForeignKey(Product,related_name="variations", on_delete=models.CASCADE)
     variation_options = models.ForeignKey(VariationOption,on_delete = models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2,null = True,blank=True,default = 0)
+    price = models.DecimalField(max_digits=10, decimal_places=2,default = 0)
     quantity = models.PositiveIntegerField(default=0)  # Quantity for this specific variation
 
     created_date = models.DateTimeField(auto_now_add=True)
