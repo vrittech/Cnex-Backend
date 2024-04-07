@@ -43,7 +43,7 @@ def CartToOrder(request,carts,coupon_obj = None):
             'quantity':cart_obj.quantity,
             'price':cart_obj.product.price,
             'discount':cart_obj.product.discount,
-            'price_with_variation':cart_obj.product.price + total_variations_price,
+            'price_with_variation':float(cart_obj.product.price) + total_variations_price,
             'total_price':float(cart_obj.product.price)*float(cart_obj.quantity)+float(total_variations_price)-float(cart_obj.product.discount)
         }
 
