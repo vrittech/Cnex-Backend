@@ -1,6 +1,6 @@
 from . import frontend_setting
 mapping = {
-    "service_booked!":{
+    "service_booked":{
         "model_name":"Appointment",
         "admin_message":"",
         "path":"appointments",

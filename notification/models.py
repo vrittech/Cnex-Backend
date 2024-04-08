@@ -12,9 +12,8 @@ class Notification(models.Model):
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type','object_id')
 
-    notification_type = models.CharField(max_length=200,choices = (('sticky','Sticky'),('push','Push'),('admin_push','admin_push')),null=True,default="push")
-    
-    model_type = models.CharField(max_length=200,null=True)
+    not_type = models.CharField(max_length=200,choices = (('sticky','Sticky'),('push','Push'),('admin_push','admin_push')),null=True,default="push")
+    notification_type = models.CharField(max_length=200,null=True)
 
     notification_message = models.CharField(max_length=200,null=True)
     message_description = models.TextField(null=True)
