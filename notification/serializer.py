@@ -1,7 +1,7 @@
 from .models import Notification
-from account.models import CustomUser
+from accounts.models import CustomUser
 from rest_framework import serializers
-from account import roles
+from accounts import roles
 # from management.models import SampleForm
 from . import frontend_setting
 

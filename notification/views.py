@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from .serializer import NotificationWriteSerializer,NotificationReadSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .custom_filters import CustomFilter
-from account import roles
+from accounts import roles
 from django.db.models import Q
 from .custompermission import NotificationPermission
 from django.http import  HttpResponse
@@ -20,7 +20,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.core.cache import cache
 cache_time = 300 # 300 is 5 minutes
-from account.models import CustomUser
+from accounts.models import CustomUser
 from .handle_notification import NotificationHandler
 
 # Create your views here.
