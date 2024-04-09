@@ -7,7 +7,7 @@ def IsAuthenticated(request):
     return bool(request.user and request.user.is_authenticated)
 
 def AdminLevel(request):
-    return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN])
+    return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]) and request.user.is_superuser
 
 def isOwner(request):
     order = Order.objects.filter(id = request.data.get('order_id'))

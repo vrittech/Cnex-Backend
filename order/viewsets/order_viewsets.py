@@ -39,12 +39,14 @@ class OrderViewsets(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
-            return super().get_queryset()
+            query =  super().get_queryset()
         elif self.action == "ToReceiveOrder" and self.request.user.role == roles.USER:
             print("received order ")
-            return super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
+            query = super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
         elif self.request.user.role == roles.USER:
-            return super().get_queryset().filter(user = self.request.user)
+            queury = super().get_queryset().filter(user = self.request.user)
+
+        return query.order_by("-created_date")
    
     @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
     def ToReceiveOrder(self, request, *args, **kwargs):
