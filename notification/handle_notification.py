@@ -20,7 +20,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.id
         path = "#"
         notification_message = mapping.get(method).get('admin_message').format(username=instance.username,user_id = instance.id)
-        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
@@ -29,7 +29,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
     
@@ -40,7 +40,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(services_name=services_names)
-        particular_message = mapping.get(method).get('admin_message').format(services_name=services_names)
+        user_messaage = mapping.get(method).get('admin_message').format(services_name=services_names)
         is_read = False
         group_notification = '..'
 
@@ -49,7 +49,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
@@ -58,7 +58,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
@@ -67,13 +67,12 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
     notification_data = {
         "notification_message": notification_message,
-        'particular_message':particular_message,
         "path": path,
         "from_notification": from_notification,
         "is_read": is_read,
@@ -85,8 +84,8 @@ def NotificationHandler(instance,method,request = None):
         'notification_type':method,
     }
     serializer = save_notification(notification_data)
-    print(notification_data)
-    return notification_data
+    sendNotificationToOneSignals(notification_data)
+    return True
 
 def save_notification(notification_data):
     serializer = NotificationWriteSerializer(data=notification_data)
