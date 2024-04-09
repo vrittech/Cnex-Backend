@@ -2,6 +2,7 @@ from django.db.models.signals import pre_save,post_save , pre_delete
 from django.dispatch import receiver
 from .models import Order,OrderItem,Cart
 from products.models import Product
+from notification.handle_notification import NotificationHandler
 
 
 @receiver(post_save, sender=Order)
@@ -11,8 +12,8 @@ def OrderPostSave(sender, instance, created, **kwargs):
 @receiver(pre_save,sender=Order)
 def OrderPreSave(sender,instance,**kwargs):
     pass
-    #
 
+    #
 @receiver(post_save, sender=OrderItem)
 def OrderItemPostSave(sender, instance, created, **kwargs):
     if created:

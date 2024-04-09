@@ -18,12 +18,59 @@ def NotificationHandler(instance,method,request = None):
     if method == 'password_changed':
         to_notification = [instance.id]
         from_notification = instance.id
-        path = mapping.get(method).get('path').format(username=instance.username,user_id = instance.id)
+        path = "#"
         notification_message = mapping.get(method).get('admin_message').format(username=instance.username,user_id = instance.id)
         particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
+
+    if method == 'payment_confirmed':
+        to_notification = [instance.user.id]
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        is_read = False
+        group_notification = '..'
     
+    if method == 'service_booked':
+        services = instance.checkout_appointment.services_items.all()
+        services_names = ','.join([service.service.name for service in services])
+        to_notification = [instance.user.id]
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(services_name=services_names)
+        particular_message = mapping.get(method).get('admin_message').format(services_name=services_names)
+        is_read = False
+        group_notification = '..'
+
+    if method == 'order_shipped':
+        to_notification = [instance.user.id]
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        is_read = False
+        group_notification = '..'
+
+    if method == 'order_delivered':
+        to_notification = [instance.user.id]
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        is_read = False
+        group_notification = '..'
+
+    if method == 'order_cancelled':
+        to_notification = [instance.user.id]
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        is_read = False
+        group_notification = '..'
+
     notification_data = {
         "notification_message": notification_message,
         'particular_message':particular_message,
