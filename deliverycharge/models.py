@@ -33,7 +33,7 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
        
     def clean(self):
         # Check if there are any existing records that overlap with the current price range
-        overlapping_ranges = DeliveryCharge.objects.filter(
+        overlapping_ranges = DeliveryCharge.objects.exclude(id=self.id).filter(
             min_price__lt=self.max_price,
             max_price__gt=self.min_price
         )

@@ -46,7 +46,7 @@ class OrderViewsets(viewsets.ModelViewSet):
         elif self.request.user.role == roles.USER:
             queury = super().get_queryset().filter(user = self.request.user)
 
-        return query.order_by("-created_date")
+        return query.order_by("-order_date")
    
     @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
     def ToReceiveOrder(self, request, *args, **kwargs):
