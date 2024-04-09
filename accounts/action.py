@@ -1,6 +1,7 @@
 from django.db.models.signals import pre_save,post_save , pre_delete
 from django.dispatch import receiver
 from .models import CustomUser,ShippingAddress
+from notification.handle_notification import NotificationHandler
 
 @receiver(post_save, sender=ShippingAddress)
 def ShippingAddressPostSave(sender, instance, created, **kwargs):
@@ -13,9 +14,10 @@ def ShippingAddressPreSave(sender,instance,**kwargs):
 
 @receiver(post_save, sender=CustomUser)
 def CustomUserPostSave(sender, instance, created, **kwargs):
-    if not created:
-        print("notification here")
+    pass
 
 @receiver(pre_save, sender=CustomUser)
 def CustomUserPreSave(sender, instance, **kwargs):
-    pass
+    if instance.pk:
+        if instance.password != CustomUser.objects.get(id = instance.id).password:
+            NotificationHandler(instance,"password_changed")

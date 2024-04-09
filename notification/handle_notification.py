@@ -13,7 +13,7 @@ from django.db import transaction
 from django.contrib.contenttypes.models import ContentType
 from .mapping_notification_type import mapping
 
-def NotificationHandler(instance,request,method):
+def NotificationHandler(instance,method,request = None):
 
     if method == 'password_changed':
         to_notification = [instance.id]
@@ -37,13 +37,14 @@ def NotificationHandler(instance,request,method):
         'content_type':ContentType.objects.get_for_model(instance).id,
         'notification_type':method,
     }
-    # serializer = save_notification(notification_data)
+    serializer = save_notification(notification_data)
+    print(notification_data)
     return notification_data
 
-# def save_notification(notification_data):
-#     serializer = NotificationWriteSerializer(data=notification_data)
-#     serializer.is_valid(raise_exception=True)
-#     serializer.save()
-#     return serializer
+def save_notification(notification_data):
+    serializer = NotificationWriteSerializer(data=notification_data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return serializer
 
 
