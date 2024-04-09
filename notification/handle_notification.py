@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.db import transaction
 from django.contrib.contenttypes.models import ContentType
 from .mapping_notification_type import mapping
+from .one_signals import sendNotificationToOneSignals
 
 def NotificationHandler(instance,method,request = None):
 
