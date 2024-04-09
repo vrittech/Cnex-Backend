@@ -11,16 +11,16 @@ from django.db.models import Q
 # Assuming you have the necessary imports
 from django.db import transaction
 from django.contrib.contenttypes.models import ContentType
+from .mapping_notification_type import mapping
 
 def NotificationHandler(instance,request,method):
 
-    if method == 'service_booked':
-        model_name = "ModelName"
+    if method == 'password_changed':
         to_notification = [instance.id]
         from_notification = instance.id
-        path = frontend_setting.get(method).path.format(username=instance.username,user_id = instance.id)
-        notification_message = frontend_setting.get(method).path.format(username=instance.username,user_id = instance.id)
-        particular_message = frontend_setting.get(method).path.format(username=instance.username,user_id = instance.id)
+        path = mapping.get(method).get('path').format(username=instance.username,user_id = instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(username=instance.username,user_id = instance.id)
+        particular_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
     
@@ -29,7 +29,6 @@ def NotificationHandler(instance,request,method):
         'particular_message':particular_message,
         "path": path,
         "from_notification": from_notification,
-        "model_name": model_name,
         "is_read": is_read,
         "group_notification": 'USER_ADMIN',
         "to_notification": to_notification,
@@ -38,13 +37,13 @@ def NotificationHandler(instance,request,method):
         'content_type':ContentType.objects.get_for_model(instance).id,
         'notification_type':method,
     }
-    serializer = save_notification(notification_data)
-    return {}
+    # serializer = save_notification(notification_data)
+    return notification_data
 
-def save_notification(notification_data):
-    serializer = NotificationWriteSerializer(data=notification_data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return serializer
+# def save_notification(notification_data):
+#     serializer = NotificationWriteSerializer(data=notification_data)
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return serializer
 
 
