@@ -20,9 +20,6 @@ def sendNotificationToOneSignals(data):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    print(response.status_code)
-    print(response.text)
-
     #     response.raise_for_status()
     #     print("Notification sent successfully!")
     # except requests.exceptions.RequestException as e:

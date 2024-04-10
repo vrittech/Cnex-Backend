@@ -14,6 +14,8 @@ from django.contrib.contenttypes.models import ContentType
 from .mapping_notification_type import mapping
 from .one_signals import sendNotificationToOneSignals
 
+from .mails.notification_mail import sendMail
+
 def NotificationHandler(instance,method,request = None):
 
     if method == 'password_changed':
@@ -85,7 +87,8 @@ def NotificationHandler(instance,method,request = None):
         'notification_type':method,
     }
     serializer = save_notification(notification_data)
-    sendNotificationToOneSignals(notification_data)
+    sendNotificationToOneSignals(c)
+    sendMail(sendMail)
     return True
 
 def save_notification(notification_data):
