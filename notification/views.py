@@ -15,6 +15,7 @@ from django.db.models import Q
 from .custompermission import NotificationPermission
 from django.http import  HttpResponse
 from datetime import date
+from rest_framework.decorators import action
 
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
@@ -54,6 +55,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return response
+    
+    @action(detail=False, methods=['get'], name="otpVerify", url_path="otp-verify")
+    def cartCount(self, request):
+        notification_count = self.get_queryset().count()
+        return Response({"total_notification":notification_count}, status=status.HTTP_201_CREATED)
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
