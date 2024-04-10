@@ -61,7 +61,7 @@ def NotificationHandler(instance,method,request = None):
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        user_messaage = mapping.get(method).get('admin_message').format(order_id=instance.id)
         is_read = False
         group_notification = '..'
 
@@ -87,8 +87,8 @@ def NotificationHandler(instance,method,request = None):
         'notification_type':method,
     }
     serializer = save_notification(notification_data)
-    sendNotificationToOneSignals(c)
-    sendMail(sendMail)
+    sendNotificationToOneSignals(notification_data)
+    sendMail(notification_data)
     return True
 
 def save_notification(notification_data):

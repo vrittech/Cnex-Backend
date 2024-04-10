@@ -11,7 +11,9 @@ def OrderPostSave(sender, instance, created, **kwargs):
 
 @receiver(pre_save,sender=Order)
 def OrderPreSave(sender,instance,**kwargs):
-    pass
+    if instance.pk:
+        if instance.order_status == 'delivered' and instance.order_status != Order.objects.get(id = instance.id).order_status:
+            NotificationHandler(instance,"order_delivered")
 
     #
 @receiver(post_save, sender=OrderItem)
