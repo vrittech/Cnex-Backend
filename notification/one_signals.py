@@ -1,21 +1,21 @@
 import requests
-api_key = "YzliYWI5YjUtODRkMC00MmIwLWFhZmItZjczYjExYjk1Yjc1"
-api_key = "YzliYWI5YjUtODRkMC00MmIwLWFhZmItZjczYjExYjk1Yjc1"
+from django.conf import settings
+
 url = "https://onesignal.com/api/v1/notifications"
 
 def sendNotificationToOneSignals(data):
     
     headers = {
-        "Authorization": f"Basic {api_key}",
-        "app_id":"cc098330-e95b-44f5-ab5f-934c99a60c28",
-        "Content-Type": "application/json",
-        "Accept": "application/json",
+        "accept": "application/json",
+        "Authorization": f"Basic {settings.ONE_SIGNAL_API_KEY}",
+        "content-type": "application/json"
     }
     print(data.get('to_notification'))
     payload = {
-        "app_id":"cc098330-e95b-44f5-ab5f-934c99a60c28",
-        # "included_segments":['15'],#data.get('to_notification'),
-        "tags":[{'id':'15'},],
+        "app_id":settings.APP_ID,
+        "filters": [
+            {"field": "tag", "key": "user_id", "relation": "=", "value": data.get('to_notification')},
+        ],
         "contents": {"en": data.get('notification_message'), "es": data.get('notification_message')}
     }
 
@@ -27,3 +27,5 @@ def sendNotificationToOneSignals(data):
     #     print("Notification sent successfully!")
     # except requests.exceptions.RequestException as e:
     #     print("Failed to send notification:", e)
+
+
