@@ -14,7 +14,8 @@ def sendNotificationToOneSignals(data):
     print(data.get('to_notification'))
     payload = {
         "app_id":"cc098330-e95b-44f5-ab5f-934c99a60c28",
-        "included_segments":['30'],#data.get('to_notification'),
+        # "included_segments":['15'],#data.get('to_notification'),
+        "tags":[{'id':'15'},],
         "contents": {"en": data.get('notification_message'), "es": data.get('notification_message')}
     }
 
