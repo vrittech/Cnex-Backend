@@ -9,6 +9,6 @@ class MyLimitOffsetPagination(LimitOffsetPagination):
 
 class PageNumberPagination(PageNumberPagination):
     page_size = 20  # Set your desired page size
-    page_size_query_param = 'limit'
+    page_size_query_param = 'size'
     max_page_size = 500  # Set the maximum page size
 
