@@ -44,7 +44,7 @@ class OrderViewsets(viewsets.ModelViewSet):
             print("received order ")
             query = super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
         elif self.request.user.role == roles.USER:
-            queury = super().get_queryset().filter(user = self.request.user)
+            query = super().get_queryset().filter(user = self.request.user)
 
         return query.order_by("-order_date")
    
