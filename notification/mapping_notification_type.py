@@ -21,19 +21,19 @@ mapping = {
     },
     "order_shipped":{
         "model_name":"Order",
-        "path":"orderDetails/:order_id",
+        "path":"orderDetails/{order_id}",
         "admin_message":"Your ordered product {order_id} has been delivered to your doorstep. Enjoy your purchase!",
         "user_message":"Your ordered product {order_id} has been delivered to your doorstep. Enjoy your purchase!",
     },
     "order_delivered":{
         "model_name":"Order",
-        "path":"orderDetails/:order_id",
+        "path":"orderDetails/{order_id}",
         "admin_message":"Your ordered product {order_id} has been delivered to your doorstep. Enjoy your purchase!",
         "user_message":"Your ordered product {order_id} has been delivered to your doorstep. Enjoy your purchase!",
     },
     "order_cancelled":{
         "model_name":"Order",
-        "path":"orderDetails/:order_id",
+        "path":"orderDetails/{order_id}",
         "admin_message":"We're excited to announce a new discount coupon created just for you! Check out the app for exclusive savings.",
         "user_message":"We're excited to announce a new discount coupon created just for you! Check out the app for exclusive savings.",
     },

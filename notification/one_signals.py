@@ -16,7 +16,8 @@ def sendNotificationToOneSignals(data):
         "filters": [
             {"field": "tag", "key": "user_id", "relation": "=", "value": data.get('to_notification')[0]},
         ],
-        "contents": {"en": data.get('notification_message'), "es": data.get('notification_message')}
+        "contents": {"en": data.get('notification_message'),},
+        "data":{"path":data.get('path')}
     }
 
     response = requests.post(url, headers=headers, json=payload)
