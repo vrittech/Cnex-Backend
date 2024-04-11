@@ -12,6 +12,7 @@ class Order(models.Model):
     user = models.ForeignKey(CustomUser,related_name = "orders", on_delete=models.PROTECT)
     products = models.ManyToManyField(Product, through='OrderItem')
     order_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
+    sub_total_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     coupon_discount = models.DecimalField(max_digits=10, decimal_places=2,default = 0)
     shipping_price = models.DecimalField(max_digits=10, decimal_places=2,default = 0)#
