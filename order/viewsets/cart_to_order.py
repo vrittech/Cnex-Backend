@@ -13,6 +13,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         'delivery_address':request.data.get('shipping_id'),
         'quantity':hisab_kitab_data.get('quantity'),
         'total_price':hisab_kitab_data.get('total_price'),
+        'coupon_discount':hisab_kitab_data.get('coupon_discount'),
         'discount':hisab_kitab_data.get('discount'),
         'order_status':'checkout',
         'shipping_price':hisab_kitab_data.get('shipping_price'),
@@ -33,7 +34,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         variations = list(cart_obj.variations.values_list('id', flat=True))
 
         if len(variations)>0:
-            total_variations_price = cart_obj.product.getPriceByvariationList(variations)
+            total_variations_price = cart_obj.product.getvariationPriceOnly(variations)
         else:
             total_variations_price = 0
 
@@ -49,7 +50,7 @@ def CartToOrder(request,carts,coupon_obj = None):
 
         if len(variations)>0:
             items_payload['variations'] = variations
-            items_payload['variations_price']=cart_obj.product.getPriceByvariationList(variations)
+            items_payload['variations_price']=cart_obj.product.getvariationPriceOnly(variations)
         else:
             total_variations_price = 0
         

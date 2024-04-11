@@ -11,7 +11,9 @@ class Order(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
     user = models.ForeignKey(CustomUser,related_name = "orders", on_delete=models.PROTECT)
     products = models.ManyToManyField(Product, through='OrderItem')
+    order_type = models.CharField(max_length = 20, choices = (('pre-order','Pre Order'),('regular','Regular')),default = 'regular')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    coupon_discount = models.DecimalField(max_digits=10, decimal_places=2,default = 0)
     shipping_price = models.DecimalField(max_digits=10, decimal_places=2,default = 0)#
     is_delivery_free = models.BooleanField(default = False) 
     delivery_address = models.ForeignKey(ShippingAddress, on_delete=models.SET_NULL, null=True, blank=True)
