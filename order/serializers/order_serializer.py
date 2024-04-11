@@ -5,6 +5,7 @@ from accounts.models import CustomUser,ShippingAddress
 from ..models import OrderItem
 from variations.models import VariationOption
 from coupon.models import Coupon
+from payment.models import Payment
 
 class VariationSerializer_OrderItem_OrderReadSerializers(serializers.ModelSerializer):
     class Meta:
@@ -74,11 +75,17 @@ class OrderReadSerializers_customerOrder(serializers.ModelSerializer):
         model = Order
         fields = ['id','user']
 
+class Payment_OrderRetrieveAdminSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['ammount','payment_mode','status','refrence_id']
+
 class OrderRetrieveAdminSerializers(serializers.ModelSerializer):
     user = CustomUserSerializers_OrderReadSerializers()
     order_items = OrderItem_OrderRetrieveAdminSerializers(many = True)
     delivery_address = ShippingAddressSerializers_OrderReadSerializers()
     coupons = CouponSerializer_OrderRetrieveAdminSerializers()
+    payment = Payment_OrderRetrieveAdminSerializers(many = True)
     class Meta:
         model = Order
         # fields = '__all__'
