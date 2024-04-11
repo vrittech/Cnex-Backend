@@ -70,6 +70,7 @@ def CartsHisabKitab(request):
         'discount':discount,
         'quantity':cart_obj.aggregate(total_quantity = Sum('quantity'))['total_quantity'],
         'checkout':details,
+        'order_type':cart_obj.first().product.product_type,
         'shipping_price':delivery_charge,
         'delivery_charge_detail':delivery_charge_dict,
         'coupon_apply':coupon_apply,
