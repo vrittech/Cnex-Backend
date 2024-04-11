@@ -15,7 +15,7 @@ def CartToOrder(request,carts,coupon_obj = None):
         'sub_total_price':hisab_kitab_data.get('products_variations_quantity_price'),
         'total_price':hisab_kitab_data.get('total_price'),
         'coupon_discount':hisab_kitab_data.get('coupon_discount'),
-        'discount':hisab_kitab_data.get('discount'),
+        'total_discount':hisab_kitab_data.get('discount'),
         'order_status':'checkout',
         'shipping_price':hisab_kitab_data.get('shipping_price'),
         'is_delivery_free':hisab_kitab_data.get('delivery_charge_detail').get('is_delivery_free'),
