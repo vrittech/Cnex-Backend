@@ -15,8 +15,8 @@ def sendNotificationToOneSignals(data,file = None):
         payload = {
             "app_id":settings.APP_ID,
             "contents": {"en": data.get('notification_message'),},
-            "included_segments":["Subscribed Users"],#["Active Users", "Inactive Users"],
-            # "filters": [{"field": "tag", "key": "user_id", "relation": "=", "value": ""}],
+            # "included_segments":["Subscribed Users"],#["Active Users", "Inactive Users"],
+            "filters": [{"field": "country","relation": "=", "value": "NP"}],
             "headings": {"en": data.get('title'),},
             "url":data.get('url'),
             "big_picture":file,
