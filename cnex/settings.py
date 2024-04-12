@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'deliverycharge',
     'reviewrating',
     'accountsmanagement',
+    'notification',
 ]
 
 ASGI_APPLICATION = 'cnex.asgi.application'
@@ -87,7 +88,7 @@ ROOT_URLCONF = 'cnex.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -277,3 +278,7 @@ NfiR3GXO
 -----END PRIVATE KEY-----"""
 SOCIAL_AUTH_APPLE_ID_SCOPE = ["email", "name"]
 SOCIAL_AUTH_APPLE_ID_EMAIL_AS_USERNAME = True
+
+#ONE_SIGNAL_API
+ONE_SIGNAL_API_KEY = os.getenv('ONE_SIGNAL_API_KEY')
+APP_ID = os.getenv('APP_ID')

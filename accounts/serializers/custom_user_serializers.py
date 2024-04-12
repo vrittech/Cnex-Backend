@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group,Permission
 from ..models import CustomUser
 from django.contrib.auth.hashers import make_password
 from .. import roles
-
+from ..utilities.permission import SecureFields
 
 class CustomUserReadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,13 +36,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         # print(user.is_authenticated)
         if not user.is_authenticated:
-            if value == roles.USER or value == roles.PUBLISHER:
+            if value == roles.USER:
                 pass
             else:
                 raise serializers.ValidationError("You can only set USER,PUBLISHER as role") 
-        elif user.role==roles.SYSTEM_ADMIN:
-            return value
-        elif value == roles.PUBLISHER:
+        elif user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
             return value
         elif user.is_authenticated and value!=roles.USER:
                 raise serializers.ValidationError("You can only set USER as role") 
@@ -64,7 +62,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You can not set USER as SYSTEM_ADMIN") 
         else:
             return False
-        
 
     def validate(self, attrs):
         request = self.context.get('request')
@@ -92,6 +89,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         ref_name =  "accountWriteserializer"
         model = CustomUser
         fields = '__all__' 
+
+
+    def get_fields(self):
+        model_fields = super().get_fields()
+        SecureFields(self,model_fields,['email','is_active','is_verified','role','provider','username','is_superuser'],['PATCH','PUT'],[roles.ADMIN,roles.SUPER_ADMIN])
+        # SecureFields(self,model_fields,['provider'],['PATCH','PUT'],[]) #if empty [] it means it is striction for all
+        return model_fields
 
 class RoleSerializer(serializers.Serializer):
     role_id = serializers.IntegerField()

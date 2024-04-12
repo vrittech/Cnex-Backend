@@ -7,6 +7,7 @@ from variations.models import VariationOption,Variation
 from order.models import Wishlist,Cart
 from ..utilities.variations_group import ArrangeVariationGroup
 from django.db import transaction
+from notification.models import Notification
 
 import ast
 
@@ -156,9 +157,18 @@ class ProductReadAdminSerializers(serializers.ModelSerializer):
     brand = BrandReadSerializers_ProductReadSerializers()
     category = CategoryReadSerializers_ProductReadSerializers()
     variations = VariationProducts_ProductReadAdminSerializers(many = True)
+    notification = serializers.SerializerMethodField()
     class Meta:
         model = Product
-        fields = ['is_stock','is_publish','initial_quantity','id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
+        fields = ['notification','is_stock','is_publish','initial_quantity','id','name','title','slug','public_id','description','price','category','quantity','brand','discount','product_type','featured_image','variations','total_variations_quantity','is_stock']
+
+    def get_notification(self,obj):
+        notify_obj = Notification.objects.filter(notification_type = "product_push_notification",object_id = obj.id)
+        if notify_obj.exists():
+            return {"count":notify_obj.count(),'last_notify':notify_obj.last().created_date}
+        else:
+            return {"count":notify_obj.count(),'last_notify':""}
+    
 
 class ProductRetrieveAdminSerializers(serializers.ModelSerializer):
     product_images = ProductHaveImagesReadSerializers(many = True)

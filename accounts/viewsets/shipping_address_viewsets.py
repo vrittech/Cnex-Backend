@@ -1,10 +1,11 @@
 from ..models import ShippingAddress
 from accounts.serializers.shipping_address_serializers import ShippingAddressReadSerializers,ShippingAddressWriteSerializers
 from ..utilities.importbase import *
+from rest_framework.permissions import  IsAuthenticated
 
 class ShippingAddressViewsets(viewsets.ModelViewSet):
     serializer_class = ShippingAddressReadSerializers
-    permission_classes = [ShippingAddressViewsetsPermission]
+    permission_classes = [IsAuthenticated,ShippingAddressViewsetsPermission]
     authentication_classes = [JWTAuthentication]
     # pagination_class = MyPageNumberPagination
     queryset  = ShippingAddress.objects.all()
