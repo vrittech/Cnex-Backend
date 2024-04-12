@@ -25,7 +25,8 @@ from accounts.models import CustomUser
 from .handle_notification import NotificationHandler
 
 from rest_framework.generics import views
-from .seriaizers.push_notification_serializer  import PushNotificationSerializers
+from .seriaizers.push_notification_serializer  import PushNotificationSerializers,PushNotificationSerializers_without_id
+from products.models import Product
 
 
 # Create your views here.
@@ -130,15 +131,31 @@ def birthdayAnniversaryNotification(request):
 
 class PushNotificationView(views.APIView):
     def post(self,request,*args,**kwargs):
-        serializer = PushNotificationSerializers(data=request.data)
-        serializer.is_valid(raise_exception=True)
-    
-        type = serializer.validated_data.get('type')
-        instance =  serializer.validated_data.get('id')
-        message = serializer.validated_data.get('message')
-       
-        if type == "product_push_notification":
-            NotificationHandler(instance,type,message)
+        if request.data.get('type') in ['product_push_notification','collection_push_notification']:
+            serializer = PushNotificationSerializers(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            type = serializer.validated_data.get('type')
+            file = serializer.validated_data.get('file')
+            title = serializer.validated_data.get('title')
+            url = serializer.validated_data.get('url')
+            instance =  serializer.validated_data.get('id')
+            message = serializer.validated_data.get('message')
         
+            # if type == "product_push_notification":
+            NotificationHandler(instance,type,message,title,file,url)
+
+        else:
+            serializer = PushNotificationSerializers_without_id(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            type = serializer.validated_data.get('type')
+            file = serializer.validated_data.get('file')
+            title = serializer.validated_data.get('title')
+            url = serializer.validated_data.get('url')
+            instance =  Product.objects.all().first()
+            message = serializer.validated_data.get('message')
+        
+            # if type == "product_push_notification":
+            NotificationHandler(instance,type,message,title,file,url)
+
         return Response({'status': 'Notification received'})
     

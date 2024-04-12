@@ -44,10 +44,21 @@ mapping = {
         "user_message":"We're excited to announce a new discount coupon created just for you! Check out the app for exclusive savings.",
     },
     "product_push_notification":{
-        "model_name":"Coupon",
-        "path":"coupon",
-        "admin_message":"We're excited to announce a new discount coupon created just for you! Check out the app for exclusive savings.",
-        "user_message":"We're excited to announce a new discount coupon created just for you! Check out the app for exclusive savings.",
+        "model_name":"Product",
+        "path":"products/{slug}",
+        "admin_message":"",
+        "user_message":"",
     },
-
+       "static_push_notification":{
+        "model_name":"Product",
+        "path":"/notification",
+        "admin_message":"",
+        "user_message":"",
+    },
+       "collection_push_notification":{
+        "model_name":"Product",
+        "path":"collection/{id}",
+        "admin_message":"",
+        "user_message":"",
+    },
 }

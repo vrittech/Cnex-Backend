@@ -16,7 +16,7 @@ from .one_signals import sendNotificationToOneSignals
 
 from .mails.notification_mail import sendMail
 
-def NotificationHandler(instance,method,custom_message=None,request = None):
+def NotificationHandler(instance,method,custom_message=None,title = None,file = None,url=None,request = None):
 
     if method == 'password_changed':
         to_notification = [instance.id]
@@ -86,7 +86,25 @@ def NotificationHandler(instance,method,custom_message=None,request = None):
     elif method == 'product_push_notification':
         to_notification = CustomUser.objects.all().values_list('id',flat=True)
         from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
+        path = mapping.get(method).get('path').format(slug=instance.slug)
+        notification_message = custom_message
+        user_messaage = custom_message
+        is_read = False
+        group_notification = '..'
+
+    elif method == 'static_push_notification':
+        to_notification = CustomUser.objects.all().values_list('id',flat=True)
+        from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
         path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = custom_message
+        user_messaage = custom_message
+        is_read = False
+        group_notification = '..'
+
+    elif method == 'collection_push_notification':
+        to_notification = CustomUser.objects.all().values_list('id',flat=True)
+        from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
+        path = mapping.get(method).get('path').format(id=instance.id)
         notification_message = custom_message
         user_messaage = custom_message
         is_read = False
@@ -104,9 +122,13 @@ def NotificationHandler(instance,method,custom_message=None,request = None):
         'content_object':instance,
         'content_type':ContentType.objects.get_for_model(instance).id,
         'notification_type':method,
+        'title':title,
+        'file':file,
+        'url':url
     }
+
     serializer = save_notification(notification_data)
-    sendNotificationToOneSignals(notification_data)
+    sendNotificationToOneSignals(notification_data,file = serializer.data.get('file'))
     sendMail(notification_data)
     return True
 
