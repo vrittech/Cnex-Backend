@@ -10,7 +10,8 @@ class PushNotificationSerializers(serializers.Serializer):
         type = self.initial_data.get('type')
         if type == "product_push_notification":
             query = Product.objects.filter(id = value,is_publish = True)
-        
+        else:
+            query = Product.objects.none()
         if not query.exists():
             raise serializers.ValidationError("product is not found.")
         return query.first()

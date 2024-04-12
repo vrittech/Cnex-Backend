@@ -85,7 +85,7 @@ def NotificationHandler(instance,method,custom_message=None,request = None):
     
     elif method == 'product_push_notification':
         to_notification = CustomUser.objects.all().values_list('id',flat=True)
-        from_notification = instance.user.id
+        from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = custom_message
         user_messaage = custom_message

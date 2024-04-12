@@ -10,3 +10,4 @@ class ShippingAddressWriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
         fields = '__all__'
+        

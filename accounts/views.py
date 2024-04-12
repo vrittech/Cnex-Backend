@@ -45,7 +45,6 @@ cache_time = 300 # 300 is 5 minute
 from django.db.models import Q
 from rest_framework import serializers
 
-
 class CustomUserSerializerViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     # permission_classes = [Account]

@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group,Permission
 from ..models import CustomUser
 from django.contrib.auth.hashers import make_password
 from .. import roles
-
+from ..utilities.permission import SecureFields
 
 class CustomUserReadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,7 +62,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You can not set USER as SYSTEM_ADMIN") 
         else:
             return False
-        
 
     def validate(self, attrs):
         request = self.context.get('request')
@@ -93,17 +92,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
     def get_fields(self):
-        fields = super().get_fields()
-        user = self.context['request'].user
-        print(fields)
-        # if user.is_seller:
-        #     fields['item_name'].read_only = True
-        # elif user.is_admin:
-        #     fields['supplier_company'].read_only = False
-        # else:
-        #     fields['item_name'].read_only = True
-        #     fields['supplier_company'].read_only = True
-        return fields
+        model_fields = super().get_fields()
+        SecureFields(self,model_fields,['email','is_active','is_verified','role','provider','username','is_superuser'],['PATCH','PUT'],[roles.ADMIN,roles.SUPER_ADMIN])
+        # SecureFields(self,model_fields,['provider'],['PATCH','PUT'],[]) #if empty [] it means it is striction for all
+        return model_fields
 
 class RoleSerializer(serializers.Serializer):
     role_id = serializers.IntegerField()
