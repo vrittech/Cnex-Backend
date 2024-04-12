@@ -12,10 +12,8 @@ def ownerPermission(request,view,label):
     payload_user = view.get_object()
     print(payload_user,label,request.user.id)
     if request.user.id == payload_user.id:
-        print("return True for permission")
         return True
     else:
-        print("return False for permission")
         False
 
 def AdminPermission(request):

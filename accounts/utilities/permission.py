@@ -10,16 +10,21 @@ def AdminLevel(request):
 def AllLevel(request):
     return bool(IsAuthenticated(request) and request.user.role in [roles.ADMIN,roles.SUPER_ADMIN,roles.USER])  
 
-def ownerPermission(request,view,label):
+def ownerPermission(request,view,label,is_destroy):
     if request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
         return True
-    
-    payload_user = getattr(request, label, None)
-    print(payload_user)
-    if request.user.id == payload_user.id:
-        return True
+    if is_destroy == False:
+        payload_user = request.data.get(label)
+        if request.user.id == payload_user:
+            return True
+        else:
+            False
     else:
-        False
+        payload_user = view.get_object()
+        if request.user.id == getattr(payload_user, label, None).id:
+            return True
+        else:
+            False
         
 class AdminViewSetsPermission(BasePermission):
     def has_permission(self, request, view):
@@ -29,8 +34,10 @@ class ShippingAddressViewsetsPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list','retrieve']:
             return True
-        elif view.action in ['create','update','partial_update','destroy']:
-            return ownerPermission(request,view,'profile')
+        elif view.action in ['create','update','partial_update']:
+            return ownerPermission(request,view,'profile',is_destroy = False)
+        elif view.action == 'destroy':
+            return ownerPermission(request,view,'profile',is_destroy = True)
         return False
     
 def SecureFields(self,model_fields,secure_fields,secure_method,exceptions_roles):
