@@ -16,7 +16,7 @@ from .one_signals import sendNotificationToOneSignals
 
 from .mails.notification_mail import sendMail
 
-def NotificationHandler(instance,method,request = None):
+def NotificationHandler(instance,method,custom_message=None,request = None):
 
     if method == 'password_changed':
         to_notification = [instance.id]
@@ -27,7 +27,7 @@ def NotificationHandler(instance,method,request = None):
         is_read = False
         group_notification = '..'
 
-    if method == 'payment_confirmed':
+    elif method == 'payment_confirmed':
         to_notification = [instance.user.id]
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
@@ -36,7 +36,7 @@ def NotificationHandler(instance,method,request = None):
         is_read = False
         group_notification = '..'
     
-    if method == 'service_booked':
+    elif method == 'service_booked':
         services = instance.checkout_appointment.services_items.all()
         services_names = ','.join([service.service.name for service in services])
         to_notification = [instance.user.id]
@@ -47,7 +47,7 @@ def NotificationHandler(instance,method,request = None):
         is_read = False
         group_notification = '..'
 
-    if method == 'order_shipped':
+    elif method == 'order_shipped':
         to_notification = [instance.user.id]
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
@@ -56,7 +56,7 @@ def NotificationHandler(instance,method,request = None):
         is_read = False
         group_notification = '..'
 
-    if method == 'order_delivered':
+    elif method == 'order_delivered':
         to_notification = [instance.user.id]
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
@@ -65,7 +65,7 @@ def NotificationHandler(instance,method,request = None):
         is_read = False
         group_notification = '..'
 
-    if method == 'order_cancelled':
+    elif method == 'order_cancelled':
         to_notification = [instance.user.id]
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
@@ -73,6 +73,25 @@ def NotificationHandler(instance,method,request = None):
         user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
+    
+    elif method == 'new_coupon':
+        to_notification = CustomUser.objects.all().values_list('id',flat=True)
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        is_read = False
+        group_notification = '..'
+    
+    elif method == 'product_push_notification':
+        to_notification = CustomUser.objects.all().values_list('id',flat=True)
+        from_notification = instance.user.id
+        path = mapping.get(method).get('path').format(order_id=instance.id)
+        notification_message = custom_message
+        user_messaage = custom_message
+        is_read = False
+        group_notification = '..'
+        
 
     notification_data = {
         "notification_message": notification_message,

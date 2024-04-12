@@ -8,6 +8,7 @@ router.register('notification', views.NotificationViewSet, basename="apis/Notifi
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('user-birthday-anniversary/',views.birthdayAnniversaryNotification,name="Test")
+    path('push-notification/',views.PushNotificationView.as_view(),name="PushNotificationView")
+
     # path('websocket/',views.sendNotification,name="sendNotification")
 ]

@@ -24,6 +24,10 @@ cache_time = 300 # 300 is 5 minutes
 from accounts.models import CustomUser
 from .handle_notification import NotificationHandler
 
+from rest_framework.generics import views
+from .seriaizers.push_notification_serializer  import PushNotificationSerializers
+
+
 # Create your views here.
 class NotificationViewSet(viewsets.ModelViewSet):
 
@@ -124,3 +128,17 @@ def birthdayAnniversaryNotification(request):
 
     return HttpResponse("sent notification completed")
 
+class PushNotificationView(views.APIView):
+    def post(self,request,*args,**kwargs):
+        serializer = PushNotificationSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+    
+        type = serializer.validated_data.get('type')
+        instance =  serializer.validated_data.get('id')
+        message = serializer.validated_data.get('message')
+       
+        if type == "product_push_notification":
+            NotificationHandler(instance,type,message)
+        
+        return Response({'status': 'Notification received'})
+    

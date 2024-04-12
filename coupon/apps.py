@@ -7,6 +7,6 @@ class CouponConfig(AppConfig):
 
        
     def ready(self):
-        import order.action
+        import coupon.action
 
 
