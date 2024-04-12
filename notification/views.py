@@ -151,11 +151,12 @@ class PushNotificationView(views.APIView):
             file = serializer.validated_data.get('file')
             title = serializer.validated_data.get('title')
             url = serializer.validated_data.get('url')
+            path = serializer.validated_data.get('path')
             instance =  Product.objects.all().first()
             message = serializer.validated_data.get('message')
         
             # if type == "product_push_notification":
-            NotificationHandler(instance,type,message,title,file,url)
+            NotificationHandler(instance,type,message,title,file,url,path)
 
         return Response({'status': 'Notification received'})
     

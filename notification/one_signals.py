@@ -19,6 +19,7 @@ def sendNotificationToOneSignals(data,file = None):
             "filters": [{"field": "tag", "key": "user_id", "relation": "=", "value": "15"}],
             "headings": {"en": data.get('title'),},
             "url":data.get('url'),
+            "big_picture":file,
             "data":{"path":data.get('path')}
         }
     else:

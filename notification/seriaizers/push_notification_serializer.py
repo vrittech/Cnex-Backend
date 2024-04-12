@@ -22,9 +22,10 @@ class PushNotificationSerializers(serializers.Serializer):#for instance
         return query.first()
     
 
-class PushNotificationSerializers_without_id(serializers.Serializer):#for instance
+class PushNotificationSerializers_without_id(serializers.Serializer):#for not instance
     type =  serializers.CharField()
     title = serializers.CharField()
     message = serializers.CharField()
     file = serializers.FileField(required = False)
     url =  serializers.URLField(required = False)
+    path =  serializers.CharField(required = False)

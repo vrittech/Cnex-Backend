@@ -16,7 +16,7 @@ from .one_signals import sendNotificationToOneSignals
 
 from .mails.notification_mail import sendMail
 
-def NotificationHandler(instance,method,custom_message=None,title = None,file = None,url=None,request = None):
+def NotificationHandler(instance,method,custom_message=None,title = None,file = None,url=None,path=None,request = None):
 
     if method == 'password_changed':
         to_notification = [instance.id]
@@ -95,7 +95,10 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
     elif method == 'static_push_notification':
         to_notification = CustomUser.objects.all().values_list('id',flat=True)
         from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
-        path = mapping.get(method).get('path').format(order_id=instance.id)
+        if path != None:
+            path = path
+        else:
+            path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = custom_message
         user_messaage = custom_message
         is_read = False
@@ -124,13 +127,15 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         'notification_type':method,
         'title':title,
         'file':file,
-        'url':url
+        'url':url,
     }
-
-    serializer = save_notification(notification_data)
-    sendNotificationToOneSignals(notification_data,file = serializer.data.get('file'))
-    sendMail(notification_data)
-    return True
+    try:
+        serializer = save_notification(notification_data)
+        sendNotificationToOneSignals(notification_data,file = serializer.data.get('file'))
+        sendMail(notification_data)
+        return True
+    except:
+        print("error in notification")
 
 def save_notification(notification_data):
     serializer = NotificationWriteSerializer(data=notification_data)
