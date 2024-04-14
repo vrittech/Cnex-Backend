@@ -65,10 +65,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def notificationCount(self, request):
         notification_obj = self.get_queryset()
         data  = {
-            'unread_notification':notification_obj.filter(is_read = False),
-            'read_notification':notification_obj.filter(is_read = True),
+            'unread_notification':notification_obj.filter(is_read = False).count(),
+            'read_notification':notification_obj.filter(is_read = True).count(),
             'total_notification':notification_obj.count()
         }
+        print(data)
         return Response({"message":data}, status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['get'], name="allReadNotification", url_path="mark-as-all-read")

@@ -19,6 +19,7 @@ class Notification(models.Model):
     message_description = models.TextField(null=True)
     from_notification = models.ForeignKey(CustomUser,related_name="notifications",on_delete=models.CASCADE,null=True)
     path = models.CharField(max_length=1000,null=True)
+    url = models.CharField(max_length=1000,null=True)
 
     to_notification = models.ManyToManyField(CustomUser,related_name="notification")
     is_read = models.BooleanField(default=False)

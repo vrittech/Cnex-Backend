@@ -28,7 +28,8 @@ class NotificationPermission(BasePermission):
             return False
         elif method_name == 'list' or method_name == 'retrieve':
             return True
-        
+        elif method_name in ["allReadNotification","notificationCount"]:
+            return True        
         else:
             return False
             
