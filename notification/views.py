@@ -61,10 +61,22 @@ class NotificationViewSet(viewsets.ModelViewSet):
         response = super().list(request, *args, **kwargs)
         return response
     
-    @action(detail=False, methods=['get'], name="otpVerify", url_path="otp-verify")
-    def cartCount(self, request):
-        notification_count = self.get_queryset().count()
-        return Response({"total_notification":notification_count}, status=status.HTTP_201_CREATED)
+    @action(detail=False, methods=['get'], name="notificationCount", url_path="notification-count")
+    def notificationCount(self, request):
+        notification_obj = self.get_queryset()
+        data  = {
+            'unread_notification':notification_obj.filter(is_read = False).count(),
+            'read_notification':notification_obj.filter(is_read = True).count(),
+            'total_notification':notification_obj.count()
+        }
+        print(data)
+        return Response({"message":data}, status=status.HTTP_201_CREATED)
+    
+    @action(detail=False, methods=['get'], name="allReadNotification", url_path="mark-as-all-read")
+    def allReadNotification(self, request):
+        notification_obj = self.get_queryset().filter(is_read = False).update(is_read = True)
+        
+        return Response({"message":"mark as all read completed"}, status=status.HTTP_201_CREATED)
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
