@@ -26,7 +26,7 @@ def sendNotificationToOneSignals(data,file = None):
         payload = {
             "app_id":settings.APP_ID,
             "contents": {"en": data.get('notification_message'),},
-            "filters": [{"field": "tag", "key": "user_id", "relation": "=", "value": "15"},],
+            "filters": [{"field": "tag", "key": "user_id", "relation": "=", "value": data.get('to_notification')[0]},],
             "data":{"path":data.get('path')}
         }
 
