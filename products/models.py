@@ -58,6 +58,9 @@ class Category(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    order_at = models.PositiveIntegerField(default = 1)
+
+    
     def __str__(self):
         return self.name
     
