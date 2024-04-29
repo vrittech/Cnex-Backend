@@ -42,7 +42,7 @@ class DeliveryCharge(models.Model):#if order price falls between min and max the
             raise ValidationError("Price range overlaps with existing records.")
         
         if self.max_price<=self.min_price:
-            raise ValidationError("max price range must be greater min price range.")
+            raise ValidationError("max price range must be greater than min price range.")
 
 
     def save(self, *args, **kwargs):
