@@ -11,11 +11,16 @@ class CouponViewsets(viewsets.ModelViewSet):
     queryset  = Coupon.objects.all().order_by('-created_date')
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_coupon_ok = True)
+        # return super().get_queryset().filter(is_coupon_ok = True)
+        coupons = super().get_queryset().filter(is_active = True)
+        valid_coupons = [coupon for coupon in coupons if coupon.is_coupon_ok]
+        return valid_coupons
         if self.request.user.is_authenticated and self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
             return super().get_queryset()
         else:
-            return super().get_queryset().filter(is_coupon_ok = True)
+            coupons = super().get_queryset().filter(is_active = True)
+            valid_coupons = [coupon for coupon in coupons if coupon.is_coupon_ok]
+            return valid_coupons
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
