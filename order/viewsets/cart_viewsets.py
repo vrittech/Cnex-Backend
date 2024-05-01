@@ -58,6 +58,21 @@ class CartViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], name="getCheckOutProducts", url_path="get-checkout-products")
     def getCheckOutProducts(self, request):
+        coupon_code = request.data.get('coupon_code')
+        coupon_obj = None
+        if coupon_code:
+            coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
+            if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
+                if Order.objects.filter(coupons = coupon_obj.first()).exists():
+                    # raise serializers.ValidationError("You have already used this coupon") 
+                    print("You have already used this coupon")
+                    return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # raise serializers.ValidationError("Either coupon not exists or it is expired.") 
+                print("Either coupon not exists or it is expired")
+                return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            
         data = CartsHisabKitab(request)
         return Response({"message": data.get('message'),'data':data}, status=status.HTTP_201_CREATED)
     
