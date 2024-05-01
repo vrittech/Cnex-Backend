@@ -28,7 +28,7 @@ class Coupon(models.Model):
     @property
     def is_coupon_ok(self):
         now = timezone.now().date()
-        return self.is_active and self.from_date <= now <= self.to_date and order.models.Order.objects.filter(coupons = self).filter(~Q(order_status='checkout')).count()<self.limit
+        return self.is_active and self.from_date <= now <= self.to_date and order.models.Order.objects.filter(coupons = self).filter(~Q(order_status='checkout')).count()<=self.limit
 
 
     
