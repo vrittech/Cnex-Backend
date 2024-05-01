@@ -12,9 +12,7 @@ class CouponViewsets(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # return super().get_queryset().filter(is_coupon_ok = True)
-        coupons = super().get_queryset().filter(is_active = True)
-        valid_coupons = [coupon for coupon in coupons if coupon.is_coupon_ok]
-        return valid_coupons
+       
         if self.request.user.is_authenticated and self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
             return super().get_queryset()
         else:
