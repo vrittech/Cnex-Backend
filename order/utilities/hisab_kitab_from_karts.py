@@ -65,7 +65,8 @@ def CartsHisabKitab(request):
             raise ValidationError("Either coupon does not exist or it is expired")
             message = "Either coupon not exists or it is expired"
     final_total_price = float(delivery_charge) + final_total_price - float(coupon_discount)
-
+    if final_total_price < 0:
+        final_total_price = 0
     data = {
         'total_price':final_total_price,
         'products_variations_quantity_price':total_price,
