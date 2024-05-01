@@ -1,4 +1,4 @@
-from ..models import Cart
+from ..models import Cart,Order
 from ..serializers.cart_serializer import CartReadSerializers,CartWriteSerializers
 from ..utilities.importbase import *
 from rest_framework.decorators import action
@@ -41,8 +41,9 @@ class CartViewsets(viewsets.ModelViewSet):
         coupon_obj = None
         if coupon_code:
             coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
-            if coupon_obj.exists() and coupon_obj.first().is_verify == True:
-                pass
+            if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
+                if Order.objects.filter(coupons = coupon_obj.first()).exists():
+                    return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
             
