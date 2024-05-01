@@ -3,6 +3,7 @@ from coupon.models import Coupon
 from ..models import Cart
 from deliverycharge.models import DeliveryCharge
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
 
 def CartsHisabKitab(request):
     cart_ids = request.data.get('carts')
@@ -34,7 +35,7 @@ def CartsHisabKitab(request):
             'product_total_price':product_total_price
         }
         details.append(products)
-    
+
 
     delivery_charge_obj = DeliveryCharge.objects.filter(min_price__lte=total_price, max_price__gte=total_price)
     if delivery_charge_obj.exists():
@@ -54,13 +55,14 @@ def CartsHisabKitab(request):
     final_total_price = total_price-discount
     if coupon_code:
         coupon_obj = Coupon.objects.filter(code = coupon_code)
-        if coupon_obj.exists() and coupon_obj.first().is_verify == True:
+        if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
             coupon_apply = True
             coupon_discount = coupon_obj.first().discount
             if coupon_obj.first().discount_type == "percentage":
                 coupon_discount = float(coupon_obj.first().discount)/100*float(final_total_price)
 
         else:
+            raise ValidationError("Either coupon does not exist or it is expired")
             message = "Either coupon not exists or it is expired"
     final_total_price = float(delivery_charge) + final_total_price - float(coupon_discount)
 
