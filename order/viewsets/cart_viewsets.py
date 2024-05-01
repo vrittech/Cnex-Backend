@@ -11,6 +11,7 @@ from rest_framework.decorators import action
 from ..viewsets.cart_to_order import CartToOrder
 from coupon.models import Coupon
 from ..utilities.hisab_kitab_from_karts import CartsHisabKitab
+from rest_framework import serializers
 
 
 class CartViewsets(viewsets.ModelViewSet):
@@ -43,8 +44,10 @@ class CartViewsets(viewsets.ModelViewSet):
             coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
                 if Order.objects.filter(coupons = coupon_obj.first()).exists():
+                    raise serializers.ValidationError("You have already used this coupon") 
                     return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
             else:
+                raise serializers.ValidationError("Either coupon not exists or it is expired.") 
                 return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
             
         cart_ids = request.data.get('carts')
