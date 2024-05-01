@@ -45,9 +45,11 @@ class CartViewsets(viewsets.ModelViewSet):
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
                 if Order.objects.filter(coupons = coupon_obj.first()).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
+                    print("You have already used this coupon")
                     return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 # raise serializers.ValidationError("Either coupon not exists or it is expired.") 
+                print("Either coupon not exists or it is expired")
                 return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
             
         cart_ids = request.data.get('carts')
