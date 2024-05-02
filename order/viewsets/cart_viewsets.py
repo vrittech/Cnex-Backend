@@ -63,7 +63,7 @@ class CartViewsets(viewsets.ModelViewSet):
         if coupon_code:
             coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
-                if Order.objects.filter(coupons = coupon_obj.first()).exists():
+                if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
                     print("You have already used this coupon")
                     return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
