@@ -19,6 +19,15 @@ class CategoryViewsets(viewsets.ModelViewSet):
     }
     lookup_field = 'slug'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+    
+        parent_is_null = self.request.query_params.get('parent__isnull')
+        if parent_is_null == 'true':
+            queryset = queryset.filter(parent__isnull=True)
+        
+        return queryset
+
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return CategoryWriteSerializers
