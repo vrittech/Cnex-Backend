@@ -68,6 +68,10 @@ class Category(models.Model):
         # Generate the slug when saving the product if it's blank
         if not self.slug:
             self.slug = slugify(self.name)
+
+        if not self.order_at:
+            self.order_at = Category.objects.all().count()
+    
         super().save(*args, **kwargs)
 
 class Product(models.Model):
