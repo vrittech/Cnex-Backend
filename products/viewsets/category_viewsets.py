@@ -9,6 +9,16 @@ class CategoryViewsets(viewsets.ModelViewSet):
     pagination_class = MyPageNumberPagination
     queryset  = Category.objects.all().order_by('order_at')
     lookup_field = 'slug'
+
+    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    search_fields = ['name','slug']
+    ordering_fields = ['id','created_date','order_at']
+
+    filterset_fields = {
+        'parent':['exact'],
+    }
+    lookup_field = 'slug'
+
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
             return CategoryWriteSerializers
