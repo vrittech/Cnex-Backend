@@ -18,7 +18,7 @@ def str_to_list(data,variations):
 class ParentCategoryReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id','name']
+        fields = ['id','name','slug']
 
 class CategoryReadSerializers(serializers.ModelSerializer):
     parent = ParentCategoryReadSerializers()
