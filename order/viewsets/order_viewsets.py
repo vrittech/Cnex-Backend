@@ -19,7 +19,7 @@ class OrderViewsets(viewsets.ModelViewSet):
     queryset  = Order.objects.all()
 
     filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
-    search_fields = ['id']
+    search_fields = ['id','user__email','user__phone','user__first_name']
     ordering_fields = ['id','created_date']
 
     filterset_fields = {
