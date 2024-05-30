@@ -38,16 +38,16 @@ class OrderViewsets(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
+        if self.action == "ToReceiveOrder" and self.request.user.role == roles.USER:
+            query = super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
         if self.request.user.role == roles.USER:
             query = super().get_queryset().filter(user = self.request.user)
+        elif self.action == "getFailureOrder" and self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
+            query = super().get_queryset().filter(order_status = "checkout")
+            return query.order_by("-order_date")
         elif self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
             query =  super().get_queryset()
-        elif self.action == "ToReceiveOrder" and self.request.user.role == roles.USER:
-            query = super().get_queryset().filter(Q(order_status = "in-progress") | Q(order_status = "shipped")).filter(user = self.request.user)
-        
-        elif self.action == "getFailureOrder" and self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
-            query = super().get_queryset().filter(Q(order_status = "checkout"))
-
+    
         return query.order_by("-order_date").filter(~Q(order_status = "checkout"))
    
     @action(detail=False, methods=['get'], name="ToReceiveOrder", url_path="received-order")
@@ -56,10 +56,7 @@ class OrderViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], name="getFailureOrder", url_path="checkout")
     def getFailureOrder(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter()
-        serializer_class = self.get_serializer_class()
-        serializer = serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request, *args, **kwargs)
     
     @action(detail=False, methods=['get'], name="customerOrder", url_path="customer-order")
     def customerOrder(self, request, *args, **kwargs):
