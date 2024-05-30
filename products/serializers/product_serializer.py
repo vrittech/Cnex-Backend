@@ -274,6 +274,7 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             serializers.save()
     elif create_update == "update":
         variation_data = ast.literal_eval(variation_data)
+        ProductDetailAfterVariation.objects.filter(product_id = product).delete() #this let variation delete from product. this is not best method. please use another best method
         for variation in variation_data:
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
             product_have_variation_obj = ProductDetailAfterVariation.objects.filter(product_id = product,variation_options = variation.get('id'))
