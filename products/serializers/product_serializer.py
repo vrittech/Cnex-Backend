@@ -295,7 +295,9 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             serializers.save()
         
         print(variation_data,"remaining id ", ProductDetailAfterVariation_objs_list)
-        Cart.objects.filter(variations__in = ProductDetailAfterVariation_objs_list)
+        deleted_cart_obj = Cart.objects.filter(variations__in = ProductDetailAfterVariation_objs_list)
+        print("deleted cart ",deleted_cart_obj)
+        deleted_cart_obj.delete()
     
     
                
