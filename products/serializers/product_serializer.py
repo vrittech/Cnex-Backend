@@ -274,8 +274,15 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             serializers.save()
     elif create_update == "update":
         variation_data = ast.literal_eval(variation_data)
-        ProductDetailAfterVariation.objects.filter(product_id = product).delete() #this let variation delete from product. this is not best method. please use another best method
+
+        ProductDetailAfterVariation_objs_list =  list(ProductDetailAfterVariation.objects.filter(product_id = product).values_list('variation_options_id',flat=True))
+        print(ProductDetailAfterVariation_objs_list)
+        
+        ProductDetailAfterVariation.objects.filter(product_id = product).delete() #this let variation delete from product. this is not best method. please use another best 
+        
         for variation in variation_data:
+            ProductDetailAfterVariation_objs_list.remove(variation.get('id'))
+
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
             product_have_variation_obj = ProductDetailAfterVariation.objects.filter(product_id = product,variation_options = variation.get('id'))
             if product_have_variation_obj.exists():
@@ -286,6 +293,9 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             serializers = ProductDetailAfterVariationWriteSerializers(product_have_variation_obj,data=create_payload, partial=True)
             serializers.is_valid(raise_exception=True)
             serializers.save()
+        
+        print(variation_data,"remaining id ", ProductDetailAfterVariation_objs_list)
+        Cart.objects.filter(variations__in = ProductDetailAfterVariation_objs_list)
     
     
                
