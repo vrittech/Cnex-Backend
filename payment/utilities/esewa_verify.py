@@ -10,8 +10,8 @@ def payment_verify(data):
         return None, False  # Return None and False if payment type is not recognized
 
 def EsewaVerify(data):
-    verification_url = f"https://esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
-    # verification_url = f"https://rc.esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
+    # verification_url = f"https://esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
+    verification_url = f"https://rc.esewa.com.np/mobile/transaction?txnRefId={data.get('refId')}"
     headers = {
         'merchantId': settings.ESEWA_MERCHANT_ID,
         'merchantSecret': settings.ESEWA_MERCHANT_SECRETE
