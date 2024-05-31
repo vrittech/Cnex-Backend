@@ -51,7 +51,7 @@ class CartWriteSerializers(serializers.ModelSerializer):
 
     def validate_quantity(self,value):
         product = self.instance.product
-        variations = self.instance.variations
+        variations = self.instance.variations.all()
         print(product,variations)
         variations_obj = product.variations.all().filter(product_id = product.id,variation_options_id__in = [variations.id])
         print(variations_obj,variations_obj.first().quantity)
