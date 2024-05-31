@@ -66,13 +66,16 @@ class CartViewsets(viewsets.ModelViewSet):
                 if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
                     print("You have already used this coupon")
+                    request.data.pop("coupon_code", None)
                     data = CartsHisabKitab(request)
                     return Response({"message": "You have already used this coupon",'data':data}, status=status.HTTP_400_BAD_REQUEST)
-                    #return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
+                   
             else:
                 # raise serializers.ValidationError("Either coupon not exists or it is expired.") 
                 print("Either coupon not exists or it is expired")
-                return Response({"message": "Either coupon not exists or it is expired"}, status=status.HTTP_400_BAD_REQUEST)
+                request.data.pop("coupon_code", None)
+                data = CartsHisabKitab(request)
+                return Response({"message": "Either coupon not exists or it is expired","data":data}, status=status.HTTP_400_BAD_REQUEST)
             
         
         data = CartsHisabKitab(request)
