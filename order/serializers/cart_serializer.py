@@ -49,20 +49,18 @@ class CartWriteSerializers(serializers.ModelSerializer):
         model = Cart
         fields = '__all__'
 
-    def validate_quantity(self,value):
-        product = self.instance.product
-        variations = self.instance.variations.all()
-        print(product,variations)
-        variations_obj = product.variations.all().filter(product_id = product.id,variation_options_id__in = [variations.id])
-        print(variations_obj,variations_obj.first().quantity)
-        if variations_obj.exists() and int(variations_obj.first().quantity) >=int(value):
-            return value
-        else:
-            raise serializers.ValidationError("Quantity cannot exceed available stock.")
+    # def validate_quantity(self,value):
+    #     product = self.instance.product
+    #     variations = list(self.instance.variations.values_list('id', flat=True))
+    #     print(product,variations)
+    #     variations_obj = product.variations.all().filter(product_id = product.id,variation_options_id__in = variations)
+    #     print(variations_obj,variations_obj.first().quantity)
+    #     if variations_obj.exists() and int(variations_obj.first().quantity) >=int(value):
+    #         return value
+    #     else:
+    #         raise serializers.ValidationError("Quantity cannot exceed available stock.")
 
     def validate(self, data):
-        
-        print("method: ",self.context['request'].method)
         if self.context['request'].method == "POST":
             user = data['user']
             product = data['product']
