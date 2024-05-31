@@ -82,7 +82,7 @@ class CartWriteSerializers(serializers.ModelSerializer):
     
     def create(self, validated_data):
         existing_cart_item = validated_data.pop('existing_cart_item', None)
-
+        print(existing_cart_item, " existing_cart_item")
         if existing_cart_item:
             existing_cart_item.quantity += validated_data['quantity']
             existing_cart_item.save()
