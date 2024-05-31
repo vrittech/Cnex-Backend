@@ -15,6 +15,9 @@ def CartsHisabKitab(request):
     message = "Cart checkout get successfully"            
         
     cart_obj = Cart.objects.filter(user=request.user,id__in = cart_ids)
+    
+    if cart_obj.exists() == False:
+        raise ValidationError("The selected variation is not available at the moment.")        
 
     total_price = 0.00
     discount = 0.00
