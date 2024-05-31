@@ -67,10 +67,14 @@ class CartWriteSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid variations provided.")
         
         for variations_obj in variations_objs:
-            if int(variations_obj.quantity) >=int(value):
+            if int(variations_obj.quantity) >= int(value):
                 pass
             else:
                 raise serializers.ValidationError("Quantity cannot exceed available stock.")
+        
+        if int(product.quantity) < int(value):
+            raise serializers.ValidationError("Quantity cannot exceed available stock.")
+
         return value
 
     def validate(self, data):
