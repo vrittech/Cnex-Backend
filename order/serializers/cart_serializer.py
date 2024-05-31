@@ -50,6 +50,7 @@ class CartWriteSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_quantity(self,value):
+        return value
         if self.context['request'].method in ["PATCH", "PUT"]:
             product = self.instance.product
             variations = list(self.instance.variations.values_list('id', flat=True))
