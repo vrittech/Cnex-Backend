@@ -68,14 +68,14 @@ class CartViewsets(viewsets.ModelViewSet):
                     print("You have already used this coupon")
                     request.data.pop("coupon_code", None)
                     data = CartsHisabKitab(request)
-                    return Response({"message": "You have already used this coupon",'data':data}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"message": "You have already used this coupon",'data':data}, status=status.HTTP_200_OK)
                    
             else:
                 # raise serializers.ValidationError("Either coupon not exists or it is expired.") 
                 print("Either coupon not exists or it is expired")
                 request.data.pop("coupon_code", None)
                 data = CartsHisabKitab(request)
-                return Response({"message": "Either coupon not exists or it is expired","data":data}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Either coupon not exists or it is expired","data":data}, status=status.HTTP_200_OK)
             
         
         data = CartsHisabKitab(request)
