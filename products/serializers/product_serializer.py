@@ -285,7 +285,7 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
             try:
                 ProductDetailAfterVariation_objs_list.remove(variation.get('id'))
             except:
-                print("can't remove , element not found.")
+                print("can't remove , element not found..")
 
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
             product_have_variation_obj = ProductDetailAfterVariation.objects.filter(product_id = product,variation_options = variation.get('id'))
