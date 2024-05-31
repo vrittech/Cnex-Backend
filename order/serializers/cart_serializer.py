@@ -63,12 +63,9 @@ class CartWriteSerializers(serializers.ModelSerializer):
             product = Product.objects.get(id = product)
             variations_objs = product.variations.all().filter(product_id = product.id,variation_options_id__in = variations)
 
-
-        print(product,variations)
-        
-        print(variations_objs,variations_objs.first().quantity)
-        if not variations_objs:
+        if len(variations)>0 and not variations_objs:
             raise serializers.ValidationError("Invalid variations provided.")
+        
         for variations_obj in variations_objs:
             if int(variations_obj.quantity) >=int(value):
                 pass
