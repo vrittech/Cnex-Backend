@@ -281,8 +281,11 @@ def createProductDetailAfterVariation(variation_data,product,create_update):
         ProductDetailAfterVariation.objects.filter(product_id = product).delete() #this let variation delete from product. this is not best method. please use another best 
         
         for variation in variation_data:
-            
-            ProductDetailAfterVariation_objs_list.remove(variation.get('id'))
+
+            try:
+                ProductDetailAfterVariation_objs_list.remove(variation.get('id'))
+            except:
+                print("can't remove , element not found.")
 
             create_payload = {**variation,'variation_options':variation.get('id') ,'product': product} 
             product_have_variation_obj = ProductDetailAfterVariation.objects.filter(product_id = product,variation_options = variation.get('id'))
