@@ -23,7 +23,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.id
         path = "#"
         notification_message = mapping.get(method).get('admin_message').format(username=instance.username,user_id = instance.id)
-        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        # user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
@@ -32,7 +32,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        # user_message = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
     
@@ -43,7 +43,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(services_name=services_names)
-        user_messaage = mapping.get(method).get('admin_message').format(services_name=services_names)
+        # user_messaage = mapping.get(method).get('admin_message').format(services_name=services_names)
         is_read = False
         group_notification = '..'
 
@@ -52,7 +52,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        # user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
 
@@ -61,7 +61,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        user_messaage = mapping.get(method).get('admin_message').format(order_id=instance.id)
+        # user_messaage = mapping.get(method).get('admin_message').format(order_id=instance.id)
         is_read = False
         group_notification = '..'
 
@@ -70,7 +70,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = instance.user.id
         path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = mapping.get(method).get('admin_message').format(order_id=instance.id)
-        user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
+        # user_messaage = mapping.get(method).get('user_message').format(username=instance.username,user_id = instance.id)
         is_read = False
         group_notification = '..'
     
@@ -88,7 +88,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
         path = mapping.get(method).get('path').format(slug=instance.slug)
         notification_message = custom_message
-        user_messaage = custom_message
+        # user_messaage = custom_message
         is_read = False
         group_notification = '..'
 
@@ -100,7 +100,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         else:
             path = mapping.get(method).get('path').format(order_id=instance.id)
         notification_message = custom_message
-        user_messaage = custom_message
+        # user_messaage = custom_message
         is_read = False
         group_notification = '..'
 
@@ -109,7 +109,7 @@ def NotificationHandler(instance,method,custom_message=None,title = None,file = 
         from_notification = CustomUser.objects.filter(Q(role = roles.ADMIN) | Q(role = roles.SUPER_ADMIN)).first().id
         path = mapping.get(method).get('path').format(id=instance.id)
         notification_message = custom_message
-        user_messaage = custom_message
+        # user_messaage = custom_message
         is_read = False
         group_notification = '..'
         
