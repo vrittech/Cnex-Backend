@@ -46,7 +46,7 @@ class OrderViewsets(viewsets.ModelViewSet):
             query = super().get_queryset().filter(order_status = "checkout")
             return query.order_by("-order_date")
         
-        if self.request.user.role == roles.USER:
+        elif self.request.user.role == roles.USER:
             query = super().get_queryset().filter(user = self.request.user)
 
         elif self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
@@ -57,7 +57,6 @@ class OrderViewsets(viewsets.ModelViewSet):
 
         if self.action == "partial_update":
             return query.order_by("-order_date")
-        
         
         
         return query.order_by("-order_date").filter(~Q(order_status = "checkout"))
