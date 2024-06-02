@@ -50,10 +50,15 @@ class OrderViewsets(viewsets.ModelViewSet):
             query = super().get_queryset().filter(user = self.request.user)
 
         elif self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
+            if self.action == "retrieve":
+                return super().get_queryset()
+            
             query =  super().get_queryset()
 
         if self.action == "partial_update":
             return query.order_by("-order_date")
+        
+        
         
         return query.order_by("-order_date").filter(~Q(order_status = "checkout"))
    
