@@ -7,7 +7,7 @@ class VariationViewsets(viewsets.ModelViewSet):
     permission_classes = [AdminViewSetsPermission]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
-    queryset  = Variation.objects.all()
+    queryset  = Variation.objects.all().order_by('-id')
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
