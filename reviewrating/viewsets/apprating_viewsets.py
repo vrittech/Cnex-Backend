@@ -3,6 +3,7 @@ from ..serializers.apprating_serializers import AppRatingWriteSerializers,AppRat
 from ..utilities.importbase import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from accounts import roles
 
 class AppRatingViewsets(viewsets.ModelViewSet):
     serializer_class = AppRatingRatingReadSerializers
@@ -29,6 +30,9 @@ class AppRatingViewsets(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.method in ['allRatings']:
             return super().get_queryset().all()
+        if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+            return super().get_queryset()
+        
         return super().get_queryset().filter(user = self.request.user)
     
     def list(self, request, *args, **kwargs):
