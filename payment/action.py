@@ -20,11 +20,11 @@ def PaymentPostSave(sender, instance, created, **kwargs):
             else:
                 if order_obj.first().total_price == instance.ammount:
                     payment_status = "paid"
-                    NotificationHandler(order_obj.first(),"payment_confirmed")
-                    # try:
-                    #     NotificationHandler(order_obj.first(),"payment_confirmed")
-                    # except:
-                    #     pass #notificaation hide if error
+                    try:
+                        NotificationHandler(order_obj.first(),"payment_confirmed")
+                    except:
+                        print("notification fail for payment confirmed.")
+              
                 else:
                     payment_status = "unpaid"
             order_obj.update(payment_status = payment_status,order_status = "in-progress")
@@ -52,11 +52,10 @@ def PaymentServicePostSave(sender, instance, created, **kwargs):
             'payment_mode':instance.payment_mode,
         }
         Appointment.objects.create(**payload)
-        NotificationHandler(instance.order,"service_booked")
-        # try:
-            # NotificationHandler(instance.order,"service_booked")
-        # except:
-        #     pass #notificaation hide if error
+        try:
+            NotificationHandler(instance.order,"service_booked")
+        except:
+            pass #notificaation hide if error
     
 
 @receiver(pre_save,sender=PaymentService)
