@@ -50,18 +50,19 @@ class CartWriteSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate_quantity(self,value):
-        # return value
+      
         if self.context['request'].method in ["PATCH", "PUT"]:
             product = self.instance.product
-            print("PATCH",product)
             variations = list(self.instance.variations.values_list('id', flat=True))
             variations_objs = product.variations.all().filter(product_id = product.id,variation_options_id__in = variations)
         else: #if post
             product = self.initial_data.get('product')
-            print("POST",product)
             variations = self.initial_data.get('variations', [])
             product = Product.objects.get(id = product)
             variations_objs = product.variations.all().filter(product_id = product.id,variation_options_id__in = variations)
+
+        if product.product_type == "pre-order":
+            return value
 
         if len(variations)>0 and not variations_objs:
             raise serializers.ValidationError("Invalid variations provided.")
