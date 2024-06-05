@@ -18,7 +18,7 @@ from ..models import Appointment
 
 class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
     serializer_class = CheckoutAppointmentReadSerializers
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]    
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = CheckoutAppointment.objects.all()
@@ -32,8 +32,10 @@ class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
 
         
     def get_queryset(self):
-        return super().get_queryset()
         if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+            if self.action in ['getFailureAppointment']:
+                order_appointments = list(Appointment.objects.all().values_list('checkout_appointment',flat = True))
+                return super().get_queryset().filter(~Q(id__in = order_appointments))
             return super().get_queryset()
         else:
             return super().get_queryset().filter(user_id = self.request.user.id)
@@ -73,13 +75,7 @@ class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], name="getFailureAppointment", url_path="cart-appointment")
     def getFailureAppointment(self, request, *args, **kwargs):
-        order_appointments = list(Appointment.objects.all().values_list('checkout_appointment',flat = True))
-        # print(order_appointments)
-        queryset = self.get_queryset().filter(~Q(id__in = order_appointments))
-        # print(list(self.get_queryset().values_list('id',flat=True)),list(queryset.values_list('id',flat=True)))
-        serializer_class = self.get_serializer_class()
-        serializer = serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request, *args, **kwargs)
     
 
 class ServicesReadSerializers_Checkout(serializers.ModelSerializer):
