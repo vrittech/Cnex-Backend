@@ -3,6 +3,8 @@ from ..serializers.appointment_serializer import AppointmentReadSerializers,Appo
 from ..utilities.importbase import *
 from rest_framework.permissions import  IsAuthenticated
 from accounts import roles
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 class AppointmentViewsets(viewsets.ModelViewSet):
     serializer_class = AppointmentReadSerializers
@@ -10,6 +12,14 @@ class AppointmentViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Appointment.objects.all()
+
+    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    search_fields = ['id']
+    ordering_fields = ['id']
+
+    filterset_fields = {
+        'payment_status':['exact'],
+    }
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
@@ -21,5 +31,6 @@ class AppointmentViewsets(viewsets.ModelViewSet):
             return super().get_queryset()
         else:
             return super().get_queryset().filter(user_id = self.request.user.id)
+        
     
     
