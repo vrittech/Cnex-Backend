@@ -18,16 +18,6 @@ def OrderPreSave(sender,instance,**kwargs):
             except:
                 print("issues in notifications.")
 
-    #
-@receiver(post_save, sender=OrderItem)
-def OrderItemPostSave(sender, instance, created, **kwargs):
-    if created:
-        chanages_quantity = instance.product.quantity - instance.quantity
-        if chanages_quantity>0:
-            Product.objects.filter(id = instance.product.id).update(quantity = chanages_quantity)
-        else:
-            Product.objects.filter(id = instance.product.id).update(quantity = 0,product_type =  "pre-order")
-
 @receiver(pre_save,sender=OrderItem)
 def OrderItemPreSave(sender,instance,**kwargs):
     pass

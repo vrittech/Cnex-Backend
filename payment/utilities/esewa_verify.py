@@ -2,6 +2,7 @@ from django.conf import settings
 import requests
 from ..models import PaymentFail
 from order.models import Order
+from products.models import Product
 
 def payment_verify(data):
     if data.get('payment_type') == "esewa":
@@ -43,5 +44,18 @@ def PaymentsFail(response , data , service_product):
 
 
 def VerifyOrder(data):#for cod products
-    order = Order.objects.filter(id = data.get('order_id'),order_status = "checkout").update(payment_status = "cod",order_status="in-progress")
-    return order
+    order_obj = Order.objects.filter(id = data.get('order_id'),order_status = "checkout")
+
+    order_items = order_obj.first().order_items.all()
+    for instance in order_items:
+        chanages_quantity = instance.product.quantity - instance.quantity
+        if chanages_quantity>0:
+            prouct_obj =Product.objects.filter(id = instance.product.id).update(quantity = chanages_quantity)
+            total_variations = list(instance.variations.all().value_list('variations',flat = True))
+            prouduct_variation_options = prouct_obj.first().variations.filter(variation_options__in = total_variations)
+            for product_variation_item  in prouduct_variation_options:
+                product_variation_item.update(quantity =product_variation_item.quantity - instance.quantity)
+        else:
+            prouct_obj = Product.objects.filter(id = instance.product.id).update(quantity = 0,product_type =  "pre-order")
+
+    return order_obj.update(payment_status = "cod",order_status="in-progress")
