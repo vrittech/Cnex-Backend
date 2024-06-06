@@ -46,6 +46,10 @@ class OrderViewsets(viewsets.ModelViewSet):
             query = super().get_queryset().filter(order_status = "checkout")
             return query.order_by("-order_date")
         
+        elif self.action == "customerOrder":
+             return super().get_queryset().order_by('user').distinct('user')#.annotate(total_prices=Sum('total_price'))
+           
+        
         elif self.request.user.role == roles.USER:
             query = super().get_queryset().filter(user = self.request.user)
 
@@ -71,7 +75,4 @@ class OrderViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'], name="customerOrder", url_path="customer-order")
     def customerOrder(self, request, *args, **kwargs):
-        queryset = self.get_queryset().order_by('user').distinct('user')#.annotate(total_prices=Sum('total_price'))
-        serializer_class = self.get_serializer_class()
-        serializer = serializer_class(queryset, many=True)
-        return Response(serializer.data)
+       return super().list(request, *args, **kwargs)
