@@ -30,8 +30,8 @@ class AppRatingViewsets(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.method in ['allRatings']:
             return super().get_queryset().all()
-        if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
-            return super().get_queryset()
+        elif self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+             return super().get_queryset().all()
         
         return super().get_queryset().filter(user = self.request.user)
     

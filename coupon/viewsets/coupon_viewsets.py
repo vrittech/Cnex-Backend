@@ -10,6 +10,17 @@ class CouponViewsets(viewsets.ModelViewSet):
     pagination_class = MyPageNumberPagination
     queryset  = Coupon.objects.all().order_by('-created_date')
 
+    filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
+    search_fields = ['code','discount_type']
+    ordering_fields = ['id']
+
+    filterset_fields = {
+        'discount':['gte','lte'],
+        'is_active':['exact'],
+        'is_expired':['exact'],
+    }
+
+
     def get_queryset(self):
         # return super().get_queryset().filter(is_coupon_ok = True)
        
