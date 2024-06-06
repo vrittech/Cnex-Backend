@@ -49,8 +49,6 @@ class Services(models.Model): #by admin
             'price':self.price,
             'slots':slots_data,
         }
-
-        print(services_detail, " :: getServicesSlotsAvailable")
            
         return services_detail
     
@@ -107,6 +105,12 @@ class Appointment(models.Model): #this is order
         ('offline', 'offline'),
     ])
     cancellation_reason = models.TextField(null=True, blank=True)
+
+    service_name = models.CharField(max_length = 1000,null = True,blank=True)
+    slots_from_time = models.CharField(max_length = 1000,null = True,blank=True)
+    slots_to_time = models.CharField(max_length = 1000,null = True,blank=True)
+    number_of_staffs = models.CharField(max_length = 1000,null = True,blank=True)
+
 
     def __str__(self) -> str:
         return self.user.username
