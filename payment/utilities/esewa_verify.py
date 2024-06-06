@@ -49,12 +49,14 @@ def VerifyOrder(data):#for cod products
     order_items = order_obj.first().order_items.all()
     for instance in order_items:
         chanages_quantity = instance.product.quantity - instance.quantity
+        
+        total_variations = list(instance.variations.all().value_list('variations',flat = True))
+        prouduct_variation_options = prouct_obj.first().variations.filter(variation_options__in = total_variations)
+        for product_variation_item  in prouduct_variation_options:
+            product_variation_item.update(quantity = product_variation_item.quantity - instance.quantity)
+
         if chanages_quantity>0:
             prouct_obj =Product.objects.filter(id = instance.product.id).update(quantity = chanages_quantity)
-            total_variations = list(instance.variations.all().value_list('variations',flat = True))
-            prouduct_variation_options = prouct_obj.first().variations.filter(variation_options__in = total_variations)
-            for product_variation_item  in prouduct_variation_options:
-                product_variation_item.update(quantity =product_variation_item.quantity - instance.quantity)
         else:
             prouct_obj = Product.objects.filter(id = instance.product.id).update(quantity = 0,product_type =  "pre-order")
 
