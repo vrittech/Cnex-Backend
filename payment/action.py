@@ -43,6 +43,18 @@ def PaymentServicePostSave(sender, instance, created, **kwargs):
         else:
             payment_status =  "unpaid"
         
+        try:
+            service_name = instance.order.services_items.first().service.name
+            slots_obj = instance.order.services_items.first().slots.first()
+            slots_from_time = slots_obj.from_time
+            slots_to_time = slots_obj.to_time
+            number_of_staffs = slots_obj.number_of_staffs
+        except:
+            service_name = ''
+            slots_from_time =  ''
+            slots_to_time = ''
+            number_of_staffs = ''
+
         payload =  {
             'user':instance.order.user,
             'checkout_appointment':instance.order,
@@ -50,6 +62,12 @@ def PaymentServicePostSave(sender, instance, created, **kwargs):
             'payment_status':payment_status,
             'appointment_status':'confirmed',
             'payment_mode':instance.payment_mode,
+
+            'service_name':service_name,
+            'slots_from_time':slots_from_time,
+            'slots_to_time':slots_to_time,
+            'number_of_staffs':number_of_staffs
+
         }
         Appointment.objects.create(**payload)
         try:
