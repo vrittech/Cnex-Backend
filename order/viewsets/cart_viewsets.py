@@ -12,7 +12,7 @@ from ..viewsets.cart_to_order import CartToOrder
 from coupon.models import Coupon
 from ..utilities.hisab_kitab_from_karts import CartsHisabKitab
 from rest_framework import serializers
-
+from utilities.quantity_manage import quantityValidation
 
 class CartViewsets(viewsets.ModelViewSet):
     serializer_class = CartReadSerializers
@@ -38,6 +38,9 @@ class CartViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], name="CartToOrder", url_path="cart-checkout")
     def CartToOrder(self, request):
+        if quantityValidation() == False:
+             return Response({"message": "Exceeds quantity than actual product quantity available."}, status=status.HTTP_400_BAD_REQUEST)
+
         coupon_code = request.data.get('coupon_code')
         coupon_obj = None
         if coupon_code:
@@ -65,7 +68,6 @@ class CartViewsets(viewsets.ModelViewSet):
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
                 if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
-                    print("You have already used this coupon")
                     request.data.pop("coupon_code", None)
                     data = CartsHisabKitab(request)
                     return Response({"message": "You have already used this coupon",'data':data}, status=status.HTTP_200_OK)
