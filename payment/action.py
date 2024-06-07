@@ -27,7 +27,7 @@ def PaymentPostSave(sender, instance, created, **kwargs):
               
                 else:
                     payment_status = "unpaid"
-            order_obj.update(payment_status = payment_status,order_status = "in-progress")
+            order_obj.first().save(payment_status = payment_status,order_status = "in-progress")
     
 
 @receiver(pre_save,sender=Payment)

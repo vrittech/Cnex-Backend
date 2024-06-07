@@ -4,6 +4,7 @@ from django.db.models import Sum
 from rest_framework.exceptions import ValidationError
 from ..serializers.checkout_services_items_serializers import ServicesItemsWriteSerializers
 from django.db import transaction
+from accounts.models import CustomUser
 
 def getTotalServicesPrice(data):
     services = data.get('services')
@@ -29,12 +30,25 @@ class services_itemsSerializers(serializers.ModelSerializer):
         model = ServicesItems
         fields = '__all__'
 
+class CustomUserReadSerializers_AppointmentReadSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username','email','full_name','phone']
+
 class getFailureAppointmentSerializers(serializers.ModelSerializer):
     services_items = services_itemsSerializers(many = True)
+    user = CustomUserReadSerializers_AppointmentReadSerializers()
+    appointment_status = serializers.SerializerMethodField()
+    payment_status = serializers.SerializerMethodField()
     class Meta:
         model = CheckoutAppointment
         fields = '__all__'
 
+    def get_appointment_status(self,obj):
+        return "Fail"
+    
+    def get_payment_status(self,obj):
+        return "unpaid"
 
 class CheckoutAppointmentWriteSerializers(serializers.ModelSerializer):
     class Meta:

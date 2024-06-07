@@ -11,7 +11,6 @@ def AdminLevel(request):
 
 def isOwner(request):
     order = Order.objects.filter(id = request.data.get('order_id'))
-    print(order, " permission ")
     if not order.exists():
         return False
     if request.user.id == order.first().user.id:

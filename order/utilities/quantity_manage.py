@@ -1,0 +1,26 @@
+#this function is used to decrease and increase of product/variations quantity
+from products.models import Product
+
+def quantityManage(order_obj,increase_descrease):
+    order_items = order_obj.first().order_items.all()
+    for instance in order_items:
+        
+        if increase_descrease == "-":
+            chanages_quantity = instance.product.quantity - instance.quantity
+        else:
+            chanages_quantity = instance.product.quantity + instance.quantity
+        
+        total_variations = list(instance.variations.all().value_list('variations',flat = True))
+        prouduct_variation_options = prouct_obj.first().variations.filter(variation_options__in = total_variations)
+        for product_variation_item  in prouduct_variation_options:
+            if increase_descrease == "-":
+                product_variation_item.update(quantity = product_variation_item.quantity - instance.quantity)
+            else:
+                product_variation_item.update(quantity = product_variation_item.quantity + instance.quantity)
+
+        if chanages_quantity>0:
+            prouct_obj = Product.objects.filter(id = instance.product.id).update(quantity = chanages_quantity)
+        else:
+            prouct_obj = Product.objects.filter(id = instance.product.id).update(quantity = 0,product_type =  "pre-order")
+
+

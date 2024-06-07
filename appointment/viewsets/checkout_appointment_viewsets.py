@@ -21,7 +21,7 @@ class CheckoutAppointmentViewsets(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]    
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
-    queryset  = CheckoutAppointment.objects.all()
+    queryset  = CheckoutAppointment.objects.all().order_by('-id')
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:

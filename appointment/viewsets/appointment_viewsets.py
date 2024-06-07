@@ -11,7 +11,7 @@ class AppointmentViewsets(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
-    queryset  = Appointment.objects.all()
+    queryset  = Appointment.objects.all().order_by('-id')
 
     filter_backends = [SearchFilter,DjangoFilterBackend,OrderingFilter]
     search_fields = ['id']
@@ -19,6 +19,7 @@ class AppointmentViewsets(viewsets.ModelViewSet):
 
     filterset_fields = {
         'payment_status':['exact'],
+        'appointment_status':['exact'],
     }
 
     def get_serializer_class(self):
