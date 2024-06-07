@@ -12,7 +12,7 @@ from ..viewsets.cart_to_order import CartToOrder
 from coupon.models import Coupon
 from ..utilities.hisab_kitab_from_karts import CartsHisabKitab
 from rest_framework import serializers
-from utilities.quantity_manage import quantityValidation
+from ..utilities.quantity_manage import quantityValidation
 
 class CartViewsets(viewsets.ModelViewSet):
     serializer_class = CartReadSerializers
