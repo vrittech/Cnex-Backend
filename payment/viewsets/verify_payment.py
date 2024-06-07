@@ -34,7 +34,7 @@ class PaymentVerify(APIView):
             if is_payment:
                 return Response({'message': 'Payment verified successfully'}, status=200)
             else:
-                PaymentsFail(payment_response,request.data,"product")
+                #PaymentsFail(payment_response,request.data,"product")
                 return Response({'message': payment_response}, status=400)
 
         else:
