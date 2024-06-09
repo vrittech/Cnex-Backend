@@ -31,7 +31,7 @@ class AppointmentViewsets(viewsets.ModelViewSet):
         if self.request.user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
             return super().get_queryset()
         else:
-            return super().get_queryset().filter(user_id = self.request.user.id)
+            return super().get_queryset().filter(user = self.request.user)
         
     
     
