@@ -20,9 +20,11 @@ def quantityManage(order_obj,increase_descrease):
         prouduct_variation_options = prouct_obj.variations.filter(variation_options__in = total_variations)
         for product_variation_item  in prouduct_variation_options:
             if increase_descrease == "-":
-                product_variation_item.update(quantity = product_variation_item.quantity - instance.quantity)
+                product_variation_item.quantity = product_variation_item.quantity - instance.quantity
+                product_variation_item.save()
             else:
-                product_variation_item.update(quantity = product_variation_item.quantity + instance.quantity)
+                product_variation_item.quantity = product_variation_item.quantity + instance.quantity
+                product_variation_item.save()
 
         if chanages_quantity>0:
             prouct_obj = Product.objects.filter(id = instance.product.id).update(quantity = chanages_quantity)
