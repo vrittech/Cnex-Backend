@@ -11,9 +11,6 @@ def quantityManage(order_obj,increase_descrease):
         else:
             chanages_quantity = instance.product.quantity + instance.quantity
         
-        print(instance.variations.all())
-        print( list(instance.variations.all().values_list('id',flat = True)))
-        print("\n")
         total_variations = list(instance.variations.all().values_list('id',flat = True))
         
         prouct_obj = instance.product
