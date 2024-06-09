@@ -16,7 +16,7 @@ def quantityManage(order_obj,increase_descrease):
         print("\n")
         total_variations = list(instance.variations.all().values_list('id',flat = True))
         
-        prouct_obj = instance.product.first()
+        prouct_obj = instance.product
         prouduct_variation_options = prouct_obj.variations.filter(variation_options__in = total_variations)
         for product_variation_item  in prouduct_variation_options:
             if increase_descrease == "-":
