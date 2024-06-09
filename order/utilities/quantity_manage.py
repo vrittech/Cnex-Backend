@@ -37,7 +37,7 @@ def quantityValidation(request):
             return False
 
         total_variations = variations
-        prouduct_variation_options = product_obj.first().variations.filter(variation_options__in = total_variations)
+        prouduct_variation_options = product_obj.variations.filter(variation_options__in = total_variations)
         for product_variation_item  in prouduct_variation_options:
             if quantity > product_variation_item.quantity:
                 return False
