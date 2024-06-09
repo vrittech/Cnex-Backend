@@ -46,4 +46,7 @@ def PaymentsFail(response , data , service_product):
 def VerifyOrder(data):#for cod products
     order_obj = Order.objects.get(id = data.get('order_id'),order_status = "checkout")
 
-    return order_obj.save(payment_status = "cod",order_status="in-progress")
+    order_obj.payment_status = "cod"
+    order_obj.order_status="in-progress"
+    order_obj.save()
+    return order_obj
