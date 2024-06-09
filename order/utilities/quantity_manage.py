@@ -3,7 +3,7 @@ from products.models import Product
 from order.models import Cart
 
 def quantityManage(order_obj,increase_descrease):
-    order_items = order_obj.first().order_items.all()
+    order_items = order_obj.order_items.all()
     for instance in order_items:
         
         if increase_descrease == "-":
@@ -12,7 +12,8 @@ def quantityManage(order_obj,increase_descrease):
             chanages_quantity = instance.product.quantity + instance.quantity
         
         total_variations = list(instance.variations.all().value_list('variations',flat = True))
-        prouduct_variation_options = prouct_obj.first().variations.filter(variation_options__in = total_variations)
+        prouct_obj = instance.product.first()
+        prouduct_variation_options = prouct_obj.variations.filter(variation_options__in = total_variations)
         for product_variation_item  in prouduct_variation_options:
             if increase_descrease == "-":
                 product_variation_item.update(quantity = product_variation_item.quantity - instance.quantity)
