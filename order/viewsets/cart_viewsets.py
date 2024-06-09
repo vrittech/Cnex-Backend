@@ -38,7 +38,7 @@ class CartViewsets(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], name="CartToOrder", url_path="cart-checkout")
     def CartToOrder(self, request):
-        if quantityValidation() == False:
+        if quantityValidation(request) == False:
              return Response({"message": "Exceeds quantity than actual product quantity available."}, status=status.HTTP_400_BAD_REQUEST)
 
         coupon_code = request.data.get('coupon_code')
