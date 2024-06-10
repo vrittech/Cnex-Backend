@@ -28,8 +28,8 @@ class CouponViewsets(viewsets.ModelViewSet):
             return super().get_queryset()
         else:
             coupons = super().get_queryset().filter(is_active = True)
-            valid_coupons = [coupon for coupon in coupons if coupon.is_coupon_ok]
-            return valid_coupons
+            valid_coupons = [coupon.id for coupon in coupons if coupon.is_coupon_ok]
+            return coupons.filter(id__in = valid_coupons)
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
