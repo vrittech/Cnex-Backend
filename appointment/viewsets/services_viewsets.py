@@ -4,6 +4,7 @@ from ..utilities.importbase import *
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from accounts import roles
 
 class ServicesViewsets(viewsets.ModelViewSet):
     serializer_class = ServicesReadSerializers
@@ -11,6 +12,13 @@ class ServicesViewsets(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     pagination_class = MyPageNumberPagination
     queryset  = Services.objects.all().order_by('-id')
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated and user.role in [roles.ADMIN,roles.SUPER_ADMIN]:
+            return super().get_queryset()
+        else:
+            return super().get_queryset().filter(is_active = True)
 
     def get_serializer_class(self):
         if self.action in ['create','update','partial_update']:
