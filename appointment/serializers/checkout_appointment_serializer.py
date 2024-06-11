@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import CheckoutAppointment,Services,ServicesItems
+from ..models import CheckoutAppointment,Services,ServicesItems,Slots
 from django.db.models import Sum
 from rest_framework.exceptions import ValidationError
 from ..serializers.checkout_services_items_serializers import ServicesItemsWriteSerializers
@@ -24,8 +24,14 @@ class ServicesSerializers(serializers.ModelSerializer):
         model = Services
         fields = '__all__'
 
+class SlotsSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Slots
+        fields = '__all__'
+
 class services_itemsSerializers(serializers.ModelSerializer):
     service = ServicesSerializers()
+    slots = SlotsSerializers()
     class Meta:
         model = ServicesItems
         fields = '__all__'
