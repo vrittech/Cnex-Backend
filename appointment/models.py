@@ -77,6 +77,9 @@ class ServicesItems(models.Model):
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     appointment_date = models.DateField()
 
+    service_name = models.CharField(max_length = 255,null = True)
+    service_price = models.PositiveIntegerField(null = True)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['checkout_appointment', 'slots'], name='checkout_service_slots_unique')
