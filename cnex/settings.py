@@ -201,15 +201,22 @@ EMAIL_HOST_PASSWORD = "fpsg yspd yalp wpwu"
 
 SMS_KEY_PASSWORD = os.getenv('SMS_KEY_PASSWORD')
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': os.getenv('REDIS_CACHE_LOCATION'),  # Update with your Redis server details
+#         'KEY_PREFIX': os.getenv('REDIS_CACHE_KEY_PREFIX'),
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#             'MASTER_NAME': 'mymaster_cnex_local',
+#         }
+#     }
+# }
+
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_CACHE_LOCATION'),  # Update with your Redis server details
-        'KEY_PREFIX': os.getenv('REDIS_CACHE_KEY_PREFIX'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'MASTER_NAME': 'mymaster_cnex_local',
-        }
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
     }
 }
 
