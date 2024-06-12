@@ -13,6 +13,7 @@ from coupon.models import Coupon
 from ..utilities.hisab_kitab_from_karts import CartsHisabKitab
 from rest_framework import serializers
 from ..utilities.quantity_manage import quantityValidation
+from django.db.models import Q
 
 class CartViewsets(viewsets.ModelViewSet):
     serializer_class = CartReadSerializers
@@ -46,7 +47,7 @@ class CartViewsets(viewsets.ModelViewSet):
         if coupon_code:
             coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
-                if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).exists():
+                if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).filter(~Q(order_status='checkout')).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
                     print("You have already used this coupon")
                     return Response({"message": "You have already used this coupon "}, status=status.HTTP_400_BAD_REQUEST)
@@ -66,7 +67,7 @@ class CartViewsets(viewsets.ModelViewSet):
         if coupon_code:
             coupon_obj = Coupon.objects.filter(code = coupon_code,is_active = True)
             if coupon_obj.exists() and coupon_obj.first().is_coupon_ok == True:
-                if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).exists():
+                if Order.objects.filter(coupons = coupon_obj.first(),user_id = request.user.id).filter(~Q(order_status='checkout')).exists():
                     # raise serializers.ValidationError("You have already used this coupon") 
                     request.data.pop("coupon_code", None)
                     data = CartsHisabKitab(request)
