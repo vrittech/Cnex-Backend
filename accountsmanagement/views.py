@@ -21,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 import random
 import string
 
-otp_time_expired = 1200
+otp_time_expired = 100
 site_f  = "https://lims.dftqc.gov.np" #http://localhost:4200"#"https://dev-lims.netlify.app"#"https://lims.dftqc.gov.np"
 
 class EmailCheckView(generics.GenericAPIView):
