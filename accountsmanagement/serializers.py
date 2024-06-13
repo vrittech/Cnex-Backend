@@ -23,6 +23,7 @@ class TokenValidationSerializer(serializers.Serializer):
     email = serializers.CharField()
     
     def validate_otp(self, value):
+        print("validiting ..")
         # Perform your token validation logic here
         email = self.initial_data.get('email')  # Access email from initial data
         if not TokenValidate(value,email):

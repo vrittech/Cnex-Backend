@@ -17,11 +17,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .sms_sender import SendSms,ContactMe
 from django.db.models import Q
 from django.core.cache import cache
-
+from django.views.decorators.csrf import csrf_exempt
 import random
 import string
 
-otp_time_expired = 120
+otp_time_expired = 1200
 site_f  = "https://lims.dftqc.gov.np" #http://localhost:4200"#"https://dev-lims.netlify.app"#"https://lims.dftqc.gov.np"
 
 class EmailCheckView(generics.GenericAPIView):
@@ -90,10 +90,12 @@ class CustomPasswordResetView(generics.GenericAPIView):
         )
     
 
-class VerifyUserPasswordToken(generics.GenericAPIView):
+class VerifyUserPasswordToken(APIView):
     serializer_class = TokenValidationSerializer
     
+    # @csrf_exempt
     def post(self, request, *args, **kwargs):
+        print("taking phone and otp")
         serializer = self.serializer_class(data=request.data, context={"kwargs":kwargs})
         serializer.is_valid(raise_exception=True)
         
@@ -101,7 +103,7 @@ class VerifyUserPasswordToken(generics.GenericAPIView):
             {"message": "Your Token is Validate",
              'data' : serializer.data,
             },
-            status=status.HTTP_200_OK,
+            # status=status.HTTP_200_OK,
         )
 
 

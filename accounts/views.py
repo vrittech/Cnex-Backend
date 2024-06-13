@@ -265,7 +265,7 @@ class LoginView(APIView):
         operation_summary="Login and get token",
         operation_description="Login and get token",
     )
-    # @csrf_exempt
+    @csrf_exempt
     def post(self, request):
         username_or_email = request.data.get('email')
         password = request.data.get('password')
