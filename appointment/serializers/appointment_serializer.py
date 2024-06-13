@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 class CustomUserReadSerializers_AppointmentReadSerializers(serializers.ModelSerializer):
     class Meta:
+        ref_name = "CustomUserReadSerializers_AppointmentReadSerializers"
         model = CustomUser
         fields = ['username','email','full_name','phone']
 

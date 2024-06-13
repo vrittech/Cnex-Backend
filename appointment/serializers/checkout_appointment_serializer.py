@@ -38,6 +38,7 @@ class services_itemsSerializers(serializers.ModelSerializer):
 
 class CustomUserReadSerializers_AppointmentReadSerializers(serializers.ModelSerializer):
     class Meta:
+        ref_name = "checkout_CustomUserReadSerializers_AppointmentReadSerializers"
         model = CustomUser
         fields = ['username','email','full_name','phone']
 
