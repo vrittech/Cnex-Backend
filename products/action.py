@@ -13,5 +13,12 @@ def ProductPreSave(sender,instance,**kwargs):
         instance.product_type = "regular"
     else:
         instance.product_type = "pre-order"
+    
+    if instance.is_deleted == True:
+        instance.is_publish = False
+
+
+
+
          
 
