@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .custom_filters import CustomFilter
 from accounts import roles
 from django.db.models import Q
-from .custompermission import NotificationPermission
+from .custompermission import NotificationPermission,AdminLevelPermission
 from django.http import  HttpResponse
 from datetime import date
 from rest_framework.decorators import action
@@ -142,6 +142,8 @@ def birthdayAnniversaryNotification(request):
     return HttpResponse("sent notification completed")
 
 class PushNotificationView(views.APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [AdminLevelPermission]
     def post(self,request,*args,**kwargs):
         if request.data.get('type') in ['product_push_notification','collection_push_notification']:
             serializer = PushNotificationSerializers(data=request.data)
