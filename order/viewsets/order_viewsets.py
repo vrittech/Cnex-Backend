@@ -50,7 +50,7 @@ class OrderViewsets(viewsets.ModelViewSet):
              return super().get_queryset().order_by('user').distinct('user')#.annotate(total_prices=Sum('total_price'))
            
         
-        elif self.request.user.role == roles.USER:
+        elif self.request.user.role == roles.USER or self.request.user.role == None or self.request.user.role == '':
             query = super().get_queryset().filter(user = self.request.user)
 
         elif self.request.user.role in [roles.SUPER_ADMIN,roles.ADMIN]:
