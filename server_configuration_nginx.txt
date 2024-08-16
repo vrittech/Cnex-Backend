@@ -39,7 +39,7 @@ ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
 
 
-sudo certbot --nginx -d training1.demo.vrittechnologies.com
+sudo certbot --nginx -d backend.cnex.com.np
 
 
 

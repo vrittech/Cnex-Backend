@@ -267,7 +267,7 @@ class LoginView(APIView):
     )
     @csrf_exempt
     def post(self, request):
-        username_or_email = request.data.get('email')
+        username_or_email = request.data.get('email').lower()
         password = request.data.get('password')
 
         # Authenticate the user using either username or email

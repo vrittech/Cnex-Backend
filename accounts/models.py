@@ -6,12 +6,30 @@ from .import roles
 import uuid
 from django.db.models import Sum
 
+from .utilities.model_utils import LowercaseEmailField
+from .utilities.validators import validate_emails, validate_mobile_number
+from django.utils.translation import gettext_lazy as _
+
 class CustomUser(AbstractUser):
     public_id = models.UUIDField(default=uuid.uuid4,editable=False,unique=True)
-    phone = models.CharField(max_length=15,null=True , default = '')
-    email = models.EmailField(max_length=255,unique=True)
-    username = models.CharField(max_length=255,unique=True)  
 
+    phone = models.CharField(
+        _("Mobile Number"),
+        max_length=15,
+        null=True,
+        blank=True,
+        default=None,
+        validators=[validate_mobile_number],
+        error_messages={"unique": "Given Mobile Number has already been registered."},
+    )
+    email = LowercaseEmailField(
+        _("email address"),
+        unique=True,
+        validators=[validate_emails],
+        error_messages={"unique": "Given Email has already been registered."},
+    )
+
+    username = models.CharField(max_length=255,unique=True)  
     last_name = models.CharField(max_length=255,null = True,default = '')  
     dob = models.DateField(null= True,blank= True ) 
 

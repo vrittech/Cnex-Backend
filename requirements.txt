@@ -21,3 +21,5 @@ django-redis==5.4.0
 django-storages
 boto3
 
+phonenumbers==8.13.14
+
