@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         default=None,
-        validators=[validate_mobile_number],
+        #svalidators=[validate_mobile_number],
         error_messages={"unique": "Given Mobile Number has already been registered."},
     )
     email = LowercaseEmailField(
