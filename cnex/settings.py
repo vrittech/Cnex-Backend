@@ -197,7 +197,7 @@ EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'manojdas.py@gmail.com'
 EMAIL_HOST_USER="info@cnex.com.np"
 # EMAIL_HOST_PASSWORD = 'snhz riaw dfjl mncb'
-EMAIL_HOST_PASSWORD = "fpsg yspd yalp wpwu"
+EMAIL_HOST_PASSWORD = "ouwa mnxt hkpf rrth"
 
 SMS_KEY_PASSWORD = os.getenv('SMS_KEY_PASSWORD')
 
