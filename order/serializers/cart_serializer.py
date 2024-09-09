@@ -6,7 +6,7 @@ from variations.models import VariationOption
 class ProductSerializers_CartReadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id','slug','featured_image','price','quantity','title']
+        fields = ['id','slug','featured_image','price','quantity','name']
 
     def to_representation(self, instance):
         product = super().to_representation(instance)
