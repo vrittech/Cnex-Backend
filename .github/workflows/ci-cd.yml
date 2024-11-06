@@ -35,7 +35,7 @@ jobs:
         BACKEND_USER: backend
         BACKEND_PASSWORD: backend
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_IP: "142.171.88.146"
+        SERVER_IP: "142.171.88.146" 
         PORT: "8002"
         SCREEN_NAME: "cnex"
         PROJECT_FOLDER: "/home/ubuntu/cnex"
