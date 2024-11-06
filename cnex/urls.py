@@ -43,7 +43,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     # path('', lambda request: HttpResponse("cdn storage fixing"), name='index'),
     path('api/accounts/',include('accounts.urls')),
     path('api/',include('variations.urls')),
