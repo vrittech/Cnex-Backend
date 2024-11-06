@@ -38,7 +38,7 @@ jobs:
         SERVER_IP: "142.171.88.146" 
         PORT: "8002"
         SCREEN_NAME: "cnex"
-        PROJECT_FOLDER: "/home/ubuntu/cnex"
+        PROJECT_FOLDER: "/home/cnex"
 
       run: |
         mkdir -p ~/.ssh
