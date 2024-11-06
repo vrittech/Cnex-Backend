@@ -35,7 +35,7 @@ jobs:
         BACKEND_USER: backend
         BACKEND_PASSWORD: backend
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_IP: "3.110.142.50"
+        SERVER_IP: "142.171.88.146"
         PORT: "8002"
         SCREEN_NAME: "cnex"
         PROJECT_FOLDER: "/home/ubuntu/cnex"
@@ -62,9 +62,9 @@ jobs:
 
         # Run deployment commands on the server
         echo "Running deployment commands on the server"
-        #ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd $PROJECT_FOLDER && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
+        ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd $PROJECT_FOLDER && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
         
         #echo "Running deployment commands on the server" &&
-        ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd $PROJECT_FOLDER && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && screen -ls | grep $SCREEN_NAME | awk '{print $1}' | xargs -r -I{} screen -X -S {} quit && screen -dmS $SCREEN_NAME bash -c 'source venv/bin/activate && python manage.py runserver 0.0.0.0:$PORT'"
+        #ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "cd $PROJECT_FOLDER && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && screen -ls | grep $SCREEN_NAME | awk '{print $1}' | xargs -r -I{} screen -X -S {} quit && screen -dmS $SCREEN_NAME bash -c 'source venv/bin/activate && python manage.py runserver 0.0.0.0:$PORT'"
 
 # AmazonEC2FullAccess
