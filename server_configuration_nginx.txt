@@ -35,11 +35,11 @@ server {
 ssl_certificate /etc/letsencrypt/live/api.champadevi.com.np/fullchain.pem; # managed by Certbot
 ssl_certificate_key /etc/letsencrypt/live/api.champadevi.com.np/privkey.pem; # managed by Certbot
 include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+ssl_dhparam /etc/letsencrypt/sslx-dhparams.pem; # managed by Certbot
 
 
 
-sudo certbot --nginx -d apileads.cloudedu.com.au
+sudo certbot --nginx -d backend.cnex.com.np
 
 
 
@@ -48,6 +48,17 @@ sudo certbot --nginx -d apileads.cloudedu.com.au
 ssh-keygen -t rsa -b 4096 -C "cicd-deployer" -f cicd_deploy_key
 above generate private key
 
+
+after that,
+
+# On your VPS server:
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+touch ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+# Add your public key to authorized_keys
+echo "your-public-key-content" >> ~/.ssh/authorized_keys
 
 
 
